@@ -111,6 +111,7 @@
         </div>
         <div class="page-header__actions">
           <button class="btn btn-ghost btn-sm" type="button" disabled><i class="bi bi-qr-code-scan"></i> Scan QR <span class="badge-soon ms-1">Coming Soon</span></button>
+          <button class="btn btn-ghost" type="button" id="exportBtn"><i class="bi bi-download"></i> ส่งออก CSV</button>
           <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#itemModal"><i class="bi bi-plus-lg"></i> เพิ่มอุปกรณ์</button>
         </div>
       </div>
@@ -292,9 +293,14 @@ function renderInventory() {
     var barColor = stockBarColor(item.status);
     var barWidth = stockBarWidth(item);
 
+    // Every serial this item has ever carried (in stock or handed out), so the
+    // search box can find a unit by its serial the way the placeholder promises.
+    var serialText = (item.lots || []).reduce(function (acc, l) { return acc.concat(l.serials || []); }, [])
+      .concat((item.deployments || []).reduce(function (acc, d) { return acc.concat(d.serials || []); }, []))
+      .join(' ').toLowerCase();
     var ariaLabel = item.name + ' ' + item.code + ' คงเหลือ ' + item.stock + ' ' + item.unit + ' ' + st.label + ' ดูรายละเอียด';
     var $row = $(
-      '<tr data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" style="cursor:pointer" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
+      '<tr data-code="' + item.code + '" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" data-serials="' + serialText + '" style="cursor:pointer" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
         '<td>' + itemThumbHtml(item, '38px', '16px') + '</td>' +
         '<td class="num text-muted-2">' + item.code + '</td>' +
         '<td><div class="fw-700">' + item.name + '</div><div class="text-muted-2" style="font-size:11.5px">' + (item.brand !== '-' ? item.brand + ' ' + item.model : '&nbsp;') + '</div></td>' +
@@ -311,7 +317,7 @@ function renderInventory() {
     $tbody.append($row);
 
     var $card = $(
-      '<div class="inv-card" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
+      '<div class="inv-card" data-code="' + item.code + '" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" data-serials="' + serialText + '" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
         itemThumbHtml(item, '48px', '20px') +
         '<div class="inv-card__body">' +
           '<div class="inv-card__title">' + item.name + '</div>' +
@@ -358,7 +364,8 @@ function applyFilters() {
   var visible = 0;
 
   function matches($el) {
-    var matchesText = !q || $el.text().toLowerCase().indexOf(q) > -1;
+    var matchesText = !q || $el.text().toLowerCase().indexOf(q) > -1 ||
+                      String($el.data('serials') || '').indexOf(q) > -1;
     var matchesCategory = !category || $el.data('category') === category;
     var matchesType = !type || $el.data('type') === type;
     var matchesUnit = !unit || $el.data('unit') === unit;
@@ -381,11 +388,30 @@ function applyFilters() {
 $('#invSearch').on('input', applyFilters);
 $('#categoryFilter, #typeFilter, #unitFilter, #statusFilter').on('change', applyFilters);
 
+var qText = new URLSearchParams(location.search).get('q');
+if (qText) $('#invSearch').val(qText);
 var qStatus = new URLSearchParams(location.search).get('status');
 if (qStatus && STATUS_LABEL[qStatus]) {
   $('#statusFilter').val(qStatus);
 }
 applyFilters();
+
+// Export honours the current filters: what you see is what lands in the file.
+$('#exportBtn').on('click', function () {
+  var codes = $('#invTbody tr:visible').map(function () { return $(this).data('code'); }).get();
+  var rows = INVENTORY_ITEMS.filter(function (it) { return codes.indexOf(it.code) > -1; });
+  if (!rows.length) { showToast('info', 'ไม่มีรายการให้ส่งออก'); return; }
+  downloadCsv(
+    'inventory-' + new Date().toISOString().slice(0, 10) + '.csv',
+    ['รหัส', 'ชื่ออุปกรณ์', 'ยี่ห้อ', 'รุ่น', 'หมวดหมู่', 'ประเภท', 'หน่วย', 'คงเหลือ', 'จุดสั่งซื้อ', 'สถานะ', 'ติดตาม Serial', 'จำนวนล็อต', 'PO ล่าสุด'],
+    rows.map(function (it) {
+      var latest = (it.lots || [])[0];
+      return [it.code, it.name, it.brand, it.model, it.category, it.type, it.unit, it.stock, it.min,
+              STATUS_META[it.status].label, it.serialized ? 'ใช่' : 'ไม่', (it.lots || []).length, latest ? latest.poRef : ''];
+    })
+  );
+  showToast('success', 'ส่งออก ' + rows.length + ' รายการเป็น CSV แล้ว');
+});
 </script>
 </body>
 </html>

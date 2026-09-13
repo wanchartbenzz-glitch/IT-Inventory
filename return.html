@@ -110,10 +110,24 @@
         <span>คืนได้เฉพาะรายการที่ <b>ยืม</b> เท่านั้น &middot; รายการที่ <b>เบิก</b> ถือว่าจ่ายออกถาวรไปแล้ว จึงไม่แสดงในหน้านี้</span></div>
       </div>
 
+      <!-- Overdue is the one thing worth interrupting for, so it sits above the list -->
+      <div class="card card-body mb-3 d-none" id="overdueBanner" style="background:var(--color-danger-bg);border-color:#f7c4c4">
+        <div class="d-flex gap-2 align-items-start" style="font-size:13px;color:#9b1c1c">
+          <i class="bi bi-exclamation-triangle-fill" style="margin-top:2px"></i>
+          <div>
+            <b>เลยกำหนดคืนแล้ว <span id="overdueCount">0</span> รายการ</b>
+            <div id="overdueNames" style="font-size:12.5px;margin-top:2px"></div>
+          </div>
+        </div>
+      </div>
+
       <div class="card card-body mb-3">
         <div class="card-head-row mb-3">
           <div class="section-title mb-0">รายการยืมที่ค้างอยู่</div>
-          <span class="status-badge status-badge--warning"><span class="status-badge__dot"></span><span id="loanCount">0</span> รายการ</span>
+          <div class="gap-row">
+            <span class="status-badge status-badge--danger d-none" id="loanOverdueBadge"><span class="status-badge__dot"></span>เลยกำหนด <span id="loanOverdueCount">0</span></span>
+            <span class="status-badge status-badge--warning"><span class="status-badge__dot"></span><span id="loanCount">0</span> รายการ</span>
+          </div>
         </div>
         <div class="item-picker" id="loanList"></div>
       </div>
@@ -206,14 +220,35 @@ function renderOutstanding() {
     $list.html('<div class="text-muted-2" style="font-size:13px">ไม่มีรายการยืมค้างอยู่</div>');
     return;
   }
+  // Most urgent first: overdue, then due today, then due soon, then the rest.
+  var order = { overdue: 0, 'due-today': 1, 'due-soon': 2, ok: 3 };
+  loans.sort(function (a, b) {
+    var sa = loanState(a.dep), sb = loanState(b.dep);
+    if (order[sa.state] !== order[sb.state]) return order[sa.state] - order[sb.state];
+    return (sa.days || 0) - (sb.days || 0);
+  });
+
+  var overdue = loans.filter(function (l) { return loanState(l.dep).state === 'overdue'; });
+  $('#overdueBanner').toggleClass('d-none', overdue.length === 0);
+  $('#loanOverdueBadge').toggleClass('d-none', overdue.length === 0);
+  $('#overdueCount, #loanOverdueCount').text(overdue.length);
+  $('#overdueNames').text(overdue.map(function (l) {
+    return l.item.name + ' (' + l.dep.holder + ' — ' + loanStateLabel(l.dep) + ')';
+  }).join(' · '));
+
   loans.forEach(function (l) {
+    var ls = loanState(l.dep);
+    var lm = LOAN_STATE_META[ls.state];
+    var dueColor = ls.state === 'overdue' ? 'var(--color-danger)'
+                 : ls.state === 'ok' ? 'var(--color-faint)' : 'var(--color-warning)';
     $list.append(
-      '<div class="item-picker-row" data-ref="' + l.dep.txRef + '">' +
+      '<div class="item-picker-row' + (ls.state === 'overdue' ? ' is-overdue' : '') + '" data-ref="' + l.dep.txRef + '">' +
         itemThumbHtml(l.item, '38px', '16px') +
         '<div><div class="item-picker-row__name">' + l.item.name + '</div>' +
         '<div class="item-picker-row__code">' + l.dep.holder + ' &middot; ' + l.dep.txRef + '</div></div>' +
         '<div class="item-picker-row__stock num">' + l.dep.qty + ' ' + l.item.unit +
-        '<div class="text-faint" style="font-size:11px">คืน ' + (l.dep.due || '-') + '</div></div>' +
+        '<div style="font-size:11px;color:' + dueColor + ';font-weight:600">' +
+          '<i class="bi ' + lm.icon + '"></i> ' + loanStateLabel(l.dep) + '</div></div>' +
       '</div>'
     );
   });
@@ -248,7 +283,15 @@ function searchIssue() {
   $('#foundRef').text(match.dep.txRef);
   $('#foundRequester').text(match.dep.holder + ' (' + match.dep.dept + ')');
   $('#foundQty').text(match.dep.qty + ' ' + item.unit);
-  $('#foundDue').text(match.dep.due || '-');
+  if (match.dep.due) {
+    var fls = loanState(match.dep);
+    var fColor = fls.state === 'overdue' ? 'var(--color-danger)'
+               : fls.state === 'ok' ? '' : 'var(--color-warning)';
+    $('#foundDue').html(match.dep.due + '<div style="font-size:11px;font-weight:600;color:' + fColor + '">' +
+                        loanStateLabel(match.dep) + '</div>').css('color', fColor);
+  } else {
+    $('#foundDue').text('-').css('color', '');
+  }
   $('#retQty').attr('max', match.dep.qty).val(match.dep.qty);
   $('#foundBlock, #detailBlock, #confirmReturnBtn').removeClass('d-none');
 }

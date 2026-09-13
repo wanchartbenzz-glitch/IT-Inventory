@@ -295,7 +295,7 @@ $(document).on('click', '.req-reject', function () {
 $('#exportBtn').on('click', function () {
   if (!requests.length) { showToast('info', 'ไม่มีคำขอให้ส่งออก'); return; }
   downloadCsv(
-    'คำขอรออนุมัติ-' + new Date().toISOString().slice(0, 10) + '.csv',
+    'approvals-' + new Date().toISOString().slice(0, 10) + '.csv',
     ['เลขที่', 'ประเภท', 'ผู้ขอ', 'แผนก', 'วันที่ขอ', 'รหัสอุปกรณ์', 'จำนวน', 'รายละเอียด', 'เหตุผล'],
     requests.map(function (r) {
       return [r.ref, (APPROVAL_META[r.kind] || {}).label || r.kind, r.requester, r.dept, r.date, r.code, r.qty, r.detail, r.reason];

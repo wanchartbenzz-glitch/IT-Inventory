@@ -41,6 +41,54 @@ $(function () {
     $('[data-panel-toggle]').attr('aria-expanded', 'false');
   });
   $doc.on('click', '.dropdown-panel', function (e) { e.stopPropagation(); });
+
+  // Header search: Enter hands the query to the inventory list, which also
+  // matches serials — the placeholder promised that and nothing delivered it.
+  $doc.on('keydown', '.header-search input', function (e) {
+    if (e.key !== 'Enter') return;
+    var q = $(this).val().trim();
+    if (!q) return;
+    e.preventDefault();
+    location.href = 'inventory.html?q=' + encodeURIComponent(q);
+  });
+
+  // Notifications: rebuilt from js/data.js when it is on the page, so the bell
+  // reflects real overdue loans, low stock and pending approvals rather than
+  // the three placeholder rows baked into the header partial.
+  if (typeof overdueLoans !== 'function') return;
+
+  var rows = [];
+  overdueLoans().forEach(function (l) {
+    rows.push({ tone: 'danger', icon: 'bi-exclamation-triangle-fill', href: 'return.html',
+      title: l.item.name + ' เลยกำหนดคืน', meta: l.dep.holder + ' · ' + loanStateLabel(l.dep) });
+  });
+  dueSoonLoans().forEach(function (l) {
+    rows.push({ tone: 'warning', icon: 'bi-clock-fill', href: 'return.html',
+      title: l.item.name + ' ' + loanStateLabel(l.dep), meta: l.dep.holder + ' · คืน ' + l.dep.due });
+  });
+  lowStockItems().forEach(function (item) {
+    var out = item.status === 'out';
+    rows.push({ tone: out ? 'danger' : 'warning', icon: out ? 'bi-x-circle-fill' : 'bi-exclamation-triangle-fill',
+      href: 'inventory-detail.html?code=' + encodeURIComponent(item.code),
+      title: item.name + (out ? ' หมดสต๊อก' : ' เหลือ ' + item.stock + ' ' + item.unit),
+      meta: 'จุดสั่งซื้อ ' + item.min + ' ' + item.unit });
+  });
+  if (typeof PENDING_APPROVALS !== 'undefined' && PENDING_APPROVALS.length) {
+    rows.push({ tone: 'primary', icon: 'bi-check2-square', href: 'approvals.html',
+      title: 'คำขอรออนุมัติ ' + PENDING_APPROVALS.length + ' รายการ', meta: PENDING_APPROVALS[0].detail });
+  }
+
+  var bg = { danger: 'var(--color-danger-bg)', warning: 'var(--color-warning-bg)', primary: 'var(--color-primary-light)' };
+  var fg = { danger: 'var(--color-danger)', warning: 'var(--color-warning)', primary: 'var(--color-primary)' };
+  var $body = $('#notifPanel .dropdown-panel__body');
+  if (!$body.length) return;
+  $body.html(rows.length ? rows.map(function (r) {
+    return '<a class="notif-row" href="' + r.href + '" style="text-decoration:none;color:inherit">' +
+      '<div class="notif-row__icon" style="background:' + bg[r.tone] + ';color:' + fg[r.tone] + '"><i class="bi ' + r.icon + '"></i></div>' +
+      '<div><div class="notif-row__title">' + r.title + '</div><div class="notif-row__time">' + r.meta + '</div></div></a>';
+  }).join('') : '<div class="text-muted-2 text-center py-3" style="font-size:12.5px">ไม่มีการแจ้งเตือน</div>');
+  $('#notifPanel .dropdown-panel__head').text('การแจ้งเตือน (' + rows.length + ')');
+  $('.icon-btn__dot').toggle(rows.length > 0);
   $doc.on('keydown', function (e) {
     if (e.key === 'Escape') {
       $('.dropdown-panel').addClass('d-none');

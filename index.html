@@ -155,6 +155,16 @@
         </a>
       </div>
 
+      <!-- ต้องดำเนินการ: driven by js/data.js, so it stays in step with the loan and
+           approval records instead of being one more hand-typed number -->
+      <div class="card card-body mb-4 d-none" id="actionPanel">
+        <div class="card-head-row mb-3">
+          <div class="section-title mb-0">ต้องดำเนินการ</div>
+          <span class="text-muted-2" style="font-size:12px">อัปเดตจากข้อมูลล่าสุด</span>
+        </div>
+        <div class="action-grid" id="actionGrid"></div>
+      </div>
+
       <!-- Stock Health + Category -->
       <div class="stock-health-row">
         <div class="card card-body">
@@ -281,5 +291,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
+<script src="js/data.js"></script>
+<script>
+// ---- ต้องดำเนินการ ----
+(function () {
+  var tiles = [];
+  var overdue = overdueLoans();
+  var soon = dueSoonLoans();
+  if (overdue.length) {
+    tiles.push({ tone: 'danger', icon: 'bi-exclamation-triangle-fill', href: 'return.html',
+      value: overdue.length, label: 'ยืมเลยกำหนดคืน',
+      detail: overdue.map(function (l) { return l.item.name + ' · ' + l.dep.holder + ' (' + loanStateLabel(l.dep) + ')'; }).join('<br>') });
+  }
+  if (soon.length) {
+    tiles.push({ tone: 'warning', icon: 'bi-clock-fill', href: 'return.html',
+      value: soon.length, label: 'ครบกำหนดคืนวันนี้ / ใน 3 วัน',
+      detail: soon.map(function (l) { return l.item.name + ' · ' + l.dep.holder + ' (' + loanStateLabel(l.dep) + ')'; }).join('<br>') });
+  }
+  if (PENDING_APPROVALS.length) {
+    tiles.push({ tone: 'primary', icon: 'bi-check2-square', href: 'approvals.html',
+      value: PENDING_APPROVALS.length, label: 'คำขอรออนุมัติ',
+      detail: PENDING_APPROVALS.slice(0, 3).map(function (r) { return r.detail; }).join('<br>') +
+              (PENDING_APPROVALS.length > 3 ? '<br>…' : '') });
+  }
+  var openClaims = CLAIMS.filter(function (c) { return c.status === 'open' || c.status === 'sent'; });
+  if (openClaims.length) {
+    tiles.push({ tone: 'purple', icon: 'bi-shield-check', href: 'claims.html',
+      value: openClaims.length, label: 'เคลมที่ยังไม่ปิดเรื่อง',
+      detail: openClaims.map(function (c) { var it = findInventoryItem(c.code); return (it ? it.name : c.code) + ' · ' + CLAIM_META[c.status].label; }).join('<br>') });
+  }
+  if (!tiles.length) return;
+  $('#actionPanel').removeClass('d-none');
+  $('#actionGrid').html(tiles.map(function (t) {
+    return '<a class="action-tile action-tile--' + t.tone + '" href="' + t.href + '">' +
+      '<div class="action-tile__head"><i class="bi ' + t.icon + '"></i><span class="action-tile__value num">' + t.value + '</span></div>' +
+      '<div class="action-tile__label">' + t.label + '</div>' +
+      '<div class="action-tile__detail">' + t.detail + '</div>' +
+    '</a>';
+  }).join(''));
+})();
+</script>
 </body>
 </html>

@@ -110,10 +110,9 @@
           <p class="page-header__desc">นับของจริงในคลังแล้วกรอกจำนวนที่นับได้ ระบบจะเทียบกับยอดในระบบให้อัตโนมัติ</p>
         </div>
         <div class="page-header__actions">
-          <select class="filter-select" id="countPeriod">
+          <button class="btn btn-ghost" type="button" id="cntExport"><i class="bi bi-download"></i> ส่งออก CSV</button>
+          <select class="filter-select" id="countPeriod" aria-label="รอบเดือน">
             <option>รอบเดือน ก.ย. 2569</option>
-            <option>รอบเดือน ส.ค. 2569</option>
-            <option>รอบเดือน ก.ค. 2569</option>
           </select>
         </div>
       </div>
@@ -165,6 +164,21 @@
 
         <!-- Mobile cards -->
         <div class="inv-cards p-3" id="cntCards"></div>
+      </div>
+
+      <!-- ประวัติการตรวจนับย้อนหลัง -->
+      <div class="card card-body mt-4" id="historyCard">
+        <div class="card-head-row mb-1">
+          <div class="section-title mb-0">ประวัติการตรวจนับย้อนหลัง</div>
+          <span class="text-muted-2" style="font-size:12px"><span id="histCount">0</span> รอบ</span>
+        </div>
+        <div class="section-desc mb-3">ผลต่างที่พบในแต่ละรอบ และใครเป็นผู้อนุมัติการปรับยอด</div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>รอบ</th><th>วันที่นับ</th><th>ผู้นับ</th><th>รายการ</th><th>ผลต่าง</th><th>สถานะ</th><th>ผู้อนุมัติ</th></tr></thead>
+            <tbody id="histTbody"></tbody>
+          </table>
+        </div>
       </div>
     </main>
   </div>
@@ -329,10 +343,64 @@ $('#cntSubmit').on('click', function () {
     cancelButtonText: 'ยกเลิก',
     reverseButtons: true
   }).then(function (r) {
-    if (r.isConfirmed) showToast('success', 'บันทึกผลการตรวจนับเรียบร้อย');
+    if (!r.isConfirmed) return;
+    // A round with differences is not final until someone signs off on the
+    // adjustments, so it enters history as "รออนุมัติ" and the diffs become requests.
+    var round = {
+      period: $('#countPeriod').val().replace('รอบเดือน ', ''),
+      countedOn: formatThaiDate(today()), countedBy: 'IT Support',
+      items: INVENTORY_ITEMS.length - pending.length, diffs: diffs.length,
+      status: diffs.length ? 'pending' : 'approved',
+      approvedBy: diffs.length ? null : '— ไม่มีผลต่าง —', approvedOn: diffs.length ? null : formatThaiDate(today())
+    };
+    COUNT_HISTORY.unshift(round);
+    diffs.forEach(function (i) {
+      var d = diffOf(i);
+      PENDING_APPROVALS.push({
+        ref: nextRef('ADJ'), kind: 'adjust', requester: 'IT Support', dept: 'IT',
+        date: round.countedOn, code: i.code, qty: d,
+        detail: 'ปรับยอด ' + i.name + ' ' + (d > 0 ? '+' : '') + d + ' ' + i.unit + ' (นับได้ ' + counted[i.code] + ' ระบบมี ' + i.stock + ')',
+        reason: 'ผลต่างจากการตรวจนับประจำเดือน ' + round.period
+      });
+    });
+    renderHistory();
+    showToast('success', diffs.length
+      ? 'บันทึกผลแล้ว — ส่งผลต่าง ' + diffs.length + ' รายการเข้ารออนุมัติ'
+      : 'บันทึกผลการตรวจนับเรียบร้อย ยอดตรงทุกรายการ');
+    if (diffs.length) setTimeout(function () { location.href = 'approvals.html'; }, 1400);
   });
 });
 
+var HIST_STATUS = { approved: { badge: 'success', label: 'อนุมัติแล้ว' }, pending: { badge: 'warning', label: 'รออนุมัติ' } };
+function renderHistory() {
+  $('#histCount').text(COUNT_HISTORY.length);
+  $('#histTbody').html(COUNT_HISTORY.map(function (h) {
+    var st = HIST_STATUS[h.status] || HIST_STATUS.pending;
+    return '<tr>' +
+      '<td class="fw-700">' + h.period + '</td>' +
+      '<td class="num text-muted-2">' + h.countedOn + '</td>' +
+      '<td>' + h.countedBy + '</td>' +
+      '<td class="num">' + h.items + '</td>' +
+      '<td class="num fw-700" style="color:' + (h.diffs ? 'var(--color-danger)' : 'var(--color-success)') + '">' + h.diffs + '</td>' +
+      '<td><span class="status-badge status-badge--' + st.badge + '"><span class="status-badge__dot"></span>' + st.label + '</span></td>' +
+      '<td class="text-muted-2">' + (h.approvedBy ? h.approvedBy + '<div style="font-size:11px">' + (h.approvedOn || '') + '</div>' : '-') + '</td>' +
+    '</tr>';
+  }).join(''));
+}
+
+$('#cntExport').on('click', function () {
+  downloadCsv(
+    'stock-count-' + new Date().toISOString().slice(0, 10) + '.csv',
+    ['รหัส', 'ชื่ออุปกรณ์', 'หน่วย', 'ยอดในระบบ', 'นับได้จริง', 'ผลต่าง'],
+    INVENTORY_ITEMS.map(function (i) {
+      var d = diffOf(i);
+      return [i.code, i.name, i.unit, i.stock, counted[i.code] || '', d === null ? 'ยังไม่ได้นับ' : d];
+    })
+  );
+  showToast('success', 'ส่งออกใบตรวจนับเป็น CSV แล้ว');
+});
+
+renderHistory();
 render();
 </script>
 </body>

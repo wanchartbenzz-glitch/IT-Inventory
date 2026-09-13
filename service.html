@@ -386,7 +386,7 @@ $('#svcSave').on('click', function () {
 
 $('#exportBtn').on('click', function () {
   downloadCsv(
-    'อุปกรณ์ซ่อม-ตัดจำหน่าย-' + new Date().toISOString().slice(0, 10) + '.csv',
+    'service-' + new Date().toISOString().slice(0, 10) + '.csv',
     ['เลขที่', 'สถานะ', 'รหัสอุปกรณ์', 'ชื่ออุปกรณ์', 'Serial', 'จำนวน', 'ล็อต', 'PO', 'ตั้งแต่', 'รายละเอียด'],
     records.map(function (r) {
       var item = findInventoryItem(r.code);

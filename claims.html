@@ -418,7 +418,7 @@ $('#clSave').on('click', function () {
 
 $('#exportBtn').on('click', function () {
   downloadCsv(
-    'ประวัติการเคลม-' + new Date().toISOString().slice(0, 10) + '.csv',
+    'claims-' + new Date().toISOString().slice(0, 10) + '.csv',
     ['เลขที่เคลม', 'รหัสอุปกรณ์', 'ชื่ออุปกรณ์', 'Serial', 'ล็อต', 'PO', 'ผู้จำหน่าย', 'จำนวน', 'วันที่เปิด', 'สถานะ', 'ประกันถึง', 'อาการ', 'ผู้แจ้ง', 'หมายเหตุ', 'วันที่ปิด'],
     claims.map(function (c) {
       var item = findInventoryItem(c.code);
