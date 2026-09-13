@@ -97,29 +97,10 @@
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">เบิกอุปกรณ์</span></div>
       <div class="page-header"><div><h1 class="page-header__title">เบิกอุปกรณ์</h1><p class="page-header__desc">ค้นหาและเพิ่มอุปกรณ์ที่ต้องการเบิก</p></div></div>
 
-      <div class="search-input mb-3"><i class="bi bi-search"></i><input type="text" placeholder="ค้นหา Mouse / Keyboard / SSD..."></div>
+      <div class="search-input mb-3"><i class="bi bi-search"></i><input type="text" id="issueSearch" placeholder="ค้นหา Mouse / Keyboard / SSD..."></div>
 
       <!-- Quick add catalog -->
-      <div class="item-picker mb-4">
-        <div class="item-picker-row" data-name="Wireless Mouse" data-code="IT-MOU-001" data-unit="ชิ้น" data-stock="42" data-icon="bi-mouse2" data-color="primary">
-          <div class="item-icon-box" style="background:var(--color-primary-light);color:var(--color-primary)"><i class="bi bi-mouse2"></i></div>
-          <div><div class="item-picker-row__name">Wireless Mouse</div><div class="item-picker-row__code">IT-MOU-001</div></div>
-          <div class="item-picker-row__stock num">เหลือ 42 ชิ้น</div>
-          <button class="btn btn-soft btn-sm ms-2 add-to-cart">+ เพิ่ม</button>
-        </div>
-        <div class="item-picker-row" data-name="LAN Cable Cat6" data-code="IT-LAN-001" data-unit="เมตร" data-stock="125" data-icon="bi-hdd-network" data-color="cyan">
-          <div class="item-icon-box" style="background:var(--color-cyan-light);color:var(--color-cyan)"><i class="bi bi-hdd-network"></i></div>
-          <div><div class="item-picker-row__name">LAN Cable Cat6</div><div class="item-picker-row__code">IT-LAN-001</div></div>
-          <div class="item-picker-row__stock num">เหลือ 125 เมตร</div>
-          <button class="btn btn-soft btn-sm ms-2 add-to-cart">+ เพิ่ม</button>
-        </div>
-        <div class="item-picker-row" data-name="Mechanical Keyboard" data-code="IT-KEY-001" data-unit="ชิ้น" data-stock="18" data-icon="bi-keyboard" data-color="primary">
-          <div class="item-icon-box" style="background:var(--color-primary-light);color:var(--color-primary)"><i class="bi bi-keyboard"></i></div>
-          <div><div class="item-picker-row__name">Mechanical Keyboard</div><div class="item-picker-row__code">IT-KEY-001</div></div>
-          <div class="item-picker-row__stock num">เหลือ 18 ชิ้น</div>
-          <button class="btn btn-soft btn-sm ms-2 add-to-cart">+ เพิ่ม</button>
-        </div>
-      </div>
+      <div class="item-picker mb-4" id="issuePicker"></div>
 
       <div class="section-title mb-2">รายการที่เลือก (<span id="cartCount">0</span>)</div>
       <div id="cartList"></div>
@@ -152,17 +133,39 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
+<script src="js/data.js"></script>
 <script>
 var cart = {};
-var colorMap = { primary: ['var(--color-primary-light)','var(--color-primary)'], cyan: ['var(--color-cyan-light)','var(--color-cyan)'], purple: ['var(--color-purple-light)','var(--color-purple)'] };
 
-$('.add-to-cart').on('click', function () {
+function renderIssuePicker(filter) {
+  var $picker = $('#issuePicker').empty();
+  var q = (filter || '').trim().toLowerCase();
+  INVENTORY_ITEMS.filter(function (item) {
+    return !q || item.name.toLowerCase().indexOf(q) > -1 || item.code.toLowerCase().indexOf(q) > -1;
+  }).forEach(function (item) {
+    var tone = TONE_META[item.tone] || TONE_META.primary;
+    var outOfStock = item.stock <= 0;
+    var $row = $(
+      '<div class="item-picker-row" data-name="' + item.name + '" data-code="' + item.code + '" data-unit="' + item.unit + '" data-stock="' + item.stock + '" data-icon="' + item.icon + '" data-tone="' + item.tone + '">' +
+        '<div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div>' +
+        '<div><div class="item-picker-row__name">' + item.name + '</div><div class="item-picker-row__code">' + item.code + '</div></div>' +
+        '<div class="item-picker-row__stock num">' + (outOfStock ? 'หมดสต๊อก' : 'เหลือ ' + item.stock + ' ' + item.unit) + '</div>' +
+        '<button class="btn btn-soft btn-sm ms-2 add-to-cart"' + (outOfStock ? ' disabled title="หมดสต๊อก ไม่สามารถเบิกได้"' : '') + '>+ เพิ่ม</button>' +
+      '</div>'
+    );
+    $picker.append($row);
+  });
+}
+$('#issueSearch').on('input', function () { renderIssuePicker($(this).val()); });
+renderIssuePicker('');
+
+$(document).on('click', '.add-to-cart', function () {
   var $row = $(this).closest('.item-picker-row');
   var code = $row.data('code');
   if (cart[code]) { showToast('info', 'มีรายการนี้อยู่แล้ว'); return; }
   cart[code] = {
     name: $row.data('name'), code: code, unit: $row.data('unit'),
-    stock: parseFloat($row.data('stock')), icon: $row.data('icon'), color: $row.data('color'), qty: 1
+    stock: parseFloat($row.data('stock')), icon: $row.data('icon'), color: $row.data('tone'), qty: 1
   };
   renderCart();
 });
@@ -176,7 +179,8 @@ function renderCart() {
 
   keys.forEach(function (code) {
     var it = cart[code];
-    var c = colorMap[it.color] || colorMap.primary;
+    var toneMeta = TONE_META[it.color] || TONE_META.primary;
+    var c = [toneMeta.bg, toneMeta.fg];
     var remaining = it.stock - it.qty;
     var $el = $(
       '<div class="cart-item" data-code="' + code + '">' +

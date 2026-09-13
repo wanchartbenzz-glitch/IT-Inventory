@@ -108,25 +108,8 @@
       <div class="card card-body">
         <!-- Step 1: choose item -->
         <div class="rcv-step" data-step="1">
-          <div class="search-input mb-3"><i class="bi bi-search"></i><input type="text" placeholder="ค้นหาอุปกรณ์ที่ต้องการรับเข้า..."></div>
-          <div class="item-picker">
-            <div class="item-picker-row selected" data-name="LAN Cable Cat6" data-code="IT-LAN-001" data-recv-unit="กล่อง" data-base-unit="เมตร" data-factor="305" data-current="125">
-              <div class="item-icon-box" style="background:var(--color-cyan-light);color:var(--color-cyan)"><i class="bi bi-hdd-network"></i></div>
-              <div><div class="item-picker-row__name">LAN Cable Cat6 <span class="text-faint fw-normal">(IT-LAN-001)</span></div><div class="item-picker-row__code">รับเป็น กล่อง &middot; เก็บสต๊อกเป็น เมตร</div></div>
-              <div class="item-picker-row__stock num">คงเหลือ 125 ม.</div>
-              <i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)"></i>
-            </div>
-            <div class="item-picker-row" data-name="RAM DDR4 16GB" data-code="IT-RAM-001" data-recv-unit="ชิ้น" data-base-unit="ชิ้น" data-factor="1" data-current="28">
-              <div class="item-icon-box" style="background:var(--color-purple-light);color:var(--color-purple)"><i class="bi bi-cpu"></i></div>
-              <div><div class="item-picker-row__name">RAM DDR4 16GB <span class="text-faint fw-normal">(IT-RAM-001)</span></div><div class="item-picker-row__code">รับเป็น ชิ้น</div></div>
-              <div class="item-picker-row__stock num">คงเหลือ 28 ชิ้น</div>
-            </div>
-            <div class="item-picker-row" data-name="RJ45 Connector" data-code="IT-RJ45-001" data-recv-unit="กล่อง" data-base-unit="ชิ้น" data-factor="100" data-current="700">
-              <div class="item-icon-box" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-plug"></i></div>
-              <div><div class="item-picker-row__name">RJ45 Connector <span class="text-faint fw-normal">(IT-RJ45-001)</span></div><div class="item-picker-row__code">รับเป็น กล่อง &middot; เก็บสต๊อกเป็น ชิ้น</div></div>
-              <div class="item-picker-row__stock num">คงเหลือ 700 ชิ้น</div>
-            </div>
-          </div>
+          <div class="search-input mb-3"><i class="bi bi-search"></i><input type="text" id="rcvSearch" placeholder="ค้นหาอุปกรณ์ที่ต้องการรับเข้า..."></div>
+          <div class="item-picker" id="rcvItemPicker"></div>
           <div class="d-flex justify-content-end mt-4">
             <button class="btn btn-primary" id="toStep2">ถัดไป <i class="bi bi-arrow-right"></i></button>
           </div>
@@ -199,8 +182,48 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
+<script src="js/data.js"></script>
 <script>
 $('#rcvDate').val(new Date().toISOString().split('T')[0]);
+
+// Render the item picker from the shared catalog (all 10 items, not just 3)
+function renderReceivePicker(filter) {
+  var $picker = $('#rcvItemPicker').empty();
+  var q = (filter || '').trim().toLowerCase();
+  INVENTORY_ITEMS.filter(function (item) {
+    return !q || item.name.toLowerCase().indexOf(q) > -1 || item.code.toLowerCase().indexOf(q) > -1;
+  }).forEach(function (item, i) {
+    var tone = TONE_META[item.tone] || TONE_META.primary;
+    var recvUnit = item.recvUnit || item.unit;
+    var factor = item.recvFactor || 1;
+    var codeLabel = recvUnit === item.unit ? 'รับเป็น ' + recvUnit : 'รับเป็น ' + recvUnit + ' &middot; เก็บสต๊อกเป็น ' + item.unit;
+    var $row = $(
+      '<div class="item-picker-row" data-name="' + item.name + '" data-code="' + item.code + '" data-recv-unit="' + recvUnit + '" data-base-unit="' + item.unit + '" data-factor="' + factor + '" data-current="' + item.stock + '">' +
+        '<div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div>' +
+        '<div><div class="item-picker-row__name">' + item.name + ' <span class="text-faint fw-normal">(' + item.code + ')</span></div><div class="item-picker-row__code">' + codeLabel + '</div></div>' +
+        '<div class="item-picker-row__stock num">คงเหลือ ' + item.stock + ' ' + item.unit + '</div>' +
+      '</div>'
+    );
+    $picker.append($row);
+  });
+  var $first = $picker.find('.item-picker-row').first();
+  if ($first.length) {
+    $first.addClass('selected').append('<i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)"></i>');
+  }
+  bindPickerRows();
+  updateConversion();
+}
+
+function bindPickerRows() {
+  $('.item-picker-row').off('click').on('click', function () {
+    $('.item-picker-row').removeClass('selected').find('.bi-check-circle-fill').remove();
+    $(this).addClass('selected').append('<i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)"></i>');
+    updateConversion();
+  });
+}
+
+$('#rcvSearch').on('input', function () { renderReceivePicker($(this).val()); });
+renderReceivePicker('');
 
 function goStep(n) {
   $('.rcv-step').addClass('d-none');
@@ -212,12 +235,6 @@ function goStep(n) {
     if (s === n) $(this).addClass('active');
   });
 }
-
-$('.item-picker-row').on('click', function () {
-  $('.item-picker-row').removeClass('selected').find('.bi-check-circle-fill').remove();
-  $(this).addClass('selected').append('<i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)"></i>');
-  updateConversion();
-});
 
 $('#toStep2').on('click', function () { updateConversion(); goStep(2); });
 $('#toStep3').on('click', function () {
@@ -245,7 +262,6 @@ function updateConversion() {
   $('#cvAfter').text((current + result) + ' ' + baseUnit);
 }
 $('#rcvQty').on('input', updateConversion);
-updateConversion();
 
 $('#confirmReceive').on('click', function () {
   var $btn = $(this);

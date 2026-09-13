@@ -38,6 +38,7 @@ var INVENTORY_ITEMS = [
     code: 'IT-LAN-001', name: 'LAN Cable Cat6', brand: '-', model: '-',
     category: 'Network', type: 'LAN Cable', unit: 'เมตร', icon: 'bi-hdd-network', tone: 'cyan',
     stock: 125, min: 50, status: 'available',
+    recvUnit: 'กล่อง', recvFactor: 305,
     location: 'คลังอุปกรณ์ IT', assignedTo: '-', serial: '-',
     purchase: { date: '8 ก.ย. 2569', price: '4,200 บาท/กล่อง', supplier: 'บจก. เน็ตเวิร์ค ซัพพลาย', po: 'PO-2569-0142', warrantyYears: null, warrantyEnd: null },
     movements: [
@@ -114,13 +115,14 @@ var INVENTORY_ITEMS = [
   },
   {
     code: 'IT-RJ45-001', name: 'RJ45 Connector', brand: '-', model: '-',
-    category: 'Network', type: 'RJ45 / Connector', unit: 'กล่อง', icon: 'bi-plug', tone: 'success',
-    stock: 7, min: 5, status: 'low',
+    category: 'Network', type: 'RJ45 / Connector', unit: 'ชิ้น', icon: 'bi-plug', tone: 'success',
+    stock: 700, min: 500, status: 'low',
+    recvUnit: 'กล่อง', recvFactor: 100,
     location: 'คลังอุปกรณ์ IT', assignedTo: '-', serial: '-',
     purchase: { date: '4 ก.ย. 2569', price: '350 บาท/กล่อง', supplier: 'บจก. เน็ตเวิร์ค ซัพพลาย', po: 'PO-2569-0141', warrantyYears: null, warrantyEnd: null },
     movements: [
-      { date: '9 ก.ย. 2569', type: 'issue', qty: -3, balance: 7, user: 'ทีม IT (เดินสายชั้น 3)', ref: 'ISS-2026-0316', note: '1 กล่อง = 100 ชิ้น' },
-      { date: '4 ก.ย. 2569', type: 'receive', qty: 10, balance: 10, user: 'Admin', ref: 'RCV-2026-0140', note: '1 กล่อง = 100 ชิ้น' }
+      { date: '9 ก.ย. 2569', type: 'issue', qty: -300, balance: 700, user: 'ทีม IT (เดินสายชั้น 3)', ref: 'ISS-2026-0316', note: '3 กล่อง' },
+      { date: '4 ก.ย. 2569', type: 'receive', qty: 1000, balance: 1000, user: 'Admin', ref: 'RCV-2026-0140', note: '10 กล่อง (1 กล่อง = 100 ชิ้น)' }
     ]
   }
 ];

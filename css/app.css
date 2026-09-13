@@ -242,7 +242,7 @@ button { font-family: inherit; }
 }
 .header-menu-btn {
   display: none; background: none; border: none; font-size: 20px; color: var(--color-text);
-  width: 40px; height: 40px; border-radius: var(--r-sm); cursor: pointer; flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: var(--r-sm); cursor: pointer; flex-shrink: 0;
 }
 .header-menu-btn:hover { background: var(--color-bg); }
 @media (max-width: 575px) { .header-menu-btn { display: inline-flex; align-items: center; justify-content: center; } }
@@ -260,7 +260,7 @@ button { font-family: inherit; }
 
 .header-actions { display: flex; align-items: center; gap: var(--sp-2); flex-shrink: 0; }
 .icon-btn {
-  position: relative; width: 40px; height: 40px; border-radius: var(--r-full);
+  position: relative; width: 44px; height: 44px; border-radius: var(--r-full);
   border: none; background: none; color: var(--color-muted); font-size: 17px;
   display: flex; align-items: center; justify-content: center; cursor: pointer;
 }
@@ -501,6 +501,11 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .qty-stepper { display: flex; align-items: center; border: 1px solid var(--color-border); border-radius: var(--r-sm); overflow: hidden; flex-shrink: 0; }
 .qty-stepper button { width: 30px; height: 30px; border: none; background: var(--color-bg); font-size: 15px; cursor: pointer; color: var(--color-text); }
 .qty-stepper button:hover { background: #e5e9f0; }
+/* Touch target minimum (44px) on mobile, where a mouse's pointer precision isn't available */
+@media (max-width: 575px) {
+  .qty-stepper button { width: 44px; height: 44px; font-size: 18px; }
+  .cart-remove { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+}
 .qty-stepper input { width: 44px; border: none; text-align: center; font-family: "Inter"; font-weight: 700; font-size: 13.5px; }
 .cart-remove { background: none; border: none; color: var(--color-faint); font-size: 16px; cursor: pointer; flex-shrink: 0; }
 .cart-remove:hover { color: var(--color-danger); }
