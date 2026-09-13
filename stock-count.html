@@ -10,18 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -50,6 +53,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -61,29 +65,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -94,14 +90,14 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main" style="padding-bottom:100px">
+    <main class="app-main" id="main" style="padding-bottom:100px">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">ตรวจนับสต๊อก</span></div>
 
       <div class="page-header">
@@ -117,41 +113,41 @@
         </div>
       </div>
 
-      <!-- Progress summary -->
-      <div class="kpi-grid">
-        <div class="kpi-card kpi-card--total">
-          <div class="kpi-card__icon"><i class="bi bi-list-check"></i></div>
-          <div><div class="kpi-card__value num" id="cntTotal">0</div><div class="kpi-card__label">รายการทั้งหมด</div></div>
-        </div>
-        <div class="kpi-card kpi-card--available">
-          <div class="kpi-card__icon"><i class="bi bi-check2-circle"></i></div>
-          <div><div class="kpi-card__value num" id="cntDone">0</div><div class="kpi-card__label">นับแล้ว</div></div>
-        </div>
-        <div class="kpi-card kpi-card--low">
-          <div class="kpi-card__icon"><i class="bi bi-exclamation-diamond"></i></div>
-          <div><div class="kpi-card__value num" id="cntDiff">0</div><div class="kpi-card__label">พบผลต่าง</div></div>
-        </div>
-        <div class="kpi-card kpi-card--out">
-          <div class="kpi-card__icon"><i class="bi bi-hourglass-split"></i></div>
-          <div><div class="kpi-card__value num" id="cntPending">0</div><div class="kpi-card__label">ยังไม่ได้นับ</div></div>
-        </div>
+      <!-- A count you can resume: progress lands here from localStorage after an interruption -->
+      <div class="restore-banner d-none" id="restoreBanner" role="status">
+        <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+        <span>กู้คืนผลนับที่ค้างอยู่ <b id="restoreCount">0</b> รายการ (แก้ไขล่าสุด <span id="restoreTime">-</span>)</span>
+        <button class="btn btn-ghost btn-sm" type="button" id="restoreDiscard">เริ่มนับใหม่</button>
+      </div>
+
+      <!-- Progress: one strip, so the first count field is one scroll away on a phone -->
+      <div class="count-progress" aria-live="polite">
+        <span class="count-progress__stat">นับแล้ว <b id="cntDone">0</b>/<b id="cntTotal">0</b></span>
+        <div class="count-progress__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="cntBar"><div class="count-progress__fill" id="cntFill" style="width:0%"></div></div>
+        <span class="count-progress__stat">ผลต่าง <b id="cntDiff" style="color:var(--color-danger-text)">0</b></span>
+        <span class="count-progress__stat">ยังไม่ได้นับ <b id="cntPending">0</b></span>
+      </div>
+
+      <div class="card card-body mb-3" style="background:var(--color-info-bg);border-color:var(--color-info-border)">
+        <div class="d-flex gap-2" style="font-size:12.5px;color:var(--color-info-text)"><i class="bi bi-eye-slash-fill" aria-hidden="true"></i>
+        <span><b>นับแบบไม่เห็นยอด (blind count)</b> — ยอดในระบบจะโผล่ให้เห็นก็ต่อเมื่อคุณกรอกตัวเลขของแถวนั้นแล้ว เพื่อให้ตัวเลขที่บันทึกมาจากชั้นวางจริง ไม่ใช่จากหน้าจอ &middot; กด Enter เพื่อไปแถวถัดไป</span></div>
       </div>
 
       <div class="toolbar">
-        <div class="search-input"><i class="bi bi-search"></i><input type="text" id="cntSearch" placeholder="ค้นหาอุปกรณ์ / รหัส..."></div>
-        <select class="filter-select" id="cntFilter">
+        <div class="search-input"><i class="bi bi-search" aria-hidden="true"></i><input type="search" id="cntSearch" placeholder="ค้นหาอุปกรณ์ / รหัส..." aria-label="ค้นหาอุปกรณ์ในรายการนับ"></div>
+        <select class="filter-select" id="cntFilter" aria-label="กรองรายการนับ">
           <option value="">แสดงทั้งหมด</option>
           <option value="pending">ยังไม่ได้นับ</option>
           <option value="diff">เฉพาะที่มีผลต่าง</option>
           <option value="done">นับแล้ว</option>
         </select>
-        <button class="btn btn-ghost btn-sm" type="button" id="cntFillAll"><i class="bi bi-magic"></i> เติมยอดตามระบบทั้งหมด</button>
+        <button class="btn btn-soft btn-sm" type="button" id="cntNext"><i class="bi bi-skip-forward" aria-hidden="true"></i> ไปแถวถัดไปที่ยังไม่นับ</button>
       </div>
 
       <div class="table-wrap responsive-table" id="cntWrap">
         <table class="data-table">
           <thead>
-            <tr><th></th><th>รหัส</th><th>อุปกรณ์</th><th>ยอดในระบบ</th><th style="width:150px">นับได้จริง</th><th>ผลต่าง</th><th>สถานะ</th></tr>
+            <tr><th><span class="visually-hidden">รูป</span></th><th>รหัส</th><th>อุปกรณ์</th><th style="width:170px">นับได้จริง</th><th>ยอดในระบบ</th><th>ผลต่าง</th><th>สถานะ</th></tr>
           </thead>
           <tbody id="cntTbody"></tbody>
         </table>
@@ -169,7 +165,7 @@
       <!-- ประวัติการตรวจนับย้อนหลัง -->
       <div class="card card-body mt-4" id="historyCard">
         <div class="card-head-row mb-1">
-          <div class="section-title mb-0">ประวัติการตรวจนับย้อนหลัง</div>
+          <h2 class="section-title mb-0">ประวัติการตรวจนับย้อนหลัง</h2>
           <span class="text-muted-2" style="font-size:12px"><span id="histCount">0</span> รอบ</span>
         </div>
         <div class="section-desc mb-3">ผลต่างที่พบในแต่ละรอบ และใครเป็นผู้อนุมัติการปรับยอด</div>
@@ -186,7 +182,7 @@
 
 <div class="cart-summary-bar">
   <span>นับแล้ว <b id="cntDone2">0</b>/<b id="cntTotal2">0</b> รายการ</span>
-  <button class="btn btn-primary" id="cntSubmit" disabled><span class="btn-label">บันทึกผลการนับ <i class="bi bi-check-lg"></i></span></button>
+  <button class="btn btn-commit" id="cntSubmit" disabled><span class="btn-label"><i class="bi bi-check-lg" aria-hidden="true"></i> บันทึกผลการนับ</span></button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -197,7 +193,63 @@
 <script src="js/data.js"></script>
 <script>
 // counted[code] = number typed by staff. undefined = ยังไม่ได้นับ
+//
+// BLIND COUNT: the system quantity for a row stays hidden until that row has a
+// value, so the number entered comes from the shelf, not the screen. There is
+// deliberately no "fill from system" shortcut — a count taken that way measures
+// agreement with the screen, not stock.
+//
+// RESUMABLE: every keystroke is mirrored to localStorage under the period key,
+// because a phone call or an accidental back-swipe in the stockroom must not
+// throw away forty rows of counting.
 var counted = {};
+var STORE_KEY = 'itinv.count.' + $('#countPeriod').val();
+
+function persist() {
+  try {
+    if (Object.keys(counted).length) {
+      localStorage.setItem(STORE_KEY, JSON.stringify({ at: Date.now(), counted: counted }));
+    } else {
+      localStorage.removeItem(STORE_KEY);
+    }
+  } catch (e) { /* storage unavailable (private mode) — counting still works, just not resumable */ }
+}
+
+function restore() {
+  var raw = null;
+  try { raw = localStorage.getItem(STORE_KEY); } catch (e) { return; }
+  if (!raw) return;
+  try {
+    var saved = JSON.parse(raw);
+    counted = saved.counted || {};
+    var n = Object.keys(counted).length;
+    if (!n) return;
+    var at = new Date(saved.at);
+    $('#restoreCount').text(n);
+    $('#restoreTime').text(formatThaiDate(at) + ' ' + String(at.getHours()).padStart(2, '0') + ':' + String(at.getMinutes()).padStart(2, '0'));
+    $('#restoreBanner').removeClass('d-none');
+  } catch (e) { counted = {}; }
+}
+
+$('#restoreDiscard').on('click', function () {
+  Swal.fire({
+    title: 'ทิ้งผลนับที่ค้างอยู่?',
+    text: 'ตัวเลขที่กรอกไว้ ' + Object.keys(counted).length + ' รายการจะหายไป',
+    icon: 'warning', showCancelButton: true, confirmButtonColor: '#b91c1c', cancelButtonColor: '#94a3b8',
+    confirmButtonText: 'ทิ้งและเริ่มใหม่', cancelButtonText: 'เก็บไว้', reverseButtons: true
+  }).then(function (r) {
+    if (!r.isConfirmed) return;
+    counted = {};
+    persist();
+    $('#restoreBanner').addClass('d-none');
+    render();
+  });
+});
+
+window.addEventListener('beforeunload', function (e) {
+  if (Object.keys(counted).length && !submitted) { e.preventDefault(); e.returnValue = ''; }
+});
+var submitted = false;
 
 function diffOf(item) {
   if (counted[item.code] === undefined || counted[item.code] === '') return null;
@@ -214,9 +266,16 @@ function rowStatusHtml(item) {
 function diffHtml(item) {
   var d = diffOf(item);
   if (d === null) return '<span class="text-faint">-</span>';
-  if (d === 0) return '<span class="num" style="color:var(--color-success)">0</span>';
-  var color = d > 0 ? 'var(--color-primary)' : 'var(--color-danger)';
+  if (d === 0) return '<span class="num" style="color:var(--color-success-text)">0</span>';
+  var color = d > 0 ? 'var(--color-info-text)' : 'var(--color-danger-text)';
   return '<span class="num fw-700" style="color:' + color + '">' + (d > 0 ? '+' : '') + d + '</span>';
+}
+
+// The system figure is only revealed once the row has been counted.
+function systemHtml(item) {
+  var hidden = diffOf(item) === null;
+  return '<span class="cnt-system num' + (hidden ? ' is-hidden' : '') + '" aria-hidden="' + hidden + '">' +
+           'ระบบ <b>' + item.stock + ' ' + item.unit + '</b></span>';
 }
 
 function passesFilter(item) {
@@ -226,6 +285,12 @@ function passesFilter(item) {
   if (mode === 'done') return d !== null;
   if (mode === 'diff') return d !== null && d !== 0;
   return true;
+}
+
+function inputHtml(item, val) {
+  return '<input type="number" inputmode="numeric" pattern="[0-9]*" min="0" step="1" class="form-control cnt-input" ' +
+         'data-code="' + item.code + '" value="' + val + '" placeholder="นับได้..." ' +
+         'aria-label="นับได้จริง — ' + item.name + ' (' + item.unit + ')">';
 }
 
 function render() {
@@ -241,26 +306,25 @@ function render() {
     var val = counted[item.code] === undefined ? '' : counted[item.code];
 
     $tb.append(
-      '<tr>' +
+      '<tr data-code="' + item.code + '">' +
         '<td>' + itemThumbHtml(item, '38px', '16px') + '</td>' +
         '<td class="num text-muted-2">' + item.code + '</td>' +
-        '<td><div class="fw-700">' + item.name + '</div><div class="text-muted-2" style="font-size:11.5px">' + item.category + '</div></td>' +
-        '<td class="num fw-700">' + item.stock + ' ' + item.unit + '</td>' +
-        '<td><input type="number" class="form-control cnt-input" data-code="' + item.code + '" value="' + val + '" min="0" placeholder="นับได้..."></td>' +
-        '<td>' + diffHtml(item) + '</td>' +
-        '<td>' + rowStatusHtml(item) + '</td>' +
+        '<td><div class="fw-700">' + item.name + '</div><div class="text-muted-2" style="font-size:12px">' + item.category + '</div></td>' +
+        '<td>' + inputHtml(item, val) + '</td>' +
+        '<td class="cell-system">' + systemHtml(item) + '</td>' +
+        '<td class="cell-diff">' + diffHtml(item) + '</td>' +
+        '<td class="cell-status">' + rowStatusHtml(item) + '</td>' +
       '</tr>'
     );
 
     $cards.append(
-      '<div class="inv-card">' +
+      '<div class="inv-card" data-code="' + item.code + '">' +
         itemThumbHtml(item, '48px', '20px') +
         '<div class="inv-card__body">' +
           '<div class="inv-card__title">' + item.name + '</div>' +
-          '<div class="inv-card__code">' + item.code + '</div>' +
-          '<div class="text-muted-2" style="font-size:12px;margin:6px 0 4px">ยอดในระบบ <b class="num">' + item.stock + ' ' + item.unit + '</b></div>' +
-          '<input type="number" class="form-control cnt-input" data-code="' + item.code + '" value="' + val + '" min="0" placeholder="นับได้จริง...">' +
-          '<div class="mt-2 d-flex align-items-center gap-2">' + rowStatusHtml(item) + '<span>ผลต่าง ' + diffHtml(item) + '</span></div>' +
+          '<div class="inv-card__code">' + item.code + ' &middot; ' + item.unit + '</div>' +
+          '<div class="mt-2">' + inputHtml(item, val) + '</div>' +
+          '<div class="mt-2 d-flex align-items-center gap-2 flex-wrap cell-meta">' + rowStatusHtml(item) + '<span class="cell-system">' + systemHtml(item) + '</span><span>ผลต่าง ' + diffHtml(item) + '</span></div>' +
         '</div>' +
       '</div>'
     );
@@ -276,10 +340,13 @@ function updateSummary() {
     var d = diffOf(item);
     if (d !== null) { done++; if (d !== 0) diff++; }
   });
+  var pct = total ? Math.round(done / total * 100) : 0;
   $('#cntTotal, #cntTotal2').text(total);
   $('#cntDone, #cntDone2').text(done);
   $('#cntDiff').text(diff);
   $('#cntPending').text(total - done);
+  $('#cntFill').css('width', pct + '%');
+  $('#cntBar').attr('aria-valuenow', pct);
   $('#cntSubmit').prop('disabled', done === 0);
 }
 
@@ -288,27 +355,42 @@ $(document).on('input', '.cnt-input', function () {
   var code = $(this).data('code');
   var v = $(this).val();
   counted[code] = v === '' ? undefined : v;
+  if (counted[code] === undefined) delete counted[code];
   var item = findInventoryItem(code);
   var $row = $(this).closest('tr');
   if ($row.length) {
-    $row.find('td').eq(5).html(diffHtml(item));
-    $row.find('td').eq(6).html(rowStatusHtml(item));
+    $row.find('.cell-system').html(systemHtml(item));
+    $row.find('.cell-diff').html(diffHtml(item));
+    $row.find('.cell-status').html(rowStatusHtml(item));
   }
   var $card = $(this).closest('.inv-card');
   if ($card.length) {
-    $card.find('.mt-2').html(rowStatusHtml(item) + '<span>ผลต่าง ' + diffHtml(item) + '</span>');
+    $card.find('.cell-meta').html(rowStatusHtml(item) + '<span class="cell-system">' + systemHtml(item) + '</span><span>ผลต่าง ' + diffHtml(item) + '</span>');
   }
   updateSummary();
+  persist();
+});
+
+// Enter = next row (the natural "done with this one" on a numeric keypad)
+$(document).on('keydown', '.cnt-input', function (e) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  var inputs = $('.cnt-input:visible');
+  var i = inputs.index(this);
+  var $next = inputs.eq(i + 1);
+  if ($next.length) { $next.trigger('focus'); $next[0].scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+  else $(this).trigger('blur');
+});
+
+$('#cntNext').on('click', function () {
+  var $target = $('.cnt-input:visible').filter(function () { return $(this).val() === ''; }).first();
+  if (!$target.length) { showToast('success', 'นับครบทุกแถวที่แสดงแล้ว'); return; }
+  $target[0].scrollIntoView({ block: 'center', behavior: 'smooth' });
+  $target.trigger('focus');
 });
 
 $('#cntSearch').on('input', render);
 $('#cntFilter').on('change', render);
-
-$('#cntFillAll').on('click', function () {
-  INVENTORY_ITEMS.forEach(function (item) { counted[item.code] = String(item.stock); });
-  render();
-  showToast('info', 'เติมยอดตามระบบให้ทุกรายการแล้ว — กรุณาแก้เฉพาะรายการที่นับได้ไม่ตรง');
-});
 
 $('#cntSubmit').on('click', function () {
   var diffs = INVENTORY_ITEMS.filter(function (i) { var d = diffOf(i); return d !== null && d !== 0; });
@@ -316,19 +398,19 @@ $('#cntSubmit').on('click', function () {
 
   var html = '<div style="text-align:left;font-size:13.5px">' +
     '<p>รอบ: <b>' + $('#countPeriod').val() + '</b></p>' +
-    '<p>นับแล้ว <b>' + (INVENTORY_ITEMS.length - pending.length) + '</b> จาก <b>' + INVENTORY_ITEMS.length + '</b> รายการ</p>';
+    '<p>นับจริง <b>' + (INVENTORY_ITEMS.length - pending.length) + '</b> จาก <b>' + INVENTORY_ITEMS.length + '</b> รายการ</p>';
   if (pending.length) {
-    html += '<p style="color:#92610a">ยังไม่ได้นับอีก <b>' + pending.length + '</b> รายการ</p>';
+    html += '<p style="color:var(--color-warning-text)"><b>ยังไม่ได้นับอีก ' + pending.length + ' รายการ</b> — รายการเหล่านี้จะถูกบันทึกว่า "ไม่ได้นับ" ไม่ใช่ "ตรงกัน"</p>';
   }
   if (diffs.length) {
-    html += '<hr><p style="color:#b91c1c"><b>พบผลต่าง ' + diffs.length + ' รายการ</b></p>';
+    html += '<hr><p style="color:var(--color-danger-text)"><b>พบผลต่าง ' + diffs.length + ' รายการ</b></p>';
     diffs.slice(0, 5).forEach(function (i) {
       var d = diffOf(i);
       html += '<div style="display:flex;justify-content:space-between"><span>' + i.name + '</span><span><b>' + (d > 0 ? '+' : '') + d + '</b> ' + i.unit + '</span></div>';
     });
     if (diffs.length > 5) html += '<div class="text-muted-2">และอีก ' + (diffs.length - 5) + ' รายการ</div>';
   } else {
-    html += '<hr><p style="color:#166534">ยอดตรงกันทุกรายการที่นับ</p>';
+    html += '<hr><p style="color:var(--color-success-text)">ยอดตรงกันทุกรายการที่นับ</p>';
   }
   html += '</div>';
 
@@ -339,11 +421,13 @@ $('#cntSubmit').on('click', function () {
     showCancelButton: true,
     confirmButtonColor: '#2563eb',
     cancelButtonColor: '#94a3b8',
-    confirmButtonText: 'บันทึกผล',
-    cancelButtonText: 'ยกเลิก',
+    confirmButtonText: pending.length ? 'บันทึกเฉพาะที่นับแล้ว' : 'บันทึกผล',
+    cancelButtonText: pending.length ? 'กลับไปนับต่อ' : 'ยกเลิก',
     reverseButtons: true
   }).then(function (r) {
     if (!r.isConfirmed) return;
+    submitted = true;
+    setBtnLoading($('#cntSubmit'), 'กำลังบันทึก...');
     // A round with differences is not final until someone signs off on the
     // adjustments, so it enters history as "รออนุมัติ" and the diffs become requests.
     var round = {
@@ -363,6 +447,7 @@ $('#cntSubmit').on('click', function () {
         reason: 'ผลต่างจากการตรวจนับประจำเดือน ' + round.period
       });
     });
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
     renderHistory();
     showToast('success', diffs.length
       ? 'บันทึกผลแล้ว — ส่งผลต่าง ' + diffs.length + ' รายการเข้ารออนุมัติ'
@@ -401,6 +486,7 @@ $('#cntExport').on('click', function () {
 });
 
 renderHistory();
+restore();
 render();
 </script>
 </body>

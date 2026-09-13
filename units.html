@@ -10,18 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -50,6 +53,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -61,29 +65,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -94,21 +90,21 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main">
+    <main class="app-main" id="main">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">หน่วยนับ</span></div>
       <div class="page-header">
         <div><h1 class="page-header__title">หน่วยนับ</h1><p class="page-header__desc">จัดการหน่วยนับพื้นฐานและอัตราแปลงหน่วยรับเข้า</p></div>
         <div class="page-header__actions"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#unitModal"><i class="bi bi-plus-lg"></i> เพิ่มหน่วย</button></div>
       </div>
 
-      <div class="section-title mb-3">หน่วยพื้นฐานทั้งหมด</div>
+      <h2 class="section-title mb-3">หน่วยพื้นฐานทั้งหมด</h2>
       <div class="gap-row mb-5">
         <span class="unit-pill">ชิ้น</span>
         <span class="unit-pill">เมตร</span>
@@ -119,7 +115,7 @@
         <span class="unit-pill">เส้น</span>
       </div>
 
-      <div class="section-title mb-3">อัตราแปลงหน่วยรับเข้า (Receiving Conversion)</div>
+      <h2 class="section-title mb-3">อัตราแปลงหน่วยรับเข้า (Receiving Conversion)</h2>
       <div class="d-flex flex-column gap-3">
         <div class="card card-body">
           <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -168,17 +164,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="unitModal" tabindex="-1">
+<div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalTitle">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">เพิ่มอัตราแปลงหน่วย</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-header"><h2 class="modal-title h5" id="unitModalTitle">เพิ่มอัตราแปลงหน่วย</h2><button class="btn-close" data-bs-dismiss="modal" aria-label="ปิดหน้าต่าง"></button></div>
       <div class="modal-body">
-        <div class="mb-3"><label class="form-label">อุปกรณ์ <span class="required">*</span></label><select class="form-select"><option>LAN Cable Cat6</option><option>RJ45 Connector</option><option>Cable Tie / เทปพันสาย</option></select></div>
+        <div class="mb-3"><label class="form-label" for="fld5_b96aec">อุปกรณ์ <span class="required">*</span></label><select class="form-select" id="fld5_b96aec"><option>LAN Cable Cat6</option><option>RJ45 Connector</option><option>Cable Tie / เทปพันสาย</option></select></div>
         <div class="row g-3">
-          <div class="col-6"><label class="form-label">หน่วยสต๊อก (Base) <span class="required">*</span></label><select class="form-select"><option>เมตร</option><option>ชิ้น</option><option>ม้วน</option></select></div>
-          <div class="col-6"><label class="form-label">หน่วยรับเข้า <span class="required">*</span></label><select class="form-select"><option>กล่อง</option><option>แพ็ค</option><option>ชุด</option></select></div>
+          <div class="col-6"><label class="form-label" for="fld6_1f754e">หน่วยสต๊อก (Base) <span class="required">*</span></label><select class="form-select" id="fld6_1f754e"><option>เมตร</option><option>ชิ้น</option><option>ม้วน</option></select></div>
+          <div class="col-6"><label class="form-label" for="fld7_65f273">หน่วยรับเข้า <span class="required">*</span></label><select class="form-select" id="fld7_65f273"><option>กล่อง</option><option>แพ็ค</option><option>ชุด</option></select></div>
         </div>
-        <div class="mt-3"><label class="form-label">อัตราแปลง (1 หน่วยรับเข้า = ? หน่วยสต๊อก) <span class="required">*</span></label><input type="number" class="form-control" placeholder="เช่น 305"></div>
+        <div class="mt-3"><label class="form-label" for="fld8_920041">อัตราแปลง (1 หน่วยรับเข้า = ? หน่วยสต๊อก) <span class="required">*</span></label><input type="number" class="form-control" placeholder="เช่น 305" id="fld8_920041"></div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-ghost" data-bs-dismiss="modal">ยกเลิก</button>

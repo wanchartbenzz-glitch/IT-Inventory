@@ -11,14 +11,23 @@ $(function () {
   var $doc = $(document);
 
   // Mobile drawer
-  $doc.on('click', '.header-menu-btn', function () {
+  // Opening the drawer moves focus into it (first link, or the current page's link);
+  // closing hands focus back to the button, so keyboard and screen-reader users are
+  // never left "behind" an overlay.
+  function openDrawer() {
     $('.sidebar, .sidebar-overlay').addClass('is-open');
-    $(this).attr('aria-expanded', 'true');
-  });
-  $doc.on('click', '.sidebar-overlay', function () {
+    $('.header-menu-btn').attr('aria-expanded', 'true');
+    var target = document.querySelector('.sidebar .nav-item.active') || document.querySelector('.sidebar .nav-item');
+    if (target) setTimeout(function () { target.focus(); }, 200);
+  }
+  function closeDrawer(returnFocus) {
+    if (!$('.sidebar').hasClass('is-open')) return;
     $('.sidebar, .sidebar-overlay').removeClass('is-open');
     $('.header-menu-btn').attr('aria-expanded', 'false');
-  });
+    if (returnFocus) $('.header-menu-btn').trigger('focus');
+  }
+  $doc.on('click', '.header-menu-btn', openDrawer);
+  $doc.on('click', '.sidebar-overlay', function () { closeDrawer(true); });
 
   // Desktop manual collapse
   $doc.on('click', '.sidebar-collapse-btn', function () {
@@ -50,6 +59,14 @@ $(function () {
     if (!q) return;
     e.preventDefault();
     location.href = 'inventory.html?q=' + encodeURIComponent(q);
+  });
+
+  $doc.on('keydown', function (e) {
+    if (e.key === 'Escape') {
+      $('.dropdown-panel').addClass('d-none');
+      $('[data-panel-toggle]').attr('aria-expanded', 'false');
+      closeDrawer(true);
+    }
   });
 
   // Notifications: rebuilt from js/data.js when it is on the page, so the bell
@@ -89,12 +106,4 @@ $(function () {
   }).join('') : '<div class="text-muted-2 text-center py-3" style="font-size:12.5px">ไม่มีการแจ้งเตือน</div>');
   $('#notifPanel .dropdown-panel__head').text('การแจ้งเตือน (' + rows.length + ')');
   $('.icon-btn__dot').toggle(rows.length > 0);
-  $doc.on('keydown', function (e) {
-    if (e.key === 'Escape') {
-      $('.dropdown-panel').addClass('d-none');
-      $('[data-panel-toggle]').attr('aria-expanded', 'false');
-      $('.sidebar, .sidebar-overlay').removeClass('is-open');
-      $('.header-menu-btn').attr('aria-expanded', 'false');
-    }
-  });
 });

@@ -10,18 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -50,6 +53,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -61,29 +65,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -94,21 +90,21 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main" style="max-width:920px">
+    <main class="app-main" id="main" style="max-width:920px">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">รับเข้าอุปกรณ์</span></div>
       <div class="page-header"><div><h1 class="page-header__title">รับเข้าอุปกรณ์</h1><p class="page-header__desc">บันทึกการรับเข้าอุปกรณ์ IT พร้อมแปลงหน่วย</p></div></div>
 
       <div class="wizard-steps">
         <div class="wizard-step active" data-step-indicator="1"><span class="wizard-step__num">1</span> เลือกอุปกรณ์</div>
         <div class="wizard-connector"></div>
-        <div class="wizard-step" data-step-indicator="2"><span class="wizard-step__num">2</span> ระบุจำนวน</div>
+        <div class="wizard-step" data-step-indicator="2"><span class="wizard-step__num">2</span> จำนวน &amp; ข้อมูลล็อต</div>
         <div class="wizard-connector"></div>
         <div class="wizard-step" data-step-indicator="3"><span class="wizard-step__num">3</span> ยืนยัน</div>
       </div>
@@ -116,33 +112,34 @@
       <div class="card card-body">
         <!-- Step 1: choose item -->
         <div class="rcv-step" data-step="1">
-          <div class="search-input mb-3"><i class="bi bi-search"></i><input type="text" id="rcvSearch" placeholder="ค้นหาอุปกรณ์ที่ต้องการรับเข้า..."></div>
-          <div class="item-picker" id="rcvItemPicker"></div>
+          <div class="search-input mb-3"><i class="bi bi-search"></i><input type="search" id="rcvSearch" placeholder="ค้นหาอุปกรณ์ที่ต้องการรับเข้า..." aria-label="ค้นหาอุปกรณ์ที่ต้องการรับเข้า"></div>
+          <div class="item-picker" id="rcvItemPicker" role="listbox" aria-label="เลือกอุปกรณ์ที่รับเข้า"></div>
+          <div class="text-muted-2 mt-2" style="font-size:12.5px" id="rcvPickHint">เลือกอุปกรณ์ 1 รายการเพื่อไปต่อ</div>
           <div class="d-flex justify-content-end mt-4">
-            <button class="btn btn-primary" id="toStep2">ถัดไป <i class="bi bi-arrow-right"></i></button>
+            <button class="btn btn-primary" id="toStep2" disabled>ถัดไป <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
           </div>
         </div>
 
         <!-- Step 2: quantity + conversion -->
         <div class="rcv-step d-none" data-step="2">
           <div class="form-section">
-            <div class="section-title mb-3" style="font-size:14px">รับเข้า: <span id="selItemName">LAN Cable Cat6</span></div>
+            <h2 class="section-title mb-3" style="font-size:14px">รับเข้า: <span id="selItemName">LAN Cable Cat6</span></h2>
             <div class="row g-3 align-items-end mb-3">
               <div class="col-md-4">
-                <label class="form-label">จำนวนที่รับ <span class="required">*</span></label>
+                <label class="form-label" for="rcvQty">จำนวนที่รับ <span class="required">*</span></label>
                 <input type="number" class="form-control" id="rcvQty" value="1" min="1">
               </div>
               <div class="col-md-4">
-                <label class="form-label">หน่วยที่รับ</label>
+                <label class="form-label" for="rcvUnitLabel">หน่วยที่รับ</label>
                 <input class="form-control" id="rcvUnitLabel" value="กล่อง" disabled>
               </div>
               <div class="col-md-4">
-                <label class="form-label">เลขที่อ้างอิง (PO) <span class="required">*</span></label>
+                <label class="form-label" for="rcvPo">เลขที่อ้างอิง (PO) <span class="required">*</span></label>
                 <input class="form-control" id="rcvPo" placeholder="PO-2569-XXXX">
               </div>
             </div>
 
-            <div class="conversion-box mb-2">
+            <div class="conversion-box mb-2" id="cvBox">
               <div class="conversion-box__part"><div class="conversion-box__value" id="cvQty">1</div><div class="conversion-box__unit" id="cvUnit">กล่อง</div></div>
               <div class="conversion-box__arrow"><i class="bi bi-arrow-right"></i></div>
               <div class="conversion-box__part"><div class="conversion-box__value" id="cvFactor">305</div><div class="conversion-box__unit" id="cvBaseUnit">เมตร / กล่อง</div></div>
@@ -151,29 +148,29 @@
                 <div class="val" id="cvResult">+305 เมตร</div>
               </div>
             </div>
-            <div class="text-muted-2" style="font-size:12px">คงเหลือปัจจุบัน <span id="cvCurrent" class="num fw-700">125 เมตร</span> &rarr; หลังรับเข้า <span id="cvAfter" class="num fw-700" style="color:var(--color-success)">430 เมตร</span></div>
+            <div class="text-muted-2" style="font-size:12px">คงเหลือปัจจุบัน <span id="cvCurrent" class="num fw-700">125 เมตร</span> &rarr; หลังรับเข้า <span id="cvAfter" class="num fw-700" style="color:var(--color-success-text)">430 เมตร</span></div>
           </div>
 
           <div class="form-section">
-            <div class="section-title mb-1" style="font-size:13.5px">ข้อมูลสำหรับตรวจสอบย้อนกลับ &amp; การเคลม</div>
+            <h2 class="section-title mb-1" style="font-size:13.5px">ข้อมูลสำหรับตรวจสอบย้อนกลับ &amp; การเคลม</h2>
             <div class="text-muted-2 mb-3" style="font-size:12px">ข้อมูลชุดนี้จะติดไปกับล็อตนี้ เพื่อให้ย้อนกลับได้ว่าอุปกรณ์มาจากใบสั่งซื้อไหน และยังอยู่ในประกันหรือไม่</div>
             <div class="row g-3">
-              <div class="col-md-6"><label class="form-label">ผู้จำหน่าย</label><input class="form-control" id="rcvSupplier" placeholder="ชื่อผู้จำหน่าย"></div>
-              <div class="col-md-6"><label class="form-label">ราคาต่อหน่วย</label>
-                <input type="number" class="form-control" id="rcvPrice" min="0" step="0.01" placeholder="0.00">
-                <div class="text-muted-2 mt-1" style="font-size:11.5px">บาท ต่อ <span id="rcvPriceUnit">หน่วย</span></div>
+              <div class="col-md-6"><label class="form-label" for="rcvSupplier">ผู้จำหน่าย <span class="required">*</span></label><input class="form-control" id="rcvSupplier" placeholder="ชื่อผู้จำหน่ายตามใบสั่งซื้อ"></div>
+              <div class="col-md-6"><label class="form-label" for="rcvWarranty">วันหมดประกัน <span class="required" id="rcvWarrantyReq">*</span></label><input type="date" class="form-control" id="rcvWarranty">
+                <label class="d-flex align-items-center gap-2 mt-2" style="font-size:12.5px;cursor:pointer"><input type="checkbox" id="rcvNoWarranty" style="width:18px;height:18px"> อุปกรณ์นี้ไม่มีประกัน (เช่น สายเคเบิล หัวต่อ)</label>
               </div>
-              <div class="col-md-6"><label class="form-label">วันที่รับเข้า</label><input type="date" class="form-control" id="rcvDate"></div>
-              <div class="col-md-6"><label class="form-label">วันหมดประกัน</label><input type="date" class="form-control" id="rcvWarranty">
-                <div class="text-muted-2 mt-1" style="font-size:11.5px">เว้นว่างได้ถ้าอุปกรณ์ไม่มีประกัน เช่น สายเคเบิล หัวต่อ</div>
+              <div class="col-md-6"><label class="form-label" for="rcvPrice">ราคาต่อหน่วย</label>
+                <input type="number" class="form-control" id="rcvPrice" min="0" step="0.01" placeholder="0.00" inputmode="decimal">
+                <div class="text-muted-2 mt-1" style="font-size:12px">บาท ต่อ <span id="rcvPriceUnit">หน่วย</span></div>
               </div>
-              <div class="col-12"><label class="form-label">หมายเหตุ</label><textarea class="form-control" id="rcvNote" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
+              <div class="col-md-6"><label class="form-label" for="rcvDate">วันที่รับเข้า</label><input type="date" class="form-control" id="rcvDate"></div>
+              <div class="col-12"><label class="form-label" for="rcvNote">หมายเหตุ</label><textarea class="form-control" id="rcvNote" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
             </div>
           </div>
 
           <!-- Serial entry — only shown for items tracked individually -->
           <div class="form-section d-none" id="rcvSerialSection">
-            <div class="section-title mb-1" style="font-size:13.5px">Serial Number รายชิ้น <span class="required">*</span></div>
+            <label class="section-title mb-1 d-block" style="font-size:13.5px" for="rcvSerials">Serial Number รายชิ้น <span class="required">*</span></label>
             <div class="text-muted-2 mb-2" style="font-size:12px">อุปกรณ์ชนิดนี้ติดตามเป็นรายชิ้น กรอก Serial บรรทัดละ 1 เลข เพื่อให้ระบุตัวเครื่องได้ตอนส่งเคลม</div>
             <textarea class="form-control num" id="rcvSerials" rows="5" spellcheck="false" placeholder="SN-XXXX-0001&#10;SN-XXXX-0002"></textarea>
             <div class="d-flex justify-content-between align-items-center mt-2 gap-2 flex-wrap" style="font-size:12px">
@@ -193,7 +190,7 @@
           <div class="empty-state py-4">
             <div class="empty-state__icon" style="color:var(--color-success)"><i class="bi bi-check-circle"></i></div>
             <div class="empty-state__title">ตรวจสอบข้อมูลก่อนยืนยัน</div>
-            <div class="empty-state__desc">อุปกรณ์ <b id="confName">LAN Cable Cat6</b> จะเพิ่มสต๊อก <b id="confResult" style="color:var(--color-success)">+305 เมตร</b></div>
+            <div class="empty-state__desc">อุปกรณ์ <b id="confName">LAN Cable Cat6</b> จะเพิ่มสต๊อก <b id="confResult" style="color:var(--color-success-text)">+305 เมตร</b></div>
           </div>
           <div class="lot-card">
             <div class="lot-card__top">
@@ -213,7 +210,7 @@
           </div>
           <div class="d-flex justify-content-between mt-3">
             <button class="btn btn-ghost" data-back="2">ย้อนกลับ</button>
-            <button class="btn btn-primary" id="confirmReceive"><span class="btn-label"><i class="bi bi-check-lg"></i> ยืนยันการรับเข้า</span></button>
+            <button class="btn btn-commit" id="confirmReceive"><span class="btn-label"><i class="bi bi-check-lg" aria-hidden="true"></i> ยืนยันการรับเข้า</span></button>
           </div>
         </div>
       </div>
@@ -227,6 +224,7 @@
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
 <script src="js/data.js"></script>
+<script src="js/cart.js"></script>
 <script>
 $('#rcvDate').val(new Date().toISOString().split('T')[0]);
 
@@ -261,20 +259,28 @@ function renderReceivePicker(filter) {
     );
   });
 
-  var $first = $picker.find('.item-picker-row').first();
-  if ($first.length) {
-    $first.addClass('selected').append('<i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)"></i>');
-  }
+  // No silent default: pressing "ถัดไป" without choosing used to receive a Wireless Mouse.
+  $picker.find('.item-picker-row').attr({ role: 'option', tabindex: 0, 'aria-selected': 'false' });
   bindPickerRows();
+  $('#toStep2').prop('disabled', true);
+}
+
+function selectPickerRow(row) {
+  $('.item-picker-row').removeClass('selected').attr('aria-selected', 'false').find('.bi-check-circle-fill').remove();
+  $(row).addClass('selected').attr('aria-selected', 'true').append('<i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)" aria-hidden="true"></i>');
+  $('#toStep2').prop('disabled', false);
+  $('#rcvPickHint').text('เลือกแล้ว: ' + findInventoryItem($(row).data('code')).name);
   updateConversion();
 }
 
 function bindPickerRows() {
-  $('.item-picker-row').off('click').on('click', function () {
-    $('.item-picker-row').removeClass('selected').find('.bi-check-circle-fill').remove();
-    $(this).addClass('selected').append('<i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)"></i>');
-    updateConversion();
-  });
+  $('.item-picker-row').off('click keydown')
+    .on('click', function () { selectPickerRow(this); })
+    .on('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectPickerRow(this); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); $(this).next('.item-picker-row').trigger('focus'); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); $(this).prev('.item-picker-row').trigger('focus'); }
+    });
 }
 
 $('#rcvSearch').on('input', function () { renderReceivePicker($(this).val()); });
@@ -288,6 +294,8 @@ function goStep(n) {
     if (s < n) $(this).addClass('done');
     if (s === n) $(this).addClass('active');
   });
+  syncWizardAria();
+  $('.rcv-step[data-step="' + n + '"]')[0].scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
 // ---- Step 2: quantity, unit conversion and the serial block ----
@@ -319,15 +327,19 @@ function serialProblem() {
   return null;
 }
 
+var serialTouched = false;
 function updateSerialState() {
   var item = selectedItem();
   var serialized = !!(item && item.serialized);
   $('#rcvSerialSection').toggleClass('d-none', !serialized);
+  // Warranty is required for anything tracked by serial unless explicitly waived.
+  $('#rcvWarrantyReq').toggle(serialized && !$('#rcvNoWarranty').is(':checked'));
   if (!serialized) return;
 
   $('#serialNeeded').text(baseQty());
   $('#serialCount').text(enteredSerials().length);
-  var problem = serialProblem();
+  // Don't scold before the person has typed anything.
+  var problem = serialTouched ? serialProblem() : null;
   $('#serialWarn').toggleClass('d-none', !problem);
   $('#serialWarnText').text(problem || '');
 }
@@ -350,27 +362,33 @@ function updateConversion() {
   $('#cvResult').text('+' + result + ' ' + item.unit);
   $('#cvCurrent').text(item.stock + ' ' + item.unit);
   $('#cvAfter').text((item.stock + result) + ' ' + item.unit);
+  // "1 ชิ้น → 1 ชิ้น/ชิ้น" says nothing; only show the conversion when there is one.
+  $('#cvBox').toggleClass('d-none', factor === 1);
   updateSerialState();
 }
 
 $('#rcvQty').on('input', updateConversion);
-$('#rcvSerials').on('input', updateSerialState);
+$('#rcvSerials').on('input', function () { serialTouched = true; updateSerialState(); });
+$('#rcvNoWarranty').on('change', function () {
+  $('#rcvWarranty').prop('disabled', this.checked);
+  if (this.checked) { $('#rcvWarranty').val(''); clearFieldError('#rcvWarranty'); refreshDateEcho($('#rcvWarranty')[0]); }
+  updateSerialState();
+});
 
 $('#toStep2').on('click', function () { updateConversion(); goStep(2); });
 
 $('#toStep3').on('click', function () {
   var item = selectedItem();
-  if (!$('#rcvPo').val().trim()) {
-    showToast('warning', 'กรุณาระบุเลขที่ PO เพื่อให้ตรวจสอบย้อนกลับได้ตอนส่งเคลม');
-    $('#rcvPo').focus();
+  if (!$('#rcvPo').val().trim()) { showFieldError('#rcvPo', 'ระบุเลขที่ PO เพื่อให้ตรวจสอบย้อนกลับได้ตอนส่งเคลม'); return; }
+  if (!$('#rcvSupplier').val().trim()) { showFieldError('#rcvSupplier', 'ระบุผู้จำหน่าย — คือคนที่ต้องส่งเคลมไปหา'); return; }
+  var noWarranty = $('#rcvNoWarranty').is(':checked');
+  if (item.serialized && !noWarranty && !$('#rcvWarranty').val()) {
+    showFieldError('#rcvWarranty', 'อุปกรณ์ที่ติดตามด้วย Serial ต้องระบุวันหมดประกัน หรือติ๊ก "ไม่มีประกัน" ให้ชัดเจน');
     return;
   }
+  serialTouched = true;
   var problem = serialProblem();
-  if (problem) {
-    showToast('warning', problem);
-    $('#rcvSerials').focus();
-    return;
-  }
+  if (problem) { showFieldError('#rcvSerials', problem); return; }
 
   var price = $('#rcvPrice').val();
   var warranty = $('#rcvWarranty').val();
@@ -380,7 +398,9 @@ $('#toStep3').on('click', function () {
   $('#confSupplier').text($('#rcvSupplier').val().trim() || '-');
   $('#confPrice').text(price ? Number(price).toLocaleString('th-TH') + ' บาท / ' + (item.recvUnit || item.unit) : '-');
   $('#confDate').text($('#rcvDate').val() ? formatThaiDate(new Date($('#rcvDate').val() + 'T00:00:00')) : '-');
-  $('#confWarranty').text(warranty ? formatThaiDate(new Date(warranty + 'T00:00:00')) : 'ไม่มีประกัน');
+  // A blank is "ยังไม่ระบุ", never a claim of fact.
+  $('#confWarranty').html(warranty ? formatThaiDate(new Date(warranty + 'T00:00:00'))
+                        : noWarranty ? 'ไม่มีประกัน' : '<span class="status-badge status-badge--neutral">ยังไม่ระบุ</span>');
 
   var serials = item.serialized ? enteredSerials() : [];
   $('#confSerialWrap').toggleClass('d-none', serials.length === 0);
@@ -396,12 +416,27 @@ $('[data-back]').on('click', function () { goStep($(this).data('back')); });
 
 $('#confirmReceive').on('click', function () {
   var $btn = $(this);
+  var item = selectedItem();
   setBtnLoading($btn, 'กำลังบันทึก...');
   setTimeout(function () {
-    resetBtnLoading($btn);
-    showToast('success', 'รับเข้าอุปกรณ์สำเร็จ (ล็อต ' + nextRef('LOT') + ')');
-    setTimeout(function () { location.href = 'inventory.html'; }, 900);
-  }, 700);
+    var lotRef = nextRef('LOT');
+    var serials = item.serialized ? enteredSerials() : [];
+    var lines = [
+      { label: item.name + ' <span class="text-muted-2">· ' + $('#rcvPo').val().trim() + '</span>', value: $('#cvResult').text() },
+      { label: 'ผู้จำหน่าย', value: $('#rcvSupplier').val().trim() },
+      { label: 'หมดประกัน', value: $('#confWarranty').text() }
+    ];
+    if (serials.length) lines.push({ label: 'Serial (' + serials.length + ')', value: serials.join(', ') });
+    $('.app-main').children().not('#receiptHost').hide();
+    showReceipt({
+      title: 'รับเข้าอุปกรณ์สำเร็จ',
+      ref: lotRef,
+      lines: lines,
+      meta: 'ติดเลขล็อตนี้ที่กล่อง — ใช้อ้างอิงตอนเบิก ยืม และส่งเคลม · ' + formatThaiDate(today()),
+      nextLabel: 'รับเข้ารายการถัดไป',
+      nextHref: { href: 'inventory-detail.html?code=' + encodeURIComponent(item.code), label: 'ดูอุปกรณ์นี้' }
+    });
+  }, 500);
 });
 </script>
 </body>

@@ -52,6 +52,13 @@ node build.js
 - อุปกรณ์ที่ `serialized: true` เก็บ Serial ที่ `lot.serials[]` (ยังอยู่ในสต๊อก) และ `deployment.serials[]` (จ่ายออกแล้ว)
 - วันที่เป็น พ.ศ. รูปแบบ `13 ก.ย. 2569` — ใช้ `parseThaiDate()` / `formatThaiDate()`
 
+## คุณภาพ UX/UI
+
+ตรวจด้วย [impeccable](https://impeccable.style) (`npx impeccable detect .`) — ผลล่าสุดไม่มีปัญหาคอนทราสต์/ตัวหนังสือเล็ก/heading ข้ามระดับ
+รายงาน critique ฉบับเต็มอยู่ที่ `.impeccable/critique/`
+หลักการที่ใช้ทั้งระบบ: ตัวหนังสือสีความหมายใช้โทเคน `--color-*-text` (ไม่ใช่สี fill), ขั้นต่ำ 12px, ปุ่มบนมือถือ 44px,
+ปุ่มที่ย้อนกลับไม่ได้ใช้ `.btn-commit`, ธุรกรรมจบด้วยใบเสร็จในหน้า (ไม่ redirect), ตรวจนับเป็น blind count และกู้คืนได้จาก localStorage
+
 ## การต่อกับระบบจริง
 
 จุดที่ต้องเปลี่ยนคือ `js/data.js` (แทนที่ array ด้วยข้อมูลจากระบบ) และ handler ปุ่มบันทึกในแต่ละหน้า (ตอนนี้แค่แสดง toast)

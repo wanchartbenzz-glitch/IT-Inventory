@@ -10,18 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -50,6 +53,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -61,29 +65,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -94,14 +90,14 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main">
+    <main class="app-main" id="main">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">หมวดอุปกรณ์</span></div>
       <div class="page-header">
         <div><h1 class="page-header__title">หมวดอุปกรณ์</h1><p class="page-header__desc">จัดการหมวดหมู่อุปกรณ์ IT ทั้งหมด</p></div>
@@ -142,14 +138,14 @@
   </div>
 </div>
 
-<div class="modal fade" id="catModal" tabindex="-1">
+<div class="modal fade" id="catModal" tabindex="-1" aria-labelledby="catModalTitle">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">เพิ่มหมวดอุปกรณ์</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-header"><h2 class="modal-title h5" id="catModalTitle">เพิ่มหมวดอุปกรณ์</h2><button class="btn-close" data-bs-dismiss="modal" aria-label="ปิดหน้าต่าง"></button></div>
       <div class="modal-body">
-        <div class="mb-3"><label class="form-label">ชื่อหมวด <span class="required">*</span></label><input class="form-control" placeholder="เช่น Peripheral, Network"></div>
-        <div class="mb-3"><label class="form-label">ไอคอน</label><select class="form-select"><option>bi-mouse2</option><option>bi-hdd-network</option><option>bi-hdd</option><option>bi-plug</option><option>bi-link-45deg</option><option>bi-box-seam</option></select></div>
-        <div class="mb-0"><label class="form-label">คำอธิบาย</label><textarea class="form-control" rows="2" placeholder="คำอธิบายหมวดอุปกรณ์..."></textarea></div>
+        <div class="mb-3"><label class="form-label" for="fld1_52ffb9">ชื่อหมวด <span class="required">*</span></label><input class="form-control" placeholder="เช่น Peripheral, Network" id="fld1_52ffb9"></div>
+        <div class="mb-3"><label class="form-label" for="fld2_a96b46">ไอคอน</label><select class="form-select" id="fld2_a96b46"><option>bi-mouse2</option><option>bi-hdd-network</option><option>bi-hdd</option><option>bi-plug</option><option>bi-link-45deg</option><option>bi-box-seam</option></select></div>
+        <div class="mb-0"><label class="form-label" for="fld3_ea9fde">คำอธิบาย</label><textarea class="form-control" rows="2" placeholder="คำอธิบายหมวดอุปกรณ์..." id="fld3_ea9fde"></textarea></div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-ghost" data-bs-dismiss="modal">ยกเลิก</button>

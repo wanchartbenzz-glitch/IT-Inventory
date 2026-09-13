@@ -44,13 +44,15 @@ const NAV = [
 ];
 
 function buildSidebar(currentFile) {
-  var html = '<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">\n';
+  var html = '<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>\n';
+  html += '<aside class="sidebar" id="shellSidebarAside">\n';
   html += '  <div class="sidebar__brand">\n' +
           '    <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>\n' +
           '    <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>\n' +
           '    <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>\n' +
           '  </div>\n';
 
+  html += '<nav aria-label="เมนูหลัก">\n';
   NAV.forEach(function (group) {
     html += '  <div class="sidebar__group">\n';
     if (group.label) html += '    <div class="sidebar__group-label">' + group.label + '</div>\n';
@@ -71,6 +73,7 @@ function buildSidebar(currentFile) {
     html += '  </div>\n';
   });
 
+  html += '</nav>\n';
   html += '  <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true">' +
             '<i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>\n';
   html += '</aside>\n<div class="sidebar-overlay"></div>';
@@ -86,6 +89,9 @@ function replaceBetween(html, marker, content) {
   return html.replace(re, wrapped);
 }
 
+// Inline SVG favicon so the browser stops probing /favicon.ico (a 404 on every load).
+var FAVICON = '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">';
+
 var headerHtml = fs.readFileSync(path.join(ROOT, 'partials/header.html'), 'utf8').trim();
 
 var pages = fs.readdirSync(ROOT).filter(function (f) {
@@ -98,6 +104,10 @@ pages.forEach(function (file) {
   var html = fs.readFileSync(full, 'utf8');
   html = replaceBetween(html, 'sidebar', buildSidebar(file));
   html = replaceBetween(html, 'header', headerHtml);
+  html = html.replace(/<main class="app-main"(?![^>]*\bid=)/, '<main class="app-main" id="main"');
+  if (html.indexOf('rel="icon"') === -1) {
+    html = html.replace('<link href="css/app.css"', FAVICON + '\n<link href="css/app.css"');
+  }
   fs.writeFileSync(full, html);
   built++;
 });

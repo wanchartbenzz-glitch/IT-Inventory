@@ -10,18 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -50,6 +53,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -61,29 +65,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -94,14 +90,14 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main">
+    <main class="app-main" id="main">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">รออนุมัติ</span></div>
       <div class="page-header">
         <div>
@@ -140,6 +136,12 @@
         <button class="filter-chip" type="button" data-filter="disposal">ขอตัดจำหน่าย</button>
       </div>
 
+      <div class="gap-row mb-3 align-items-center d-none" id="bulkBar">
+        <span style="font-size:13px">เลือกแล้ว <b id="bulkCount">0</b> รายการ</span>
+        <button class="btn btn-commit btn-sm" type="button" id="bulkApprove"><i class="bi bi-check2-all" aria-hidden="true"></i> อนุมัติที่เลือก</button>
+        <button class="btn btn-ghost btn-sm" type="button" id="bulkClear">ยกเลิกการเลือก</button>
+      </div>
+      <div id="undoHost"></div>
       <div id="reqList"></div>
 
       <div class="empty-state d-none" id="reqEmpty">
@@ -176,6 +178,7 @@ function requestCardHtml(req) {
 
   return '<div class="card card-body req-card" data-ref="' + req.ref + '" data-kind="' + req.kind + '">' +
     '<div class="req-card__head">' +
+      '<label class="req-card__pick"><input type="checkbox" class="req-select" value="' + req.ref + '" aria-label="เลือก ' + req.ref + '"></label>' +
       (item ? itemThumbHtml(item, '40px', '18px') : '') +
       '<div class="req-card__title">' +
         '<div class="req-card__detail">' + req.detail + '</div>' +
@@ -190,12 +193,18 @@ function requestCardHtml(req) {
       '<div><div class="lot-grid__label">วันที่ขอ</div><div class="lot-grid__value">' + req.date + '</div></div>' +
       '<div><div class="lot-grid__label">คงเหลือในสต๊อก</div><div class="lot-grid__value num">' +
         (item ? item.stock + ' ' + item.unit : '-') + '</div></div>' +
+      (item && (req.kind === 'issue' || req.kind === 'borrow' || req.kind === 'adjust')
+        ? '<div><div class="lot-grid__label">จะเหลือหลังอนุมัติ</div><div class="lot-grid__value num" style="color:' +
+          ((item.stock - Math.abs(req.qty) * (req.kind === 'adjust' && req.qty > 0 ? -1 : 1)) < item.min ? 'var(--color-danger-text)' : 'inherit') + '">' +
+          (req.kind === 'adjust' ? item.stock + req.qty : item.stock - req.qty) + ' ' + item.unit +
+          ((req.kind === 'adjust' ? item.stock + req.qty : item.stock - req.qty) < item.min ? ' <span class="text-muted-2" style="font-size:12px">(ต่ำกว่า min ' + item.min + ')</span>' : '') + '</div></div>'
+        : '') +
     '</div>' +
     '<div class="req-card__reason"><b>เหตุผล:</b> ' + req.reason + '</div>' +
     '<div class="req-card__actions">' +
       (item ? '<a href="inventory-detail.html?code=' + encodeURIComponent(item.code) + '" class="btn btn-ghost btn-sm">ดูอุปกรณ์</a>' : '') +
       '<button class="btn btn-outline-danger btn-sm req-reject" type="button">ไม่อนุมัติ</button>' +
-      '<button class="btn btn-primary btn-sm req-approve" type="button">อนุมัติ</button>' +
+      '<button class="btn btn-commit btn-sm req-approve" type="button"><i class="bi bi-check-lg" aria-hidden="true"></i> อนุมัติ</button>' +
     '</div>' +
   '</div>';
 }
@@ -226,10 +235,55 @@ function findRequest(ref) {
   return null;
 }
 
-function removeRequest(ref) {
+// A decided request leaves the list but stays reachable for a few seconds:
+// approving the wrong card is a one-click mistake, so undo is one click too.
+var undoTimer = null;
+function removeRequest(ref, verdict) {
+  var req = findRequest(ref);
   requests = requests.filter(function (r) { return r.ref !== ref; });
   renderRequests();
+  if (!req) return;
+  clearTimeout(undoTimer);
+  $('#undoHost').html(
+    '<div class="restore-banner" role="status">' +
+      '<i class="bi ' + (verdict === 'approved' ? 'bi-check-circle-fill' : 'bi-x-circle-fill') + '" aria-hidden="true"></i>' +
+      '<span>' + (verdict === 'approved' ? 'อนุมัติ' : 'ไม่อนุมัติ') + ' <b class="num">' + req.ref + '</b> — ' + req.detail + '</span>' +
+      '<button class="btn btn-ghost btn-sm" type="button" id="undoBtn"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> เลิกทำ</button>' +
+    '</div>');
+  $('#undoBtn').on('click', function () {
+    requests.unshift(req);
+    $('#undoHost').empty();
+    renderRequests();
+    showToast('info', 'นำ ' + req.ref + ' กลับมารอพิจารณาแล้ว');
+  });
+  undoTimer = setTimeout(function () { $('#undoHost').empty(); }, 8000);
 }
+
+function selectedRefs() { return $('.req-select:checked').map(function () { return this.value; }).get(); }
+$(document).on('change', '.req-select', function () {
+  var n = selectedRefs().length;
+  $('#bulkCount').text(n);
+  $('#bulkBar').toggleClass('d-none', n === 0);
+});
+$('#bulkClear').on('click', function () { $('.req-select').prop('checked', false).first().trigger('change'); });
+$('#bulkApprove').on('click', function () {
+  var refs = selectedRefs();
+  if (!refs.length) return;
+  var short = refs.filter(function (ref) { var r = findRequest(ref); var it = r && findInventoryItem(r.code); return it && (r.kind === 'issue' || r.kind === 'borrow') && r.qty > it.stock; });
+  Swal.fire({
+    title: 'อนุมัติ ' + refs.length + ' รายการ?',
+    html: '<div style="text-align:left;font-size:13px">' + refs.map(function (ref) { return findRequest(ref).detail; }).join('<br>') + '</div>' +
+          (short.length ? '<div style="text-align:left;font-size:12.5px;color:#b91c1c;margin-top:8px"><b>คำเตือน:</b> ' + short.length + ' รายการขอเกินสต๊อก</div>' : ''),
+    icon: short.length ? 'warning' : 'question', showCancelButton: true, confirmButtonColor: '#1d4ed8', cancelButtonColor: '#94a3b8',
+    confirmButtonText: 'อนุมัติทั้งหมด', cancelButtonText: 'ยกเลิก', reverseButtons: true
+  }).then(function (r) {
+    if (!r.isConfirmed) return;
+    requests = requests.filter(function (x) { return refs.indexOf(x.ref) === -1; });
+    $('#bulkBar').addClass('d-none');
+    renderRequests();
+    showToast('success', 'อนุมัติ ' + refs.length + ' รายการแล้ว');
+  });
+});
 
 $('.filter-chip').on('click', function () {
   $('.filter-chip').removeClass('is-active');
@@ -253,15 +307,14 @@ $(document).on('click', '.req-approve', function () {
                    '<b>คำเตือน:</b> จำนวนที่ขอมากกว่าสต๊อกคงเหลือ</div>' : ''),
     icon: short ? 'warning' : 'question',
     showCancelButton: true,
-    confirmButtonColor: '#2563eb',
+    confirmButtonColor: '#1d4ed8',
     cancelButtonColor: '#94a3b8',
     confirmButtonText: 'อนุมัติ',
     cancelButtonText: 'ยกเลิก',
     reverseButtons: true
   }).then(function (result) {
     if (result.isConfirmed) {
-      showToast('success', 'อนุมัติ ' + req.ref + ' แล้ว');
-      removeRequest(req.ref);
+      removeRequest(req.ref, 'approved');
     }
   });
 });
@@ -286,8 +339,7 @@ $(document).on('click', '.req-reject', function () {
     reverseButtons: true
   }).then(function (result) {
     if (result.isConfirmed) {
-      showToast('info', 'ไม่อนุมัติ ' + req.ref + ' แล้ว');
-      removeRequest(req.ref);
+      removeRequest(req.ref, 'rejected');
     }
   });
 });

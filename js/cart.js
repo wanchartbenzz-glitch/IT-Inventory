@@ -119,10 +119,10 @@ function serialPickerHtml(entry) {
            '</label>';
   }).join('');
 
-  return '<div class="serial-picker">' +
-           '<div class="serial-picker__label">เลือก Serial ที่จ่ายออก (เลือกแล้ว ' + entry.serials.length + ' ชิ้น)</div>' +
+  return '<fieldset class="serial-picker">' +
+           '<legend class="serial-picker__label">เลือก Serial ที่จ่ายออก (เลือกแล้ว ' + entry.serials.length + ' ชิ้น)</legend>' +
            '<div class="serial-chips">' + chips + '</div>' +
-         '</div>';
+         '</fieldset>';
 }
 
 function renderCart() {
@@ -209,6 +209,44 @@ $(document).on('change', '.serial-check', function () {
   entry.qty = entry.serials.length;
   renderCart();
 });
+
+// ---------------------------------------------------------------------------
+// Receipt: what the person walks away with. The reference number is the one
+// thing the requester writes on the paper form and the receiver sticks on the
+// box, so it must outlive the toast — no redirect.
+// ---------------------------------------------------------------------------
+function showReceipt(opts) {
+  // opts: { title, ref, lines:[{label,value}], meta, nextHref, nextLabel, container }
+  var $c = $(opts.container || '#receiptHost');
+  if (!$c.length) { $c = $('<div id="receiptHost"></div>').prependTo('.app-main'); }
+  $c.html(
+    '<div class="receipt" role="status" aria-live="polite" tabindex="-1">' +
+      '<div class="receipt__head"><div class="receipt__icon"><i class="bi bi-check-lg" aria-hidden="true"></i></div>' +
+        '<div class="receipt__title">' + opts.title + '</div></div>' +
+      '<div class="receipt__ref"><span class="receipt__meta">เลขที่อ้างอิง</span>' +
+        '<span class="receipt__ref-value" id="receiptRef">' + opts.ref + '</span>' +
+        '<button class="btn btn-soft btn-sm" type="button" id="receiptCopy"><i class="bi bi-clipboard" aria-hidden="true"></i> คัดลอกเลขที่</button></div>' +
+      '<div class="receipt__lines">' + opts.lines.map(function (l) {
+        return '<div class="receipt__line"><span>' + l.label + '</span><span class="num fw-700" style="text-align:right">' + l.value + '</span></div>';
+      }).join('') + '</div>' +
+      (opts.meta ? '<div class="receipt__meta mb-3">' + opts.meta + '</div>' : '') +
+      '<div class="receipt__actions">' +
+        '<button class="btn btn-primary" type="button" id="receiptNext"><i class="bi bi-plus-lg" aria-hidden="true"></i> ' + (opts.nextLabel || 'ทำรายการถัดไป') + '</button>' +
+        '<a class="btn btn-ghost" href="index.html">ไปหน้าแรก</a>' +
+        (opts.nextHref ? '<a class="btn btn-ghost" href="' + opts.nextHref.href + '">' + opts.nextHref.label + '</a>' : '') +
+      '</div>' +
+    '</div>'
+  );
+  $c[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $c.find('.receipt').trigger('focus');
+  $('#receiptCopy').on('click', function () {
+    var text = $('#receiptRef').text();
+    var done = function () { showToast('success', 'คัดลอก ' + text + ' แล้ว'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
+    else done();
+  });
+  $('#receiptNext').on('click', function () { if (opts.onNext) opts.onNext(); else location.reload(); });
+}
 
 // ---------------------------------------------------------------------------
 // Confirm summary shared by both pages

@@ -10,18 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -50,6 +53,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -61,29 +65,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -94,14 +90,14 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main">
+    <main class="app-main" id="main">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">ข้อมูลอุปกรณ์ IT</span></div>
 
       <div class="page-header">
@@ -110,18 +106,18 @@
           <p class="page-header__desc">จัดการ Stock และตรวจสอบรายการอุปกรณ์</p>
         </div>
         <div class="page-header__actions">
-          <button class="btn btn-ghost btn-sm" type="button" disabled><i class="bi bi-qr-code-scan"></i> Scan QR <span class="badge-soon ms-1">Coming Soon</span></button>
+          <button class="btn btn-ghost btn-sm hide-mobile" type="button" disabled><i class="bi bi-qr-code-scan" aria-hidden="true"></i> Scan QR <span class="badge-soon ms-1">Coming Soon</span></button>
           <button class="btn btn-ghost" type="button" id="exportBtn"><i class="bi bi-download"></i> ส่งออก CSV</button>
           <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#itemModal"><i class="bi bi-plus-lg"></i> เพิ่มอุปกรณ์</button>
         </div>
       </div>
 
       <div class="toolbar">
-        <div class="search-input"><i class="bi bi-search"></i><input type="text" id="invSearch" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..."></div>
-        <select class="filter-select" id="categoryFilter"><option value="">ทุกหมวดหมู่</option><option>Peripheral</option><option>Network</option><option>Storage</option><option>Power</option><option>Cable</option><option>Consumable</option><option>Other</option></select>
-        <select class="filter-select" id="typeFilter"><option value="">ทุกประเภท</option></select>
-        <select class="filter-select" id="statusFilter"><option value="">ทุกสถานะ</option><option value="available">พร้อมใช้งาน</option><option value="low">ใกล้หมด</option><option value="out">หมดสต๊อก</option></select>
-        <select class="filter-select" id="unitFilter"><option value="">ทุกหน่วย</option><option>ชิ้น</option><option>เมตร</option><option>เส้น</option></select>
+        <div class="search-input"><i class="bi bi-search"></i><input type="search" id="invSearch" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial"></div>
+        <select class="filter-select" id="categoryFilter" aria-label="กรองตามหมวดหมู่"><option value="">ทุกหมวดหมู่</option></select>
+        <select class="filter-select" id="typeFilter" aria-label="กรองตามประเภท"><option value="">ทุกประเภท</option></select>
+        <select class="filter-select" id="statusFilter" aria-label="กรองตามสถานะ"><option value="">ทุกสถานะ</option><option value="available">พร้อมใช้งาน</option><option value="low">ใกล้หมด</option><option value="out">หมดสต๊อก</option></select>
+        <select class="filter-select" id="unitFilter" aria-label="กรองตามหน่วย"><option value="">ทุกหน่วย</option></select>
       </div>
 
       <!-- Loading skeleton (shown briefly on first load) -->
@@ -150,14 +146,9 @@
         <div class="inv-cards p-3"></div>
 
         <div class="table-footer">
-          <span>แสดง 1-10 จาก 128 รายการ</span>
-          <div class="d-flex gap-1">
-            <button class="btn btn-ghost btn-sm" disabled><i class="bi bi-chevron-left"></i></button>
-            <button class="btn btn-soft btn-sm">1</button>
-            <button class="btn btn-ghost btn-sm">2</button>
-            <button class="btn btn-ghost btn-sm">3</button>
-            <button class="btn btn-ghost btn-sm"><i class="bi bi-chevron-right"></i></button>
-          </div>
+          <span id="invResultCount" aria-live="polite">แสดง 0 รายการ</span>
+          <button class="btn btn-ghost btn-sm d-none" type="button" id="invClearFilters"><i class="bi bi-x-circle" aria-hidden="true"></i> ล้างตัวกรอง</button>
+        </div>
         </div>
       </div>
     </main>
@@ -165,13 +156,13 @@
 </div>
 
 <!-- Add/Edit Item Modal -->
-<div class="modal fade" id="itemModal" tabindex="-1">
+<div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalTitle">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header"><h5 class="modal-title">เพิ่มอุปกรณ์</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-header"><h2 class="modal-title h5" id="itemModalTitle">เพิ่มอุปกรณ์</h2><button class="btn-close" data-bs-dismiss="modal" aria-label="ปิดหน้าต่าง"></button></div>
       <div class="modal-body">
         <div class="form-section">
-          <div class="section-title mb-3" style="font-size:13.5px">รูปภาพอุปกรณ์</div>
+          <h2 class="section-title mb-3" style="font-size:13.5px">รูปภาพอุปกรณ์</h2>
           <div class="photo-upload">
             <label class="photo-upload__box" id="itemPhotoBox" for="itemPhotoInput">
               <img id="itemPhotoPreview" class="d-none" alt="ตัวอย่างรูปอุปกรณ์">
@@ -185,21 +176,21 @@
           </div>
         </div>
         <div class="form-section">
-          <div class="section-title mb-3" style="font-size:13.5px">ข้อมูลอุปกรณ์</div>
+          <h2 class="section-title mb-3" style="font-size:13.5px">ข้อมูลอุปกรณ์</h2>
           <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">ชื่ออุปกรณ์ <span class="required">*</span></label><input class="form-control" placeholder="เช่น Wireless Mouse"></div>
-            <div class="col-md-6"><label class="form-label">รหัสอุปกรณ์ <span class="required">*</span></label><input class="form-control" placeholder="IT-XXX-XXX"></div>
-            <div class="col-md-4"><label class="form-label">หมวดหมู่ <span class="required">*</span></label><select class="form-select"><option>Peripheral</option><option>Network</option><option>Storage</option><option>Power</option><option>Cable</option><option>Consumable</option><option>Other</option></select></div>
-            <div class="col-md-4"><label class="form-label">ยี่ห้อ</label><input class="form-control" placeholder="เช่น Logitech"></div>
-            <div class="col-md-4"><label class="form-label">รุ่น</label><input class="form-control" placeholder="เช่น M185"></div>
+            <div class="col-md-6"><label class="form-label" for="newName">ชื่ออุปกรณ์ <span class="required">*</span></label><input class="form-control" id="newName" placeholder="เช่น Wireless Mouse"></div>
+            <div class="col-md-6"><label class="form-label" for="newCode">รหัสอุปกรณ์ <span class="required">*</span></label><input class="form-control" id="newCode" placeholder="IT-XXX-XXX"></div>
+            <div class="col-md-4"><label class="form-label" for="newCategory">หมวดหมู่ <span class="required">*</span></label><select class="form-select" id="newCategory"><option>Peripheral</option><option>Network</option><option>Storage</option><option>Power</option><option>Cable</option><option>Consumable</option><option>Other</option></select></div>
+            <div class="col-md-4"><label class="form-label" for="newBrand">ยี่ห้อ</label><input class="form-control" id="newBrand" placeholder="เช่น Logitech"></div>
+            <div class="col-md-4"><label class="form-label" for="newModel">รุ่น</label><input class="form-control" id="newModel" placeholder="เช่น M185"></div>
           </div>
         </div>
         <div class="form-section mb-0">
-          <div class="section-title mb-3" style="font-size:13.5px">Stock</div>
+          <h2 class="section-title mb-3" style="font-size:13.5px">สต๊อกเริ่มต้น</h2>
           <div class="row g-3">
-            <div class="col-md-4"><label class="form-label">หน่วยหลัก <span class="required">*</span></label><select class="form-select"><option>ชิ้น</option><option>เมตร</option><option>กล่อง</option><option>ม้วน</option></select></div>
-            <div class="col-md-4"><label class="form-label">จำนวนเริ่มต้น</label><input type="number" class="form-control" value="0"></div>
-            <div class="col-md-4"><label class="form-label">จุดสั่งซื้อ (Minimum)</label><input type="number" class="form-control" value="10"></div>
+            <div class="col-md-4"><label class="form-label" for="newUnit">หน่วยหลัก <span class="required">*</span></label><select class="form-select" id="newUnit"><option>ชิ้น</option><option>เมตร</option><option>กล่อง</option><option>ม้วน</option></select></div>
+            <div class="col-md-4"><label class="form-label" for="newStock">จำนวนเริ่มต้น</label><input type="number" class="form-control" id="newStock" value="0"></div>
+            <div class="col-md-4"><label class="form-label" for="newMin">จุดสั่งซื้อ (Minimum)</label><input type="number" class="form-control" id="newMin" value="10"></div>
           </div>
         </div>
       </div>
@@ -300,10 +291,10 @@ function renderInventory() {
       .join(' ').toLowerCase();
     var ariaLabel = item.name + ' ' + item.code + ' คงเหลือ ' + item.stock + ' ' + item.unit + ' ' + st.label + ' ดูรายละเอียด';
     var $row = $(
-      '<tr data-code="' + item.code + '" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" data-serials="' + serialText + '" style="cursor:pointer" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
+      '<tr data-code="' + item.code + '" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" data-serials="' + serialText + '" style="cursor:pointer">' +
         '<td>' + itemThumbHtml(item, '38px', '16px') + '</td>' +
         '<td class="num text-muted-2">' + item.code + '</td>' +
-        '<td><div class="fw-700">' + item.name + '</div><div class="text-muted-2" style="font-size:11.5px">' + (item.brand !== '-' ? item.brand + ' ' + item.model : '&nbsp;') + '</div></td>' +
+        '<td><a class="fw-700 row-link" href="' + href + '">' + item.name + '</a><div class="text-muted-2" style="font-size:12px">' + (item.brand !== '-' ? item.brand + ' ' + item.model : '&nbsp;') + '</div><div class="serial-hit text-muted-2 d-none" style="font-size:12px"></div></td>' +
         '<td>' + item.type + '</td>' +
         '<td>' + item.unit + '</td>' +
         '<td><div class="stock-mini"><span class="num fw-700">' + item.stock + ' ' + item.unit + '</span><div class="stock-mini__bar"><div class="stock-mini__fill" style="width:' + barWidth + ';background:' + barColor + '"></div></div></div></td>' +
@@ -312,15 +303,15 @@ function renderInventory() {
         '<td><i class="bi bi-chevron-right text-faint"></i></td>' +
       '</tr>'
     );
-    $row.on('click', function () { location.href = href; });
-    $row.on('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = href; } });
+    $row.on('click', function (e) { if (!$(e.target).closest('a').length) location.href = href; });
     $tbody.append($row);
 
     var $card = $(
-      '<div class="inv-card" data-code="' + item.code + '" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" data-serials="' + serialText + '" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
+      '<div class="inv-card" data-code="' + item.code + '" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" data-serials="' + serialText + '">' +
         itemThumbHtml(item, '48px', '20px') +
         '<div class="inv-card__body">' +
-          '<div class="inv-card__title">' + item.name + '</div>' +
+          '<a class="inv-card__title row-link" href="' + href + '">' + item.name + '</a>' +
+          '<div class="serial-hit text-muted-2 d-none" style="font-size:12px"></div>' +
           '<div class="inv-card__code">' + item.code + '</div>' +
           '<div class="inv-card__stock">' + item.stock + ' ' + item.unit + '</div>' +
           '<span class="status-badge status-badge--' + st.badge + '"><span class="status-badge__dot"></span>' + st.label + '</span>' +
@@ -328,21 +319,22 @@ function renderInventory() {
         '</div>' +
       '</div>'
     );
-    $card.on('click', function () { location.href = href; });
-    $card.on('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = href; } });
+    $card.on('click', function (e) { if (!$(e.target).closest('a').length) location.href = href; });
     $cards.append($card);
   });
 
-  // Populate the "ประเภท" filter from the distinct types actually present, once, in stable order
-  if ($('#typeFilter option').length === 1) {
+  // Filters list only values that actually exist in the catalog, in stable order —
+  // a hand-typed "Consumable / Other" that matches nothing is a dead end.
+  function fillFilter(sel, key) {
+    if ($(sel + ' option').length > 1) return;
     var seen = {};
     INVENTORY_ITEMS.forEach(function (item) {
-      if (!seen[item.type]) {
-        seen[item.type] = true;
-        $('#typeFilter').append('<option>' + item.type + '</option>');
-      }
+      if (!seen[item[key]]) { seen[item[key]] = true; $(sel).append('<option>' + item[key] + '</option>'); }
     });
   }
+  fillFilter('#categoryFilter', 'category');
+  fillFilter('#typeFilter', 'type');
+  fillFilter('#unitFilter', 'unit');
 }
 
 // Simulate initial load then reveal table (skeleton -> content)
@@ -364,8 +356,11 @@ function applyFilters() {
   var visible = 0;
 
   function matches($el) {
-    var matchesText = !q || $el.text().toLowerCase().indexOf(q) > -1 ||
-                      String($el.data('serials') || '').indexOf(q) > -1;
+    var serialHit = q && String($el.data('serials') || '').split(' ').filter(function (sn) { return sn && sn.indexOf(q) > -1; });
+    var $hit = $el.find('.serial-hit');
+    if (serialHit && serialHit.length) $hit.removeClass('d-none').html('<i class="bi bi-upc" aria-hidden="true"></i> Serial ' + serialHit.map(function (x) { return x.toUpperCase(); }).join(', '));
+    else $hit.addClass('d-none').text('');
+    var matchesText = !q || $el.text().toLowerCase().indexOf(q) > -1 || (serialHit && serialHit.length > 0);
     var matchesCategory = !category || $el.data('category') === category;
     var matchesType = !type || $el.data('type') === type;
     var matchesUnit = !unit || $el.data('unit') === unit;
@@ -383,13 +378,23 @@ function applyFilters() {
     $(this).toggle(matches($(this)));
   });
   $('#invEmptyState').toggleClass('d-none', visible !== 0);
+  var filtered = q || category || type || unit || status;
+  $('#invResultCount').text(filtered ? 'พบ ' + visible + ' จาก ' + INVENTORY_ITEMS.length + ' รายการ' : 'แสดง ' + visible + ' รายการ');
+  $('#invClearFilters').toggleClass('d-none', !filtered);
 }
+$('#invClearFilters').on('click', function () {
+  $('#invSearch').val('');
+  $('#categoryFilter, #typeFilter, #unitFilter, #statusFilter').val('');
+  applyFilters();
+  $('#invSearch').trigger('focus');
+});
 
 $('#invSearch').on('input', applyFilters);
 $('#categoryFilter, #typeFilter, #unitFilter, #statusFilter').on('change', applyFilters);
 
 var qText = new URLSearchParams(location.search).get('q');
 if (qText) $('#invSearch').val(qText);
+if (new URLSearchParams(location.search).get('focus')) setTimeout(function () { $('#invSearch').trigger('focus'); }, 300);
 var qStatus = new URLSearchParams(location.search).get('status');
 if (qStatus && STATUS_LABEL[qStatus]) {
   $('#statusFilter').val(qStatus);

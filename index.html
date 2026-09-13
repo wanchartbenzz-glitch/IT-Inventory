@@ -10,6 +10,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
@@ -17,12 +18,14 @@
 <div class="app-shell">
   <!-- ======== Sidebar ======== -->
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -51,6 +54,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -62,29 +66,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -95,7 +91,7 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
@@ -103,13 +99,13 @@
 <!-- /shell:header -->
 
     <!-- ======== Main ======== -->
-    <main class="app-main">
+    <main class="app-main" id="main">
       <div class="breadcrumb-row"><span class="current">Dashboard</span></div>
 
       <div class="page-header">
         <div>
-          <h1 class="page-header__title">สวัสดีตอนเช้า, ทีม IT 👋</h1>
-          <p class="page-header__desc">ภาพรวม Stock วันนี้ &middot; 13 ก.ย. 2569, 14:32 น.</p>
+          <h1 class="page-header__title" id="dashGreeting">สวัสดี, ทีม IT</h1>
+          <p class="page-header__desc">ภาพรวมสต๊อกวันนี้ &middot; <span id="dashDate"></span></p>
         </div>
       </div>
 
@@ -117,41 +113,41 @@
       <div class="quick-actions">
         <a href="issue.html" class="quick-action quick-action--issue">
           <div class="quick-action__icon"><i class="bi bi-box-arrow-up"></i></div>
-          <div><div class="quick-action__title">เบิกอุปกรณ์</div><div class="quick-action__sub">Create Issue</div></div>
+          <div><div class="quick-action__title">เบิกอุปกรณ์</div><div class="quick-action__sub">ตัดสต๊อกถาวร</div></div>
           <i class="bi bi-arrow-right quick-action__arrow"></i>
         </a>
         <a href="receive.html" class="quick-action quick-action--receive">
           <div class="quick-action__icon"><i class="bi bi-box-arrow-in-down"></i></div>
-          <div><div class="quick-action__title">รับเข้าอุปกรณ์</div><div class="quick-action__sub">Receive Stock</div></div>
+          <div><div class="quick-action__title">รับเข้าอุปกรณ์</div><div class="quick-action__sub">บันทึกล็อต / PO</div></div>
           <i class="bi bi-arrow-right quick-action__arrow"></i>
         </a>
         <a href="return.html" class="quick-action quick-action--return">
           <div class="quick-action__icon"><i class="bi bi-arrow-return-left"></i></div>
-          <div><div class="quick-action__title">คืนอุปกรณ์</div><div class="quick-action__sub">Return</div></div>
+          <div><div class="quick-action__title">คืนอุปกรณ์</div><div class="quick-action__sub">รับคืนของที่ยืม</div></div>
           <i class="bi bi-arrow-right quick-action__arrow"></i>
         </a>
       </div>
 
-      <!-- KPI -->
+      <!-- KPI — computed from js/data.js -->
       <div class="kpi-grid">
-        <div class="kpi-card kpi-card--total">
-          <div class="kpi-card__icon"><i class="bi bi-boxes"></i></div>
-          <div><div class="kpi-card__value num">128</div><div class="kpi-card__label">รายการทั้งหมด (SKU)</div></div>
-        </div>
-        <div class="kpi-card kpi-card--available">
-          <div class="kpi-card__icon"><i class="bi bi-check-circle"></i></div>
-          <div><div class="kpi-card__value num">98</div><div class="kpi-card__label">พร้อมใช้งาน</div></div>
-          <div class="kpi-card__trend up"><i class="bi bi-arrow-up-short"></i>76.6%</div>
-        </div>
+        <a href="inventory.html" class="kpi-card kpi-card--total">
+          <div class="kpi-card__icon"><i class="bi bi-boxes" aria-hidden="true"></i></div>
+          <div><div class="kpi-card__value num" id="kpiTotal">0</div><div class="kpi-card__label">รายการทั้งหมด (SKU)</div></div>
+        </a>
+        <a href="inventory.html?status=available" class="kpi-card kpi-card--available">
+          <div class="kpi-card__icon"><i class="bi bi-check-circle" aria-hidden="true"></i></div>
+          <div><div class="kpi-card__value num" id="kpiOk">0</div><div class="kpi-card__label">พร้อมใช้งาน</div></div>
+          <div class="kpi-card__trend up" id="kpiOkPct"></div>
+        </a>
         <a href="inventory.html?status=low" class="kpi-card kpi-card--low">
-          <div class="kpi-card__icon"><i class="bi bi-exclamation-triangle"></i></div>
-          <div><div class="kpi-card__value num">21</div><div class="kpi-card__label">ใกล้หมด</div></div>
-          <div class="kpi-card__trend down">16.4%</div>
+          <div class="kpi-card__icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></div>
+          <div><div class="kpi-card__value num" id="kpiLow">0</div><div class="kpi-card__label">ใกล้หมด</div></div>
+          <div class="kpi-card__trend down" id="kpiLowPct"></div>
         </a>
         <a href="inventory.html?status=out" class="kpi-card kpi-card--out">
-          <div class="kpi-card__icon"><i class="bi bi-x-circle"></i></div>
-          <div><div class="kpi-card__value num">9</div><div class="kpi-card__label">หมดสต๊อก</div></div>
-          <div class="kpi-card__trend down">7.0%</div>
+          <div class="kpi-card__icon"><i class="bi bi-x-circle" aria-hidden="true"></i></div>
+          <div><div class="kpi-card__value num" id="kpiOut">0</div><div class="kpi-card__label">หมดสต๊อก</div></div>
+          <div class="kpi-card__trend down" id="kpiOutPct"></div>
         </a>
       </div>
 
@@ -159,127 +155,42 @@
            approval records instead of being one more hand-typed number -->
       <div class="card card-body mb-4 d-none" id="actionPanel">
         <div class="card-head-row mb-3">
-          <div class="section-title mb-0">ต้องดำเนินการ</div>
+          <h2 class="section-title mb-0">ต้องดำเนินการ</h2>
           <span class="text-muted-2" style="font-size:12px">อัปเดตจากข้อมูลล่าสุด</span>
         </div>
         <div class="action-grid" id="actionGrid"></div>
       </div>
 
-      <!-- Stock Health + Category -->
+      <!-- สุขภาพสต๊อก + หมวด — computed -->
       <div class="stock-health-row">
         <div class="card card-body">
-          <div class="section-title">Stock Health</div>
-          <div class="section-desc mb-3">ภาพรวมสุขภาพสต๊อกทั้งหมด</div>
+          <h2 class="section-title">สุขภาพสต๊อก</h2>
+          <div class="section-desc mb-3">สัดส่วนรายการที่พร้อมใช้ ใกล้หมด และหมดสต๊อก</div>
           <div class="d-flex align-items-center gap-4 mb-4">
-            <div class="donut-ring" style="--pct:77"><div class="donut-ring__hole"><div class="donut-ring__pct num">77%</div><div class="donut-ring__label">Healthy</div></div></div>
-            <div class="flex-fill d-flex flex-column gap-2">
-              <div class="legend-row"><span class="legend-dot" style="background:var(--color-success)"></span> พร้อมใช้งาน <span class="num fw-700 ms-auto">98</span></div>
-              <div class="legend-row"><span class="legend-dot" style="background:var(--color-warning)"></span> ใกล้หมด <span class="num fw-700 ms-auto">21</span></div>
-              <div class="legend-row"><span class="legend-dot" style="background:var(--color-danger)"></span> หมดสต๊อก <span class="num fw-700 ms-auto">9</span></div>
-            </div>
+            <div class="donut-ring" id="donut" style="--pct:0"><div class="donut-ring__hole"><div class="donut-ring__pct num" id="donutPct">0%</div><div class="donut-ring__label">พร้อมใช้</div></div></div>
+            <div class="flex-fill d-flex flex-column gap-2" id="healthLegend"></div>
           </div>
-          <div class="section-title" style="font-size:13px">Critical Items</div>
-          <a class="critical-item-row" href="inventory-detail.html?code=IT-SSD-001" style="color:inherit;text-decoration:none"><span>SSD M.2 1TB</span><span class="qty num">4 ชิ้น</span></a>
-          <a class="critical-item-row" href="inventory-detail.html?code=IT-UPS-001" style="color:inherit;text-decoration:none"><span>UPS 1000VA</span><span class="qty num">0 ชิ้น</span></a>
-          <a class="critical-item-row" href="inventory-detail.html?code=IT-PSU-001" style="color:inherit;text-decoration:none"><span>Power Supply 650W</span><span class="qty num">3 ชิ้น</span></a>
-          <a class="critical-item-row" href="inventory-detail.html?code=IT-RJ45-001" style="color:inherit;text-decoration:none"><span>RJ45 Connector</span><span class="qty num">700 ชิ้น</span></a>
+          <h3 class="section-title" style="font-size:13px">ต้องสั่งซื้อ / ใกล้หมด</h3>
+          <div id="criticalList"></div>
           <a href="inventory.html?status=low" class="btn btn-soft btn-sm mt-3">ดูรายการทั้งหมด</a>
         </div>
 
         <div class="card card-body">
-          <div class="section-title">หมวดอุปกรณ์ (ตาม SKU)</div>
-          <div class="section-desc mb-3">สัดส่วนรายการอุปกรณ์แต่ละหมวด</div>
-          <div class="category-bar-row">
-            <div class="category-bar-row__top"><span>Peripheral</span><span class="num text-muted-2">34</span></div>
-            <div class="category-bar-track"><div class="category-bar-fill" style="width:26.5%;background:var(--color-primary)"></div></div>
-          </div>
-          <div class="category-bar-row">
-            <div class="category-bar-row__top"><span>Cable</span><span class="num text-muted-2">21</span></div>
-            <div class="category-bar-track"><div class="category-bar-fill" style="width:16.4%;background:var(--color-teal)"></div></div>
-          </div>
-          <div class="category-bar-row">
-            <div class="category-bar-row__top"><span>Network</span><span class="num text-muted-2">22</span></div>
-            <div class="category-bar-track"><div class="category-bar-fill" style="width:17.2%;background:var(--color-cyan)"></div></div>
-          </div>
-          <div class="category-bar-row">
-            <div class="category-bar-row__top"><span>Storage</span><span class="num text-muted-2">18</span></div>
-            <div class="category-bar-track"><div class="category-bar-fill" style="width:14.1%;background:var(--color-purple)"></div></div>
-          </div>
-          <div class="category-bar-row">
-            <div class="category-bar-row__top"><span>Consumable</span><span class="num text-muted-2">16</span></div>
-            <div class="category-bar-track"><div class="category-bar-fill" style="width:12.5%;background:var(--color-success)"></div></div>
-          </div>
-          <div class="category-bar-row">
-            <div class="category-bar-row__top"><span>Power</span><span class="num text-muted-2">9</span></div>
-            <div class="category-bar-track"><div class="category-bar-fill" style="width:7%;background:var(--color-orange)"></div></div>
-          </div>
-          <div class="category-bar-row mb-0">
-            <div class="category-bar-row__top"><span>Other</span><span class="num text-muted-2">8</span></div>
-            <div class="category-bar-track"><div class="category-bar-fill" style="width:6.3%;background:var(--color-faint)"></div></div>
-          </div>
+          <h2 class="section-title">หมวดอุปกรณ์ (ตาม SKU)</h2>
+          <div class="section-desc mb-3">จำนวนรายการอุปกรณ์แต่ละหมวด</div>
+          <div id="categoryBars"></div>
         </div>
       </div>
 
-      <!-- Activity + Most issued -->
+      <!-- ความเคลื่อนไหวล่าสุด + เบิกบ่อย — computed from movements -->
       <div class="grid-2">
         <div class="card card-body">
-          <div class="section-title mb-3">Recent Activity</div>
-          <div class="activity-feed">
-            <div class="activity-item activity-item--receive">
-              <div class="activity-item__icon"><i class="bi bi-box-arrow-in-down"></i></div>
-              <div><div class="activity-item__title">รับเข้า RAM DDR4 16GB × 20</div><div class="activity-item__meta">วันนี้ 14:32 &middot; Admin</div></div>
-              <div class="activity-item__qty plus num">+20</div>
-            </div>
-            <div class="activity-item activity-item--issue">
-              <div class="activity-item__icon"><i class="bi bi-box-arrow-up"></i></div>
-              <div><div class="activity-item__title">เบิก Wireless Mouse × 5</div><div class="activity-item__meta">วันนี้ 13:50 &middot; กมล ศรีสุข (IT Support)</div></div>
-              <div class="activity-item__qty minus num">-5</div>
-            </div>
-            <div class="activity-item activity-item--return">
-              <div class="activity-item__icon"><i class="bi bi-arrow-return-left"></i></div>
-              <div><div class="activity-item__title">คืน Keyboard × 2</div><div class="activity-item__meta">วันนี้ 11:24 &middot; กมล ศรีสุข</div></div>
-              <div class="activity-item__qty plus num">+2</div>
-            </div>
-            <div class="activity-item activity-item--receive">
-              <div class="activity-item__icon"><i class="bi bi-box-arrow-in-down"></i></div>
-              <div><div class="activity-item__title">รับเข้า LAN Cable Cat6 × 1 กล่อง (305 ม.)</div><div class="activity-item__meta">เมื่อวาน 16:05 &middot; Admin</div></div>
-              <div class="activity-item__qty plus num">+305 ม.</div>
-            </div>
-            <div class="activity-item activity-item--issue">
-              <div class="activity-item__icon"><i class="bi bi-box-arrow-up"></i></div>
-              <div><div class="activity-item__title">เบิก SSD M.2 1TB × 2</div><div class="activity-item__meta">เมื่อวาน 10:12 &middot; IT Support</div></div>
-              <div class="activity-item__qty minus num">-2</div>
-            </div>
-          </div>
+          <h2 class="section-title mb-3">ความเคลื่อนไหวล่าสุด</h2>
+          <div class="activity-feed" id="activityFeed"></div>
         </div>
-
         <div class="card card-body">
-          <div class="section-title mb-3">Most Issued Items <span class="text-muted-2 fw-normal" style="font-size:12px">(30 วันล่าสุด)</span></div>
-          <div class="rank-bar-row">
-            <span>Mouse</span>
-            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:100%"></div></div>
-            <span class="rank-bar-row__count">86</span>
-          </div>
-          <div class="rank-bar-row">
-            <span>Keyboard</span>
-            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:63%"></div></div>
-            <span class="rank-bar-row__count">54</span>
-          </div>
-          <div class="rank-bar-row">
-            <span>LAN Cable</span>
-            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:46%"></div></div>
-            <span class="rank-bar-row__count">40</span>
-          </div>
-          <div class="rank-bar-row">
-            <span>HDMI Cable</span>
-            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:33%"></div></div>
-            <span class="rank-bar-row__count">28</span>
-          </div>
-          <div class="rank-bar-row">
-            <span>SSD</span>
-            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:22%"></div></div>
-            <span class="rank-bar-row__count">19</span>
-          </div>
+          <h2 class="section-title mb-3">เบิกออกมากที่สุด <span class="text-muted-2 fw-normal" style="font-size:12px">(ตามประวัติที่บันทึก)</span></h2>
+          <div id="rankBars"></div>
         </div>
       </div>
     </main>
@@ -293,6 +204,71 @@
 <script src="js/shell.js"></script>
 <script src="js/data.js"></script>
 <script>
+// ---- Everything on this page is derived from INVENTORY_ITEMS; nothing is typed in ----
+(function () {
+  var items = INVENTORY_ITEMS, n = items.length;
+  var ok = items.filter(function (i) { return i.status === 'available'; }).length;
+  var low = items.filter(function (i) { return i.status === 'low'; }).length;
+  var out = items.filter(function (i) { return i.status === 'out'; }).length;
+  var pct = function (x) { return n ? Math.round(x / n * 100) : 0; };
+  var h = new Date().getHours();
+  $('#dashGreeting').text((h < 12 ? 'สวัสดีตอนเช้า' : h < 17 ? 'สวัสดีตอนบ่าย' : 'สวัสดีตอนเย็น') + ', ทีม IT');
+  $('#dashDate').text(formatThaiDate(today()));
+  $('#kpiTotal').text(n); $('#kpiOk').text(ok); $('#kpiLow').text(low); $('#kpiOut').text(out);
+  $('#kpiOkPct').text(pct(ok) + '%'); $('#kpiLowPct').text(pct(low) + '%'); $('#kpiOutPct').text(pct(out) + '%');
+  $('#donut').css('--pct', pct(ok)); $('#donutPct').text(pct(ok) + '%');
+  $('#healthLegend').html(
+    '<div class="legend-row"><span class="legend-dot" style="background:var(--color-success)"></span> พร้อมใช้งาน <span class="num fw-700 ms-auto">' + ok + '</span></div>' +
+    '<div class="legend-row"><span class="legend-dot" style="background:var(--color-warning)"></span> ใกล้หมด <span class="num fw-700 ms-auto">' + low + '</span></div>' +
+    '<div class="legend-row"><span class="legend-dot" style="background:var(--color-danger)"></span> หมดสต๊อก <span class="num fw-700 ms-auto">' + out + '</span></div>');
+
+  // Critical: out first, then lowest cover (stock / min)
+  var critical = items.filter(function (i) { return i.status !== 'available'; })
+    .sort(function (a, b) { return (a.stock / Math.max(a.min, 1)) - (b.stock / Math.max(b.min, 1)); });
+  $('#criticalList').html(critical.length ? critical.slice(0, 5).map(function (i) {
+    return '<a class="critical-item-row" href="inventory-detail.html?code=' + encodeURIComponent(i.code) + '" style="color:inherit;text-decoration:none">' +
+      '<span>' + i.name + ' <span class="text-muted-2" style="font-size:12px">min ' + i.min + '</span></span>' +
+      '<span class="qty num">' + i.stock + ' ' + i.unit + '</span></a>';
+  }).join('') : '<div class="text-muted-2" style="font-size:13px">ทุกรายการอยู่เหนือจุดสั่งซื้อ</div>');
+
+  // Category bars
+  var tones = ['primary', 'cyan', 'purple', 'orange', 'teal', 'success', 'indigo'];
+  var cats = {};
+  items.forEach(function (i) { cats[i.category] = (cats[i.category] || 0) + 1; });
+  var catList = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; });
+  $('#categoryBars').html(catList.map(function (c, idx) {
+    return '<div class="category-bar-row' + (idx === catList.length - 1 ? ' mb-0' : '') + '">' +
+      '<div class="category-bar-row__top"><span>' + c + '</span><span class="num text-muted-2">' + cats[c] + ' รายการ</span></div>' +
+      '<div class="category-bar-track"><div class="category-bar-fill" style="width:' + pct(cats[c]) + '%;background:var(--color-' + tones[idx % tones.length] + ')"></div></div></div>';
+  }).join(''));
+
+  // Recent activity: flatten movements, newest first
+  var moves = [];
+  items.forEach(function (i) { (i.movements || []).forEach(function (m) { moves.push({ item: i, m: m, t: parseThaiDate(m.date) }); }); });
+  moves.sort(function (a, b) { return b.t - a.t; });
+  var icons = { receive: 'bi-box-arrow-in-down', issue: 'bi-box-arrow-up', borrow: 'bi-arrow-left-right', return: 'bi-arrow-return-left', adjust: 'bi-sliders' };
+  $('#activityFeed').html(moves.slice(0, 6).map(function (x) {
+    var meta = MOVEMENT_META[x.m.type] || MOVEMENT_META.adjust;
+    var cls = x.m.type === 'receive' || x.m.type === 'return' ? 'plus' : 'minus';
+    return '<a class="activity-item activity-item--' + x.m.type + '" href="inventory-detail.html?code=' + encodeURIComponent(x.item.code) + '" style="color:inherit;text-decoration:none">' +
+      '<div class="activity-item__icon"><i class="bi ' + (icons[x.m.type] || 'bi-dot') + '" aria-hidden="true"></i></div>' +
+      '<div><div class="activity-item__title">' + meta.label + ' ' + x.item.name + ' × ' + Math.abs(x.m.qty) + ' ' + x.item.unit + '</div>' +
+      '<div class="activity-item__meta">' + x.m.date + ' &middot; ' + x.m.user + ' &middot; <span class="num">' + x.m.ref + '</span></div></div>' +
+      '<div class="activity-item__qty ' + cls + ' num">' + (x.m.qty > 0 ? '+' : '') + x.m.qty + '</div></a>';
+  }).join(''));
+
+  // Most issued: sum of issue quantities per item
+  var issued = items.map(function (i) {
+    return { item: i, qty: (i.movements || []).filter(function (m) { return m.type === 'issue'; }).reduce(function (a, m) { return a + Math.abs(m.qty); }, 0) };
+  }).filter(function (r) { return r.qty > 0; }).sort(function (a, b) { return b.qty - a.qty; }).slice(0, 5);
+  var top = issued.length ? issued[0].qty : 1;
+  $('#rankBars').html(issued.map(function (r) {
+    return '<div class="rank-bar-row"><span>' + r.item.name + '</span>' +
+      '<div class="rank-bar-track"><div class="rank-bar-fill" style="width:' + Math.round(r.qty / top * 100) + '%"></div></div>' +
+      '<span class="rank-bar-row__count num">' + r.qty + ' ' + r.item.unit + '</span></div>';
+  }).join(''));
+})();
+
 // ---- ต้องดำเนินการ ----
 (function () {
   var tiles = [];

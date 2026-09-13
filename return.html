@@ -10,18 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
 <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
   <!-- shell:sidebar -->
-<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
   <div class="sidebar__brand">
     <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
     <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
     <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
   </div>
+<nav aria-label="เมนูหลัก">
   <div class="sidebar__group">
     <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
   </div>
@@ -50,6 +53,7 @@
     <div class="sidebar__group-label">ทรัพย์สิน IT</div>
     <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
   </div>
+</nav>
   <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
 </aside>
 <div class="sidebar-overlay"></div>
@@ -61,29 +65,21 @@
   <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
     <i class="bi bi-list" aria-hidden="true"></i>
   </button>
-  <div class="header-search">
+  <div class="header-search" role="search">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
   </div>
   <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
     <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
       <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
     </button>
     <div class="dropdown-panel d-none" id="notifPanel" role="menu">
       <div class="dropdown-panel__head">การแจ้งเตือน</div>
       <div class="dropdown-panel__body">
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
-          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
-          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
-        </div>
-        <div class="notif-row">
-          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
-          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
-        </div>
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
       </div>
     </div>
     <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
@@ -94,14 +90,14 @@
     <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
       <div class="dropdown-panel__body">
         <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
-        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
       </div>
     </div>
   </div>
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main" style="max-width:760px">
+    <main class="app-main" id="main" style="max-width:760px">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">คืนอุปกรณ์</span></div>
       <div class="page-header"><div><h1 class="page-header__title">คืนอุปกรณ์</h1><p class="page-header__desc">รับคืนอุปกรณ์ที่ยืมไป และนำกลับเข้าสต๊อก</p></div></div>
 
@@ -123,20 +119,20 @@
 
       <div class="card card-body mb-3">
         <div class="card-head-row mb-3">
-          <div class="section-title mb-0">รายการยืมที่ค้างอยู่</div>
+          <h2 class="section-title mb-0">รายการยืมที่ค้างอยู่</h2>
           <div class="gap-row">
             <span class="status-badge status-badge--danger d-none" id="loanOverdueBadge"><span class="status-badge__dot"></span>เลยกำหนด <span id="loanOverdueCount">0</span></span>
             <span class="status-badge status-badge--warning"><span class="status-badge__dot"></span><span id="loanCount">0</span> รายการ</span>
           </div>
         </div>
-        <div class="item-picker" id="loanList"></div>
+        <div class="item-picker" id="loanList" role="listbox" aria-label="รายการยืมที่ค้างอยู่"></div>
       </div>
 
       <div class="card card-body">
         <div class="form-section">
-          <div class="section-title mb-3" style="font-size:14px">ค้นหารายการยืม</div>
+          <h2 class="section-title mb-3" style="font-size:14px">ค้นหารายการยืม</h2>
           <div class="row g-3">
-            <div class="col-md-8"><div class="search-input"><i class="bi bi-search"></i><input type="text" id="retSearch" placeholder="ค้นหาด้วยชื่อผู้ยืม / รหัสอุปกรณ์ / เลขที่อ้างอิง..."></div></div>
+            <div class="col-md-8"><div class="search-input"><i class="bi bi-search"></i><input type="search" id="retSearch" placeholder="ค้นหาด้วยชื่อผู้ยืม / รหัสอุปกรณ์ / เลขที่อ้างอิง..." aria-label="ค้นหารายการยืม"></div></div>
             <div class="col-md-4"><button class="btn btn-outline-primary w-100" onclick="searchIssue()">ค้นหา</button></div>
           </div>
         </div>
@@ -150,7 +146,7 @@
         <div class="form-section d-none" id="consumableBlock"></div>
 
         <div class="form-section d-none" id="foundBlock">
-          <div class="section-title mb-3" style="font-size:14px">รายการที่พบ</div>
+          <h2 class="section-title mb-3" style="font-size:14px">รายการที่พบ</h2>
           <div class="conversion-box" style="background:var(--color-primary-light);border-color:#c7dafb">
             <div class="row g-3 w-100">
               <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">อุปกรณ์</div><div class="fw-700" id="foundName">-</div></div>
@@ -165,12 +161,12 @@
         </div>
 
         <div class="form-section d-none" id="detailBlock">
-          <div class="section-title mb-3" style="font-size:14px">รายละเอียดการคืน</div>
+          <h2 class="section-title mb-3" style="font-size:14px">รายละเอียดการคืน</h2>
           <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">จำนวนที่คืน <span class="required">*</span></label><input type="number" class="form-control" id="retQty" value="1" min="1"></div>
-            <div class="col-md-6"><label class="form-label">วันที่คืน <span class="required">*</span></label><input type="date" class="form-control" id="retDate"></div>
+            <div class="col-md-6"><label class="form-label" for="retQty">จำนวนที่คืน <span class="required">*</span></label><input type="number" class="form-control" id="retQty" value="1" min="1" inputmode="numeric"></div>
+            <div class="col-md-6"><label class="form-label" for="retDate">วันที่คืน <span class="required">*</span></label><input type="date" class="form-control" id="retDate"></div>
             <div class="col-md-6">
-              <label class="form-label">สภาพอุปกรณ์ <span class="required">*</span></label>
+              <label class="form-label" for="retCondition">สภาพอุปกรณ์ <span class="required">*</span></label>
               <select class="form-select" id="retCondition">
                 <option value="">เลือกสภาพ...</option>
                 <option value="normal">ปกติ &mdash; กลับเข้าสต๊อก</option>
@@ -180,19 +176,19 @@
               </select>
               <div class="invalid-feedback">กรุณาเลือกสภาพอุปกรณ์</div>
             </div>
-            <div class="col-md-6"><label class="form-label">เหตุผลการคืน</label><select class="form-select"><option>ไม่ได้ใช้งานแล้ว</option><option>เปลี่ยนอุปกรณ์ใหม่</option><option>ลาออก/ย้ายแผนก</option></select></div>
-            <div class="col-12"><label class="form-label">หมายเหตุ</label><textarea class="form-control" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
+            <div class="col-md-6"><label class="form-label" for="retReason">เหตุผลการคืน</label><select class="form-select" id="retReason"><option>ไม่ได้ใช้งานแล้ว</option><option>เปลี่ยนอุปกรณ์ใหม่</option><option>ลาออก/ย้ายแผนก</option></select></div>
+            <div class="col-12"><label class="form-label" for="retNote">หมายเหตุ</label><textarea class="form-control" id="retNote" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
           </div>
         </div>
 
-        <div class="d-flex justify-content-end gap-2 pt-2">
-          <a href="index.html" class="btn btn-ghost">ยกเลิก</a>
-          <button class="btn btn-primary d-none" id="confirmReturnBtn" onclick="confirmReturn()"><span class="btn-label"><i class="bi bi-check-lg"></i> ยืนยันการคืน</span></button>
+        <div class="d-flex justify-content-end gap-2 pt-2 d-none" id="retActions">
+          <button type="button" class="btn btn-ghost" id="retCancel">ล้างการเลือก</button>
+          <button class="btn btn-commit" id="confirmReturnBtn" onclick="confirmReturn()"><span class="btn-label"><i class="bi bi-check-lg" aria-hidden="true"></i> ยืนยันการคืน</span></button>
         </div>
       </div>
 
       <div class="card card-body mt-3" style="background:var(--color-warning-bg);border-color:#fbe3ad">
-        <div class="d-flex gap-2" style="font-size:12.5px;color:#92610a"><i class="bi bi-info-circle-fill"></i> อุปกรณ์สิ้นเปลือง (Consumable) เช่น สายเคเบิล เทป หัวต่อ ไม่รองรับการคืนสต๊อก เนื่องจากถือว่าถูกใช้งานแล้ว</div>
+        <div class="d-flex gap-2" style="font-size:12.5px;color:var(--color-warning-text)"><i class="bi bi-info-circle-fill" aria-hidden="true"></i> อุปกรณ์สิ้นเปลือง (Consumable) เช่น สายเคเบิล เทป หัวต่อ ไม่รองรับการคืนสต๊อก เนื่องจากถือว่าถูกใช้งานแล้ว</div>
       </div>
     </main>
   </div>
@@ -204,6 +200,7 @@
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
 <script src="js/data.js"></script>
+<script src="js/cart.js"></script>
 <script>
 $('#retDate').val(new Date().toISOString().split('T')[0]);
 
@@ -239,10 +236,10 @@ function renderOutstanding() {
   loans.forEach(function (l) {
     var ls = loanState(l.dep);
     var lm = LOAN_STATE_META[ls.state];
-    var dueColor = ls.state === 'overdue' ? 'var(--color-danger)'
-                 : ls.state === 'ok' ? 'var(--color-faint)' : 'var(--color-warning)';
+    var dueColor = ls.state === 'overdue' ? 'var(--color-danger-text)'
+                 : ls.state === 'ok' ? 'var(--color-muted)' : 'var(--color-warning-text)';
     $list.append(
-      '<div class="item-picker-row' + (ls.state === 'overdue' ? ' is-overdue' : '') + '" data-ref="' + l.dep.txRef + '">' +
+      '<div class="item-picker-row' + (ls.state === 'overdue' ? ' is-overdue' : '') + '" data-ref="' + l.dep.txRef + '" role="option" tabindex="0" aria-selected="false">' +
         itemThumbHtml(l.item, '38px', '16px') +
         '<div><div class="item-picker-row__name">' + l.item.name + '</div>' +
         '<div class="item-picker-row__code">' + l.dep.holder + ' &middot; ' + l.dep.txRef + '</div></div>' +
@@ -252,10 +249,16 @@ function renderOutstanding() {
       '</div>'
     );
   });
-  $list.find('.item-picker-row').on('click', function () {
-    $('#retSearch').val($(this).data('ref'));
-    searchIssue();
-  });
+  $list.find('.item-picker-row').on('click', function () { pickLoan(this); })
+    .on('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pickLoan(this); } });
+}
+
+function pickLoan(row) {
+  $('#loanList .item-picker-row').removeClass('selected').attr('aria-selected', 'false');
+  $(row).addClass('selected').attr('aria-selected', 'true');
+  $('#retSearch').val($(row).data('ref'));
+  searchIssue();
+  $('#foundBlock')[0].scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
 function searchIssue() {
@@ -269,7 +272,7 @@ function searchIssue() {
            l.item.name.toLowerCase().indexOf(q) > -1;
   });
 
-  $('#foundBlock, #detailBlock, #consumableBlock, #retNotFound, #confirmReturnBtn').addClass('d-none');
+  $('#foundBlock, #detailBlock, #consumableBlock, #retNotFound, #retActions').addClass('d-none');
   currentRecord = null;
 
   if (!match) {
@@ -285,22 +288,29 @@ function searchIssue() {
   $('#foundQty').text(match.dep.qty + ' ' + item.unit);
   if (match.dep.due) {
     var fls = loanState(match.dep);
-    var fColor = fls.state === 'overdue' ? 'var(--color-danger)'
-               : fls.state === 'ok' ? '' : 'var(--color-warning)';
+    var fColor = fls.state === 'overdue' ? 'var(--color-danger-text)'
+               : fls.state === 'ok' ? '' : 'var(--color-warning-text)';
     $('#foundDue').html(match.dep.due + '<div style="font-size:11px;font-weight:600;color:' + fColor + '">' +
                         loanStateLabel(match.dep) + '</div>').css('color', fColor);
   } else {
     $('#foundDue').text('-').css('color', '');
   }
   $('#retQty').attr('max', match.dep.qty).val(match.dep.qty);
-  $('#foundBlock, #detailBlock, #confirmReturnBtn').removeClass('d-none');
+  $('#foundBlock, #detailBlock, #retActions').removeClass('d-none');
 }
+
+$('#retCancel').on('click', function () {
+  $('#retSearch').val('');
+  $('#foundBlock, #detailBlock, #consumableBlock, #retNotFound, #retActions').addClass('d-none');
+  $('#loanList .item-picker-row').removeClass('selected').attr('aria-selected', 'false');
+  currentRecord = null;
+});
 
 renderOutstanding();
 
 function confirmReturn() {
   if (!currentRecord) return;
-  if (!$('#retCondition').val()) { $('#retCondition').addClass('is-invalid').focus(); return; }
+  if (!$('#retCondition').val()) { showFieldError('#retCondition', 'เลือกสภาพอุปกรณ์ เพื่อให้รู้ว่ากลับเข้าสต๊อกได้หรือต้องส่งซ่อม'); return; }
   var item = findInventoryItem(currentRecord.code);
   var cond = $('#retCondition option:selected').text();
   Swal.fire({
@@ -308,16 +318,31 @@ function confirmReturn() {
     html: '<div style="text-align:left;font-size:13.5px"><p><b>อุปกรณ์:</b> ' + item.name + '</p><p><b>ผู้คืน:</b> ' + currentRecord.requester + '</p><p><b>สภาพ:</b> ' + cond + '</p></div>',
     icon: 'question',
     showCancelButton: true,
-    confirmButtonColor: '#2563eb',
+    confirmButtonColor: '#1d4ed8',
     cancelButtonColor: '#94a3b8',
     confirmButtonText: 'ยืนยันการคืน',
     cancelButtonText: 'ยกเลิก',
     reverseButtons: true
   }).then(function (result) {
-    if (result.isConfirmed) {
-      showToast('success', 'คืนอุปกรณ์สำเร็จ');
-      setTimeout(function () { location.href = 'index.html'; }, 900);
-    }
+    if (!result.isConfirmed) return;
+    var ref = nextRef('RET');
+    var qty = parseInt($('#retQty').val(), 10) || currentRecord.qty;
+    var lines = [
+      { label: item.name + ' <span class="text-muted-2">· คืนจาก ' + currentRecord.ref + '</span>', value: qty + ' ' + item.unit },
+      { label: 'ผู้คืน', value: currentRecord.requester },
+      { label: 'สภาพ', value: cond }
+    ];
+    if (qty < currentRecord.qty) lines.push({ label: 'ยังค้างคืน', value: (currentRecord.qty - qty) + ' ' + item.unit });
+    setBtnLoading($('#confirmReturnBtn'));
+    $('.app-main').children().not('#receiptHost').hide();
+    showReceipt({
+      title: 'รับคืนอุปกรณ์สำเร็จ',
+      ref: ref,
+      lines: lines,
+      meta: ($('#retCondition').val() === 'normal' ? 'กลับเข้าสต๊อกแล้ว' : 'ส่งต่อไปเมนู ส่งซ่อม / ตัดจำหน่าย') + ' · ' + formatThaiDate(today()),
+      nextLabel: 'รับคืนรายการถัดไป',
+      nextHref: $('#retCondition').val() !== 'normal' ? { href: 'service.html', label: 'ไปบันทึกส่งซ่อม' } : { href: 'inventory-detail.html?code=' + encodeURIComponent(item.code), label: 'ดูอุปกรณ์นี้' }
+    });
   });
 }
 </script>
