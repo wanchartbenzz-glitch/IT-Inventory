@@ -167,6 +167,20 @@
       <div class="modal-header"><h5 class="modal-title">เพิ่มอุปกรณ์</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body">
         <div class="form-section">
+          <div class="section-title mb-3" style="font-size:13.5px">รูปภาพอุปกรณ์</div>
+          <div class="photo-upload">
+            <label class="photo-upload__box" id="itemPhotoBox" for="itemPhotoInput">
+              <img id="itemPhotoPreview" class="d-none" alt="ตัวอย่างรูปอุปกรณ์">
+              <span id="itemPhotoPlaceholder"><i class="bi bi-camera"></i><br>เพิ่มรูป</span>
+              <input type="file" id="itemPhotoInput" class="photo-upload__input" accept="image/png,image/jpeg,image/webp">
+            </label>
+            <div class="photo-upload__meta">
+              <div class="photo-upload__hint">รองรับ JPG, PNG, WEBP ขนาดไม่เกิน 5MB<br>แนะนำภาพสัดส่วน 1:1 (สี่เหลี่ยมจัตุรัส)</div>
+              <button type="button" class="photo-upload__remove d-none" id="itemPhotoRemove"><i class="bi bi-trash3"></i> ลบรูปภาพ</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
           <div class="section-title mb-3" style="font-size:13.5px">ข้อมูลอุปกรณ์</div>
           <div class="row g-3">
             <div class="col-md-6"><label class="form-label">ชื่ออุปกรณ์ <span class="required">*</span></label><input class="form-control" placeholder="เช่น Wireless Mouse"></div>
@@ -209,6 +223,50 @@ function saveItem() {
     showToast('success', 'เพิ่มอุปกรณ์สำเร็จ');
   }, 700);
 }
+
+// ---- Photo upload on the Add/Edit item form: client-side preview only (no upload endpoint) ----
+var itemPhotoDataUrl = null;
+
+function resetItemPhoto() {
+  itemPhotoDataUrl = null;
+  $('#itemPhotoInput').val('');
+  $('#itemPhotoPreview').addClass('d-none').attr('src', '');
+  $('#itemPhotoPlaceholder').removeClass('d-none');
+  $('#itemPhotoRemove').addClass('d-none');
+}
+
+function handleItemPhotoFile(file) {
+  if (!file) return;
+  if (!/^image\/(png|jpeg|webp)$/.test(file.type)) {
+    showToast('error', 'รองรับเฉพาะไฟล์ JPG, PNG หรือ WEBP');
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    showToast('error', 'ขนาดไฟล์ต้องไม่เกิน 5MB');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function (ev) {
+    itemPhotoDataUrl = ev.target.result;
+    $('#itemPhotoPreview').attr('src', itemPhotoDataUrl).removeClass('d-none');
+    $('#itemPhotoPlaceholder').addClass('d-none');
+    $('#itemPhotoRemove').removeClass('d-none');
+  };
+  reader.readAsDataURL(file);
+}
+
+$('#itemPhotoInput').on('change', function (e) { handleItemPhotoFile(e.target.files[0]); });
+$('#itemPhotoRemove').on('click', function (e) { e.preventDefault(); e.stopPropagation(); resetItemPhoto(); });
+
+var $itemPhotoBox = $('#itemPhotoBox');
+$itemPhotoBox.on('dragover', function (e) { e.preventDefault(); $(this).addClass('is-dragover'); });
+$itemPhotoBox.on('dragleave drop', function () { $(this).removeClass('is-dragover'); });
+$itemPhotoBox.on('drop', function (e) {
+  e.preventDefault();
+  var file = e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files[0];
+  handleItemPhotoFile(file);
+});
+document.getElementById('itemModal').addEventListener('hidden.bs.modal', resetItemPhoto);
 
 // ---- Render the desktop table + mobile cards from the shared catalog (js/data.js) ----
 function stockBarColor(status) {
