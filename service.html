@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ส่งซ่อม / ตัดจำหน่าย - IT Inventory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link href="css/app.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- shell:sidebar -->
+<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+  <div class="sidebar__brand">
+    <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
+    <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
+    <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
+  </div>
+  <div class="sidebar__group">
+    <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">การดำเนินการ</div>
+    <a href="receive.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
+    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+    <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
+    <a href="return.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+    <a href="service.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-tools"></i></span><span>ส่งซ่อม / ตัดจำหน่าย</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ตรวจสอบ & อนุมัติ</div>
+    <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
+    <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
+    <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
+    <a href="inventory.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-hdd-stack"></i></span><span>ข้อมูลอุปกรณ์ IT</span></a>
+    <a href="categories.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>หมวดอุปกรณ์</span></a>
+    <a href="types.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-tags"></i></span><span>ประเภทอุปกรณ์</span></a>
+    <a href="units.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-rulers"></i></span><span>หน่วยนับ</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ทรัพย์สิน IT</div>
+    <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
+  </div>
+  <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
+</aside>
+<div class="sidebar-overlay"></div>
+<!-- /shell:sidebar -->
+
+  <div class="app-main-col">
+    <!-- shell:header -->
+<header class="app-header">
+  <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
+    <i class="bi bi-list" aria-hidden="true"></i>
+  </button>
+  <div class="header-search">
+    <i class="bi bi-search" aria-hidden="true"></i>
+    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
+      <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
+    </button>
+    <div class="dropdown-panel d-none" id="notifPanel" role="menu">
+      <div class="dropdown-panel__head">การแจ้งเตือน</div>
+      <div class="dropdown-panel__body">
+        <div class="notif-row">
+          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
+          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
+        </div>
+        <div class="notif-row">
+          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
+          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
+        </div>
+        <div class="notif-row">
+          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
+          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
+        </div>
+      </div>
+    </div>
+    <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
+      <div class="user-avatar" aria-hidden="true">IT</div>
+      <div class="user-chip__text"><div class="user-chip__name">IT Support</div><div class="user-chip__role">แผนก IT</div></div>
+      <i class="bi bi-chevron-down" aria-hidden="true" style="font-size:11px;color:var(--color-muted)"></i>
+    </button>
+    <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
+      <div class="dropdown-panel__body">
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- /shell:header -->
+
+    <main class="app-main">
+      <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">ส่งซ่อม / ตัดจำหน่าย</span></div>
+      <div class="page-header">
+        <div>
+          <h1 class="page-header__title">ส่งซ่อม / ตัดจำหน่าย</h1>
+          <p class="page-header__desc">บันทึกอุปกรณ์ที่ไม่ได้อยู่ในสภาพใช้งานปกติ เพื่อไม่ให้ยอดในระบบกับของจริงเพี้ยนกัน</p>
+        </div>
+        <div class="page-header__actions">
+          <button class="btn btn-ghost" id="exportBtn"><i class="bi bi-download"></i> ส่งออก CSV</button>
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#svcModal"><i class="bi bi-plus-lg"></i> บันทึกรายการใหม่</button>
+        </div>
+      </div>
+
+      <div class="card card-body mb-4" style="background:var(--color-primary-light);border-color:#c7ddfb">
+        <div class="d-flex gap-2" style="font-size:12.5px;color:#1e40af"><i class="bi bi-info-circle-fill"></i>
+        <span><b>ส่งซ่อม</b> และ <b>ส่งเคลม</b> ของยังเป็นของเรา แค่ไม่ได้อยู่ในมือ &middot;
+        <b>ตัดจำหน่าย</b> คือตัดออกจากบัญชีทรัพย์สินถาวร &middot;
+        ถ้าอุปกรณ์ยังอยู่ในประกัน ให้เปิดเรื่องที่เมนู <a href="claims.html" style="color:#1e40af;text-decoration:underline">ประวัติการเคลม</a> แทน จะได้อ้าง PO ได้</span></div>
+      </div>
+
+      <div class="kpi-grid mb-4">
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-tools"></i></div>
+          <div><div class="kpi-card__value num" id="kpiRepair">0</div><div class="kpi-card__label">อยู่ระหว่างส่งซ่อม</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-primary-light);color:var(--color-primary)"><i class="bi bi-shield-check"></i></div>
+          <div><div class="kpi-card__value num" id="kpiClaim">0</div><div class="kpi-card__label">ส่งเคลม</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-exclamation-octagon"></i></div>
+          <div><div class="kpi-card__value num" id="kpiDamaged">0</div><div class="kpi-card__label">ชำรุด รอตัดสินใจ</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-bg);color:var(--color-muted)"><i class="bi bi-trash3"></i></div>
+          <div><div class="kpi-card__value num" id="kpiDisposed">0</div><div class="kpi-card__label">ตัดจำหน่ายแล้ว</div></div>
+        </div>
+      </div>
+
+      <div class="gap-row mb-3" role="group" aria-label="กรองตามสถานะ">
+        <button class="filter-chip is-active" type="button" data-filter="">ทั้งหมด</button>
+        <button class="filter-chip" type="button" data-filter="repair">ส่งซ่อม</button>
+        <button class="filter-chip" type="button" data-filter="claim">ส่งเคลม</button>
+        <button class="filter-chip" type="button" data-filter="damaged">ชำรุด</button>
+        <button class="filter-chip" type="button" data-filter="disposed">ตัดจำหน่าย</button>
+      </div>
+
+      <div id="svcList"></div>
+      <div class="empty-state d-none" id="svcEmpty">
+        <div class="empty-state__icon" style="color:var(--color-success)"><i class="bi bi-emoji-smile"></i></div>
+        <div class="empty-state__title">ไม่มีรายการในหมวดนี้</div>
+        <div class="empty-state__desc">อุปกรณ์ทั้งหมดอยู่ในสภาพใช้งานปกติ</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal fade" id="svcModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">บันทึกอุปกรณ์ที่ไม่ปกติ</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <div class="form-section">
+          <div class="section-title mb-3" style="font-size:13.5px">สถานะที่ต้องการบันทึก</div>
+          <div class="gap-row" id="svcStateChips">
+            <button class="filter-chip is-active" type="button" data-state="repair"><i class="bi bi-tools"></i> ส่งซ่อม</button>
+            <button class="filter-chip" type="button" data-state="damaged"><i class="bi bi-exclamation-octagon"></i> ชำรุด</button>
+            <button class="filter-chip" type="button" data-state="disposed"><i class="bi bi-trash3"></i> ตัดจำหน่าย</button>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="svcItem">อุปกรณ์ <span class="required">*</span></label>
+              <select class="form-select" id="svcItem"></select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="svcLot">ล็อตที่รับเข้า</label>
+              <select class="form-select" id="svcLot"></select>
+            </div>
+            <div class="col-md-6 d-none" id="svcSerialWrap">
+              <label class="form-label" for="svcSerial">Serial <span class="required">*</span></label>
+              <select class="form-select" id="svcSerial"></select>
+            </div>
+            <div class="col-md-6" id="svcQtyWrap">
+              <label class="form-label" for="svcQty">จำนวน</label>
+              <input type="number" class="form-control" id="svcQty" value="1" min="1">
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="svcNote">รายละเอียด / อาการ <span class="required">*</span></label>
+              <textarea class="form-control" id="svcNote" rows="3" placeholder="เช่น พัดลมดัง ส่งศูนย์บริการ, ตกพื้นจอแตก, เก่าเกินซ่อมไม่คุ้ม"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-body d-none" id="svcWarrantyHint" style="background:var(--color-success-bg);border-color:#bbe8cd">
+          <div class="d-flex gap-2" style="font-size:12.5px;color:#166534"><i class="bi bi-shield-check"></i>
+          <span id="svcWarrantyText"></span></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">ยกเลิก</button>
+        <button class="btn btn-primary" id="svcSave"><span class="btn-label"><i class="bi bi-check-lg"></i> บันทึก</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/data.js"></script>
+<script>
+// Flattened working copy of every service record in the catalog.
+var records = allServiceRecords().map(function (r) {
+  return { code: r.item.code, state: r.rec.state, serial: r.rec.serial, qty: r.rec.qty || 1,
+           lotRef: r.rec.lotRef, since: r.rec.since, ref: r.rec.ref, note: r.rec.note };
+});
+var activeFilter = '';
+var newState = 'repair';
+
+function recordCardHtml(rec) {
+  var meta = SERVICE_META[rec.state] || SERVICE_META.repair;
+  var item = findInventoryItem(rec.code);
+  var lot = item ? findLot(item, rec.lotRef) : null;
+  var claim = findClaim(rec.ref);
+
+  return '<div class="card card-body req-card" data-ref="' + rec.ref + '" data-state="' + rec.state + '">' +
+    '<div class="req-card__head">' +
+      (item ? itemThumbHtml(item, '40px', '18px') : '') +
+      '<div class="req-card__title">' +
+        '<div class="req-card__detail">' + (item ? item.name : rec.code) +
+          (rec.serial ? ' <span class="serial-tag">' + rec.serial + '</span>' : ' &middot; ' + rec.qty + ' ' + (item ? item.unit : '')) + '</div>' +
+        '<div class="req-card__meta num">' + rec.ref + ' &middot; ตั้งแต่ ' + rec.since + '</div>' +
+      '</div>' +
+      '<span class="status-badge status-badge--' + meta.badge + '"><i class="bi ' + meta.icon + '"></i>&nbsp;' + meta.label + '</span>' +
+    '</div>' +
+    '<div class="req-card__grid">' +
+      '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-grid__value num">' + (lot ? lot.poRef : '-') + '</div></div>' +
+      '<div><div class="lot-grid__label">ผู้จำหน่าย</div><div class="lot-grid__value">' + (lot ? lot.supplier : '-') + '</div></div>' +
+      '<div><div class="lot-grid__label">ประกัน</div><div class="lot-grid__value">' +
+        (lot ? warrantyState(lot).label : '-') + '</div></div>' +
+      '<div><div class="lot-grid__label">เรื่องเคลม</div><div class="lot-grid__value num">' +
+        (claim ? '<a href="claims.html?ref=' + encodeURIComponent(claim.claimRef) + '">' + claim.claimRef + '</a>' : '-') + '</div></div>' +
+    '</div>' +
+    '<div class="req-card__reason">' + rec.note + '</div>' +
+    '<div class="req-card__actions">' +
+      (item ? '<a href="inventory-detail.html?code=' + encodeURIComponent(item.code) + '" class="btn btn-ghost btn-sm">ดูอุปกรณ์</a>' : '') +
+      (rec.state === 'repair' ? '<button class="btn btn-primary btn-sm svc-done" type="button">ซ่อมเสร็จ คืนเข้าสต๊อก</button>' : '') +
+      (rec.state === 'damaged' ? '<button class="btn btn-outline-danger btn-sm svc-dispose" type="button">ตัดจำหน่าย</button>' : '') +
+    '</div>' +
+  '</div>';
+}
+
+function renderRecords() {
+  var shown = records.filter(function (r) { return !activeFilter || r.state === activeFilter; });
+  $('#svcList').html(shown.map(recordCardHtml).join(''));
+  $('#svcEmpty').toggleClass('d-none', shown.length > 0);
+
+  ['repair', 'claim', 'damaged', 'disposed'].forEach(function (s) {
+    $('#kpi' + s.charAt(0).toUpperCase() + s.slice(1))
+      .text(records.filter(function (r) { return r.state === s; }).length);
+  });
+}
+
+$('.app-main .filter-chip').on('click', function () {
+  $('.app-main .filter-chip').removeClass('is-active');
+  $(this).addClass('is-active');
+  activeFilter = $(this).data('filter');
+  renderRecords();
+});
+
+$(document).on('click', '.svc-done', function () {
+  var ref = $(this).closest('.req-card').data('ref');
+  records = records.filter(function (r) { return r.ref !== ref; });
+  showToast('success', 'บันทึกว่าซ่อมเสร็จและคืนเข้าสต๊อกแล้ว');
+  renderRecords();
+});
+
+$(document).on('click', '.svc-dispose', function () {
+  var ref = $(this).closest('.req-card').data('ref');
+  Swal.fire({
+    title: 'ตัดจำหน่ายอุปกรณ์นี้?',
+    text: 'ตัดออกจากบัญชีทรัพย์สินถาวร ย้อนกลับไม่ได้',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#94a3b8',
+    confirmButtonText: 'ตัดจำหน่าย',
+    cancelButtonText: 'ยกเลิก',
+    reverseButtons: true
+  }).then(function (r) {
+    if (!r.isConfirmed) return;
+    records.forEach(function (rec) { if (rec.ref === ref) rec.state = 'disposed'; });
+    showToast('info', 'ตัดจำหน่ายเรียบร้อย');
+    renderRecords();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// New record
+// ---------------------------------------------------------------------------
+$('#svcItem').html(INVENTORY_ITEMS.map(function (it) {
+  return '<option value="' + it.code + '">' + it.name + ' (' + it.code + ')</option>';
+}).join(''));
+
+function selectedSvcItem() { return findInventoryItem($('#svcItem').val()); }
+
+function refreshSvcLots() {
+  var item = selectedSvcItem();
+  $('#svcLot').html((item.lots || []).map(function (lot) {
+    return '<option value="' + lot.lotRef + '">' + lot.poRef + ' &middot; รับเข้า ' + lot.date + '</option>';
+  }).join(''));
+  refreshSvcLotInfo();
+}
+
+function refreshSvcLotInfo() {
+  var item = selectedSvcItem();
+  var lot = findLot(item, $('#svcLot').val());
+
+  var serialized = !!item.serialized;
+  $('#svcSerialWrap').toggleClass('d-none', !serialized);
+  $('#svcQtyWrap').toggleClass('d-none', serialized);
+  if (serialized && lot) {
+    var all = (lot.serials || []).slice();
+    (item.deployments || []).forEach(function (d) {
+      if (d.lotRef === lot.lotRef) all = all.concat(d.serials || []);
+    });
+    $('#svcSerial').html(all.length
+      ? all.map(function (sn) { return '<option value="' + sn + '">' + sn + '</option>'; }).join('')
+      : '<option value="">— ไม่มี Serial ในล็อตนี้ —</option>');
+  }
+
+  // Still under warranty? Then this belongs in a claim, not a write-off.
+  var w = lot ? warrantyState(lot) : { state: 'none' };
+  var showHint = (w.state === 'active' || w.state === 'expiring') && newState !== 'repair';
+  $('#svcWarrantyHint').toggleClass('d-none', !showHint);
+  if (showHint) {
+    $('#svcWarrantyText').html('อุปกรณ์ล็อตนี้<b>ยังอยู่ในประกัน</b> (' + w.label + ') — ' +
+      'ควรเปิดเรื่องที่เมนู <a href="claims.html?code=' + encodeURIComponent(item.code) +
+      '" style="color:#166534;text-decoration:underline">ประวัติการเคลม</a> ก่อนตัดจำหน่าย');
+  }
+}
+
+$('#svcItem').on('change', refreshSvcLots);
+$('#svcLot').on('change', refreshSvcLotInfo);
+
+$('#svcStateChips .filter-chip').on('click', function () {
+  $('#svcStateChips .filter-chip').removeClass('is-active');
+  $(this).addClass('is-active');
+  newState = $(this).data('state');
+  refreshSvcLotInfo();
+});
+
+refreshSvcLots();
+
+$('#svcSave').on('click', function () {
+  var item = selectedSvcItem();
+  var note = $('#svcNote').val().trim();
+  if (!note) { showToast('warning', 'กรุณาระบุรายละเอียด/อาการ'); $('#svcNote').focus(); return; }
+  if (item.serialized && !$('#svcSerial').val()) { showToast('warning', 'กรุณาเลือก Serial'); return; }
+
+  records.unshift({
+    code: item.code, state: newState,
+    serial: item.serialized ? $('#svcSerial').val() : null,
+    qty: item.serialized ? 1 : (parseInt($('#svcQty').val(), 10) || 1),
+    lotRef: $('#svcLot').val(),
+    since: formatThaiDate(today()),
+    ref: nextRef(newState === 'disposed' ? 'DSP' : newState === 'damaged' ? 'DMG' : 'REP'),
+    note: note
+  });
+
+  closeModal('svcModal');
+  $('#svcNote').val('');
+  activeFilter = '';
+  $('.app-main .filter-chip').removeClass('is-active').first().addClass('is-active');
+  renderRecords();
+  showToast('success', 'บันทึก' + SERVICE_META[newState].label + 'เรียบร้อย');
+});
+
+$('#exportBtn').on('click', function () {
+  downloadCsv(
+    'อุปกรณ์ซ่อม-ตัดจำหน่าย-' + new Date().toISOString().slice(0, 10) + '.csv',
+    ['เลขที่', 'สถานะ', 'รหัสอุปกรณ์', 'ชื่ออุปกรณ์', 'Serial', 'จำนวน', 'ล็อต', 'PO', 'ตั้งแต่', 'รายละเอียด'],
+    records.map(function (r) {
+      var item = findInventoryItem(r.code);
+      var lot = item ? findLot(item, r.lotRef) : null;
+      return [r.ref, (SERVICE_META[r.state] || {}).label || r.state, r.code, item ? item.name : '',
+              r.serial || '', r.qty, r.lotRef || '', lot ? lot.poRef : '', r.since, r.note];
+    })
+  );
+  showToast('success', 'ส่งออกไฟล์ CSV แล้ว');
+});
+
+renderRecords();
+</script>
+</body>
+</html>

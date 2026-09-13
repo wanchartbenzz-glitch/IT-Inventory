@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รออนุมัติ - IT Inventory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link href="css/app.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- shell:sidebar -->
+<aside class="sidebar" id="shellSidebarAside" aria-label="เมนูหลัก">
+  <div class="sidebar__brand">
+    <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
+    <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
+    <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
+  </div>
+  <div class="sidebar__group">
+    <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">การดำเนินการ</div>
+    <a href="receive.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
+    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+    <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
+    <a href="return.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+    <a href="service.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-tools"></i></span><span>ส่งซ่อม / ตัดจำหน่าย</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ตรวจสอบ & อนุมัติ</div>
+    <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
+    <a href="approvals.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
+    <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
+    <a href="inventory.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-hdd-stack"></i></span><span>ข้อมูลอุปกรณ์ IT</span></a>
+    <a href="categories.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>หมวดอุปกรณ์</span></a>
+    <a href="types.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-tags"></i></span><span>ประเภทอุปกรณ์</span></a>
+    <a href="units.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-rulers"></i></span><span>หน่วยนับ</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ทรัพย์สิน IT</div>
+    <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
+  </div>
+  <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
+</aside>
+<div class="sidebar-overlay"></div>
+<!-- /shell:sidebar -->
+
+  <div class="app-main-col">
+    <!-- shell:header -->
+<header class="app-header">
+  <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
+    <i class="bi bi-list" aria-hidden="true"></i>
+  </button>
+  <div class="header-search">
+    <i class="bi bi-search" aria-hidden="true"></i>
+    <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..." aria-label="ค้นหาอุปกรณ์">
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
+      <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
+    </button>
+    <div class="dropdown-panel d-none" id="notifPanel" role="menu">
+      <div class="dropdown-panel__head">การแจ้งเตือน</div>
+      <div class="dropdown-panel__body">
+        <div class="notif-row">
+          <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
+          <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
+        </div>
+        <div class="notif-row">
+          <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
+          <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
+        </div>
+        <div class="notif-row">
+          <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
+          <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
+        </div>
+      </div>
+    </div>
+    <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
+      <div class="user-avatar" aria-hidden="true">IT</div>
+      <div class="user-chip__text"><div class="user-chip__name">IT Support</div><div class="user-chip__role">แผนก IT</div></div>
+      <i class="bi bi-chevron-down" aria-hidden="true" style="font-size:11px;color:var(--color-muted)"></i>
+    </button>
+    <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
+      <div class="dropdown-panel__body">
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- /shell:header -->
+
+    <main class="app-main">
+      <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">รออนุมัติ</span></div>
+      <div class="page-header">
+        <div>
+          <h1 class="page-header__title">รออนุมัติ</h1>
+          <p class="page-header__desc">คำขอเบิก ยืม ปรับยอด และตัดจำหน่าย ที่ต้องให้หัวหน้าพิจารณาก่อนตัดสต๊อกจริง</p>
+        </div>
+        <div class="page-header__actions">
+          <button class="btn btn-ghost" id="exportBtn"><i class="bi bi-download"></i> ส่งออก CSV</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid mb-4">
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-hourglass-split"></i></div>
+          <div><div class="kpi-card__value num" id="kpiTotal">0</div><div class="kpi-card__label">รอดำเนินการทั้งหมด</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-box-arrow-right"></i></div>
+          <div><div class="kpi-card__value num" id="kpiIssue">0</div><div class="kpi-card__label">ขอเบิก</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-arrow-left-right"></i></div>
+          <div><div class="kpi-card__value num" id="kpiBorrow">0</div><div class="kpi-card__label">ขอยืม</div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__icon" style="background:var(--color-purple-light);color:var(--color-purple)"><i class="bi bi-sliders"></i></div>
+          <div><div class="kpi-card__value num" id="kpiAdjust">0</div><div class="kpi-card__label">ปรับยอด / ตัดจำหน่าย</div></div>
+        </div>
+      </div>
+
+      <div class="gap-row mb-3" role="group" aria-label="กรองตามประเภทคำขอ">
+        <button class="filter-chip is-active" type="button" data-filter="">ทั้งหมด</button>
+        <button class="filter-chip" type="button" data-filter="issue">ขอเบิก</button>
+        <button class="filter-chip" type="button" data-filter="borrow">ขอยืม</button>
+        <button class="filter-chip" type="button" data-filter="adjust">ขอปรับยอด</button>
+        <button class="filter-chip" type="button" data-filter="disposal">ขอตัดจำหน่าย</button>
+      </div>
+
+      <div id="reqList"></div>
+
+      <div class="empty-state d-none" id="reqEmpty">
+        <div class="empty-state__icon" style="color:var(--color-success)"><i class="bi bi-check2-circle"></i></div>
+        <div class="empty-state__title">ไม่มีคำขอค้างอยู่</div>
+        <div class="empty-state__desc">พิจารณาครบทุกรายการแล้ว</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/data.js"></script>
+<script>
+// Working copy — approving/rejecting removes the request from this list.
+var requests = PENDING_APPROVALS.slice();
+var activeFilter = '';
+
+function requestCardHtml(req) {
+  var meta = APPROVAL_META[req.kind] || APPROVAL_META.issue;
+  var item = findInventoryItem(req.code);
+
+  // A เบิก/ยืม request that asks for more than the shelf holds is the one thing
+  // an approver must not miss, so it is called out on the card itself.
+  var shortWarning = '';
+  if (item && (req.kind === 'issue' || req.kind === 'borrow') && req.qty > item.stock) {
+    shortWarning = '<div class="req-card__warn"><i class="bi bi-exclamation-triangle-fill"></i> ' +
+                   'สต๊อกไม่พอ: ขอ ' + req.qty + ' ' + item.unit + ' แต่เหลือ ' + item.stock + ' ' + item.unit + '</div>';
+  }
+
+  return '<div class="card card-body req-card" data-ref="' + req.ref + '" data-kind="' + req.kind + '">' +
+    '<div class="req-card__head">' +
+      (item ? itemThumbHtml(item, '40px', '18px') : '') +
+      '<div class="req-card__title">' +
+        '<div class="req-card__detail">' + req.detail + '</div>' +
+        '<div class="req-card__meta num">' + req.ref + '</div>' +
+      '</div>' +
+      '<span class="status-badge status-badge--' + meta.badge + '"><i class="bi ' + meta.icon + '"></i>&nbsp;' + meta.label + '</span>' +
+    '</div>' +
+    shortWarning +
+    '<div class="req-card__grid">' +
+      '<div><div class="lot-grid__label">ผู้ขอ</div><div class="lot-grid__value">' + req.requester + '</div></div>' +
+      '<div><div class="lot-grid__label">แผนก</div><div class="lot-grid__value">' + req.dept + '</div></div>' +
+      '<div><div class="lot-grid__label">วันที่ขอ</div><div class="lot-grid__value">' + req.date + '</div></div>' +
+      '<div><div class="lot-grid__label">คงเหลือในสต๊อก</div><div class="lot-grid__value num">' +
+        (item ? item.stock + ' ' + item.unit : '-') + '</div></div>' +
+    '</div>' +
+    '<div class="req-card__reason"><b>เหตุผล:</b> ' + req.reason + '</div>' +
+    '<div class="req-card__actions">' +
+      (item ? '<a href="inventory-detail.html?code=' + encodeURIComponent(item.code) + '" class="btn btn-ghost btn-sm">ดูอุปกรณ์</a>' : '') +
+      '<button class="btn btn-outline-danger btn-sm req-reject" type="button">ไม่อนุมัติ</button>' +
+      '<button class="btn btn-primary btn-sm req-approve" type="button">อนุมัติ</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderRequests() {
+  var shown = requests.filter(function (r) { return !activeFilter || r.kind === activeFilter; });
+  $('#reqList').html(shown.map(requestCardHtml).join(''));
+  $('#reqEmpty').toggleClass('d-none', shown.length > 0);
+
+  if (!shown.length && requests.length) {
+    $('#reqEmpty .empty-state__title').text('ไม่มีคำขอในหมวดนี้');
+    $('#reqEmpty .empty-state__desc').text('ลองเลือกหมวดอื่น หรือกด "ทั้งหมด"');
+  } else {
+    $('#reqEmpty .empty-state__title').text('ไม่มีคำขอค้างอยู่');
+    $('#reqEmpty .empty-state__desc').text('พิจารณาครบทุกรายการแล้ว');
+  }
+
+  $('#kpiTotal').text(requests.length);
+  $('#kpiIssue').text(requests.filter(function (r) { return r.kind === 'issue'; }).length);
+  $('#kpiBorrow').text(requests.filter(function (r) { return r.kind === 'borrow'; }).length);
+  $('#kpiAdjust').text(requests.filter(function (r) { return r.kind === 'adjust' || r.kind === 'disposal'; }).length);
+}
+
+function findRequest(ref) {
+  for (var i = 0; i < requests.length; i++) {
+    if (requests[i].ref === ref) return requests[i];
+  }
+  return null;
+}
+
+function removeRequest(ref) {
+  requests = requests.filter(function (r) { return r.ref !== ref; });
+  renderRequests();
+}
+
+$('.filter-chip').on('click', function () {
+  $('.filter-chip').removeClass('is-active');
+  $(this).addClass('is-active');
+  activeFilter = $(this).data('filter');
+  renderRequests();
+});
+
+$(document).on('click', '.req-approve', function () {
+  var req = findRequest($(this).closest('.req-card').data('ref'));
+  if (!req) return;
+  var item = findInventoryItem(req.code);
+  var short = item && (req.kind === 'issue' || req.kind === 'borrow') && req.qty > item.stock;
+
+  Swal.fire({
+    title: 'อนุมัติคำขอนี้?',
+    html: '<div style="text-align:left;font-size:13.5px">' + req.detail + '</div>' +
+          '<div style="text-align:left;font-size:12.5px;color:#64748b;margin-top:8px">' +
+            req.ref + ' &middot; ' + req.requester + ' (' + req.dept + ')</div>' +
+          (short ? '<div style="text-align:left;font-size:12.5px;color:#9b1c1c;margin-top:8px">' +
+                   '<b>คำเตือน:</b> จำนวนที่ขอมากกว่าสต๊อกคงเหลือ</div>' : ''),
+    icon: short ? 'warning' : 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#2563eb',
+    cancelButtonColor: '#94a3b8',
+    confirmButtonText: 'อนุมัติ',
+    cancelButtonText: 'ยกเลิก',
+    reverseButtons: true
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      showToast('success', 'อนุมัติ ' + req.ref + ' แล้ว');
+      removeRequest(req.ref);
+    }
+  });
+});
+
+$(document).on('click', '.req-reject', function () {
+  var req = findRequest($(this).closest('.req-card').data('ref'));
+  if (!req) return;
+
+  Swal.fire({
+    title: 'ไม่อนุมัติคำขอนี้?',
+    input: 'textarea',
+    inputLabel: 'เหตุผลที่ไม่อนุมัติ (ผู้ขอจะเห็นข้อความนี้)',
+    inputPlaceholder: 'เช่น ของไม่พอ ให้รอรอบสั่งซื้อถัดไป',
+    inputValidator: function (value) {
+      if (!value || !value.trim()) return 'กรุณาระบุเหตุผล เพื่อให้ผู้ขอทราบว่าต้องแก้อะไร';
+    },
+    showCancelButton: true,
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#94a3b8',
+    confirmButtonText: 'ไม่อนุมัติ',
+    cancelButtonText: 'ยกเลิก',
+    reverseButtons: true
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      showToast('info', 'ไม่อนุมัติ ' + req.ref + ' แล้ว');
+      removeRequest(req.ref);
+    }
+  });
+});
+
+$('#exportBtn').on('click', function () {
+  if (!requests.length) { showToast('info', 'ไม่มีคำขอให้ส่งออก'); return; }
+  downloadCsv(
+    'คำขอรออนุมัติ-' + new Date().toISOString().slice(0, 10) + '.csv',
+    ['เลขที่', 'ประเภท', 'ผู้ขอ', 'แผนก', 'วันที่ขอ', 'รหัสอุปกรณ์', 'จำนวน', 'รายละเอียด', 'เหตุผล'],
+    requests.map(function (r) {
+      return [r.ref, (APPROVAL_META[r.kind] || {}).label || r.kind, r.requester, r.dept, r.date, r.code, r.qty, r.detail, r.reason];
+    })
+  );
+  showToast('success', 'ส่งออกไฟล์ CSV แล้ว');
+});
+
+renderRequests();
+</script>
+</body>
+</html>

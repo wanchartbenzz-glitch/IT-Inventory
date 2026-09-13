@@ -40,6 +40,30 @@ function showToast(type, message) {
   }, 3200);
 }
 
+// ---- Modal helper ----
+// Closing a modal must never abort the action that triggered it. bootstrap.Modal
+// .getInstance() returns null for a modal that was never opened through the JS API,
+// and the whole `bootstrap` global is missing if its CDN fails — either way the
+// bare `.hide()` call used to throw and skip everything after it, losing the save.
+function closeModal(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  try {
+    if (window.bootstrap && bootstrap.Modal) {
+      bootstrap.Modal.getOrCreateInstance(el).hide();
+      return;
+    }
+  } catch (e) {
+    // fall through to the manual teardown below
+  }
+  el.classList.remove('show');
+  el.style.display = 'none';
+  el.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+  var backdrop = document.querySelector('.modal-backdrop');
+  if (backdrop) backdrop.parentNode.removeChild(backdrop);
+}
+
 // ---- Button loading helper ----
 function setBtnLoading($btn, loadingText) {
   if (!$btn.data('orig-html')) {

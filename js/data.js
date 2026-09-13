@@ -329,8 +329,8 @@ var APPROVAL_META = {
 var PENDING_APPROVALS = [
   {
     ref: 'REQ-2569-0021', kind: 'issue', requester: 'สมหญิง ใจงาม', dept: 'บัญชี',
-    date: '12 ก.ย. 2569', code: 'IT-RAM-001', qty: 2,
-    detail: 'RAM DDR4 16GB จำนวน 2 ชิ้น', reason: 'พนักงานใหม่ 2 ตำแหน่ง'
+    date: '12 ก.ย. 2569', code: 'IT-SSD-001', qty: 6,
+    detail: 'SSD M.2 1TB จำนวน 6 ชิ้น', reason: 'อัปเกรดเครื่องฝ่ายบัญชี 6 เครื่อง'
   },
   {
     ref: 'REQ-2569-0022', kind: 'issue', requester: 'ประเสริฐ สุขใจ', dept: 'ขาย',

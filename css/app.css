@@ -316,6 +316,8 @@ button { font-family: inherit; }
 .btn-primary { background: var(--color-primary); border-color: var(--color-primary); }
 .btn-primary:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); }
 .btn-outline-primary { color: var(--color-primary); border-color: var(--color-primary); }
+.btn-outline-danger { color: var(--color-danger); border-color: #f0b8b8; background: none; }
+.btn-outline-danger:hover { background: var(--color-danger-bg); color: var(--color-danger); border-color: var(--color-danger); }
 .btn-ghost { background: none; border-color: transparent; color: var(--color-muted); }
 .btn-ghost:hover { background: var(--color-bg); color: var(--color-text); }
 .btn-soft { background: var(--color-primary-light); color: var(--color-primary); border: none; }
@@ -481,6 +483,10 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .status-badge--danger .status-badge__dot { background: var(--color-danger); }
 .status-badge--neutral { background: var(--color-bg); color: var(--color-muted); }
 .status-badge--neutral .status-badge__dot { background: var(--color-faint); }
+.status-badge--primary { background: var(--color-primary-light); color: var(--color-primary); }
+.status-badge--primary .status-badge__dot { background: var(--color-primary); }
+.status-badge--purple { background: var(--color-purple-light); color: var(--color-purple); }
+.status-badge--purple .status-badge__dot { background: var(--color-purple); }
 
 .table-footer { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-3) var(--sp-4); font-size: 12.5px; color: var(--color-muted); }
 
@@ -668,7 +674,39 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 }
 .serial-tag--out { background: var(--color-surface); color: var(--color-muted); }
 
-/* ---------- 18. Photo upload (Add/Edit item form) ---------- */
+/* ---------- 18. Filter chips ---------- */
+.filter-chip {
+  border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-muted);
+  border-radius: var(--r-full); padding: 8px 16px; min-height: 38px; font-size: 12.5px; font-weight: 600;
+  cursor: pointer; transition: all var(--dur) var(--ease);
+}
+.filter-chip:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.filter-chip.is-active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+@media (max-width: 575px) { .filter-chip { min-height: 44px; } }
+
+/* ---------- 19. Request / record cards (อนุมัติ, เคลม, ส่งซ่อม) ---------- */
+.req-card { margin-bottom: var(--sp-3); }
+.req-card__head { display: flex; align-items: flex-start; gap: var(--sp-3); margin-bottom: var(--sp-3); flex-wrap: wrap; }
+.req-card__title { flex: 1; min-width: 0; }
+.req-card__detail { font-weight: 700; font-size: 14px; }
+.req-card__meta { font-size: 11.5px; color: var(--color-muted); margin-top: 2px; }
+.req-card__grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--sp-3);
+  padding: var(--sp-3) 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);
+}
+.req-card__reason { font-size: 12.5px; color: var(--color-muted); padding: var(--sp-3) 0; }
+.req-card__actions { display: flex; gap: var(--sp-2); justify-content: flex-end; flex-wrap: wrap; }
+.req-card__warn {
+  display: flex; align-items: center; gap: var(--sp-2); font-size: 12.5px; font-weight: 600;
+  color: var(--color-danger); background: var(--color-danger-bg);
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--r-sm); margin-bottom: var(--sp-3);
+}
+@media (max-width: 575px) {
+  .req-card__actions { justify-content: stretch; }
+  .req-card__actions .btn { flex: 1; min-height: 44px; }
+}
+
+/* ---------- 20. Photo upload (Add/Edit item form) ---------- */
 .photo-upload { display: flex; align-items: flex-start; gap: var(--sp-4); flex-wrap: wrap; }
 .photo-upload__box {
   width: 96px; height: 96px; border-radius: var(--r-md); flex-shrink: 0;

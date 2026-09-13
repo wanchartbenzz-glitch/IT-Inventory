@@ -31,10 +31,13 @@
     <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
     <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
     <a href="return.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+    <a href="service.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-tools"></i></span><span>ส่งซ่อม / ตัดจำหน่าย</span></a>
   </div>
   <div class="sidebar__group">
-    <div class="sidebar__group-label">ตรวจสอบ</div>
+    <div class="sidebar__group-label">ตรวจสอบ & อนุมัติ</div>
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
+    <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
+    <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -133,6 +136,7 @@
             <div class="detail-row"><span class="detail-row__label">ยี่ห้อ</span><span class="detail-row__value" id="detBrand">-</span></div>
             <div class="detail-row"><span class="detail-row__label">รุ่น</span><span class="detail-row__value" id="detModel">-</span></div>
             <div class="detail-row"><span class="detail-row__label">หน่วย</span><span class="detail-row__value" id="detUnit">-</span></div>
+            <div class="detail-row d-none" id="detSerialRow"><span class="detail-row__label">Serial ในสต๊อก</span><span class="detail-row__value num" id="detSerialCount">-</span></div>
           </div>
         </div>
 
@@ -149,10 +153,20 @@
       <div class="card card-body mt-4">
         <div class="card-head-row mb-1">
           <div class="section-title mb-0">ที่มาของสินค้า / การรับเข้า (Lot &amp; PO)</div>
-          <span class="badge-soon">ใช้ตอนส่งเคลม</span>
+          <a href="claims.html" class="btn btn-soft btn-sm"><i class="bi bi-shield-check"></i> ส่งเคลม</a>
         </div>
         <div class="section-desc mb-3">ตรวจสอบย้อนกลับได้ว่าของล็อตไหนรับเข้าจาก PO ใด ซื้อจากผู้ขายรายไหน และประกันหมดเมื่อไร</div>
         <div id="detLots"></div>
+      </div>
+
+      <!-- ส่งซ่อม / เคลม / ชำรุด / ตัดจำหน่าย — rendered only when the item has any -->
+      <div class="card card-body mt-4 d-none" id="detServiceCard">
+        <div class="card-head-row mb-1">
+          <div class="section-title mb-0">อุปกรณ์ที่ไม่ได้อยู่ในสภาพใช้งานปกติ</div>
+          <a href="service.html" class="btn btn-soft btn-sm">บันทึกเพิ่ม</a>
+        </div>
+        <div class="section-desc mb-3">รายการที่ส่งซ่อม ส่งเคลม ชำรุด หรือตัดจำหน่ายไปแล้ว</div>
+        <div id="detService"></div>
       </div>
 
       <div class="card card-body mt-4">
@@ -184,7 +198,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-ghost" data-bs-dismiss="modal">ยกเลิก</button>
-        <button class="btn btn-primary" onclick="bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();showToast('success','บันทึกการแก้ไขสำเร็จ')">บันทึก</button>
+        <button class="btn btn-primary" onclick="closeModal('editModal');showToast('success','บันทึกการแก้ไขสำเร็จ')">บันทึก</button>
       </div>
     </div>
   </div>
@@ -258,20 +272,43 @@ if (!deployments.length) {
   deployments.forEach(function (d) {
     var meta = DEPLOY_META[d.kind] || DEPLOY_META.issue;
     var lot = findLot(item, d.lotRef);
-    var dueHtml = d.kind === 'borrow' && d.due
-      ? ' &middot; กำหนดคืน <b style="color:var(--color-warning)">' + d.due + '</b>' : '';
     var lotHtml = lot ? ' &middot; จาก <span class="num">' + lot.poRef + '</span>' : '';
+
+    // A loan carries its own clock: how it sits against กำหนดคืน matters more
+    // than the raw date, so the state drives the colour.
+    var dueHtml = '';
+    var overdueBadge = '';
+    if (d.kind === 'borrow' && d.due) {
+      var ls = loanState(d);
+      var lm = LOAN_STATE_META[ls.state];
+      var dueColor = ls.state === 'overdue' ? 'var(--color-danger)'
+                   : ls.state === 'ok' ? 'var(--color-muted)' : 'var(--color-warning)';
+      dueHtml = ' &middot; กำหนดคืน <b style="color:' + dueColor + '">' + d.due + '</b>';
+      if (ls.state !== 'ok') {
+        overdueBadge = '<div style="margin-top:4px"><span class="status-badge status-badge--' + lm.badge + '">' +
+                         '<i class="bi ' + lm.icon + '"></i>&nbsp;' + loanStateLabel(d) + '</span></div>';
+      }
+    }
+
+    var serialHtml = (d.serials && d.serials.length)
+      ? '<div class="deploy-row__meta mt-1">' + d.serials.map(function (sn) {
+          return '<span class="serial-tag">' + sn + '</span>';
+        }).join('') + '</div>'
+      : '';
+
     $dep.append(
       '<div class="deploy-row">' +
         '<div class="deploy-row__main">' +
           '<div class="deploy-row__holder">' + d.holder + '</div>' +
           '<div class="deploy-row__meta">' + d.dept + ' &middot; ' + d.location + '</div>' +
           '<div class="deploy-row__meta">ตั้งแต่ ' + d.since + dueHtml + lotHtml + '</div>' +
+          serialHtml +
         '</div>' +
         '<div>' +
           '<div class="deploy-row__qty">' + d.qty + ' ' + item.unit + '</div>' +
           '<span class="status-badge status-badge--' + meta.badge + '" style="margin-top:4px">' +
             '<span class="status-badge__dot"></span>' + meta.label + '</span>' +
+          overdueBadge +
         '</div>' +
       '</div>'
     );
@@ -285,23 +322,74 @@ if (!lots.length) {
   $lots.html('<div class="text-muted-2" style="font-size:13px">ยังไม่มีประวัติการรับเข้า</div>');
 } else {
   lots.forEach(function (lot) {
+    // Warranty is the reason this card exists, so its state is a badge, not fine print.
+    var w = warrantyState(lot);
+    var wBadge = w.state === 'expired' ? '<span class="status-badge status-badge--danger"><span class="status-badge__dot"></span>' + w.label + '</span>'
+               : w.state === 'expiring' ? '<span class="status-badge status-badge--warning"><span class="status-badge__dot"></span>' + w.label + '</span>'
+               : w.state === 'active' ? '<span class="status-badge status-badge--success"><span class="status-badge__dot"></span>อยู่ในประกัน</span>'
+               : '<span class="status-badge status-badge--neutral"><span class="status-badge__dot"></span>ไม่มีประกัน</span>';
+
+    var serialHtml = '';
+    if (item.serialized) {
+      serialHtml = '<div class="mt-3 pt-3" style="border-top:1px solid var(--color-border)">' +
+        '<div class="lot-grid__label mb-1">Serial ที่ยังอยู่ในสต๊อกจากล็อตนี้ (' + ((lot.serials || []).length) + ')</div>' +
+        ((lot.serials && lot.serials.length)
+          ? lot.serials.map(function (sn) { return '<span class="serial-tag">' + sn + '</span>'; }).join('')
+          : '<span class="text-faint" style="font-size:12px">จ่ายออกหมดแล้ว</span>') +
+        '</div>';
+    }
+
     $lots.append(
       '<div class="lot-card">' +
         '<div class="lot-card__top">' +
           '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-card__po">' + lot.poRef + '</div></div>' +
-          '<span class="status-badge status-badge--neutral num">' + lot.lotRef + '</span>' +
+          '<div class="gap-row">' + wBadge + '<span class="status-badge status-badge--neutral num">' + lot.lotRef + '</span></div>' +
         '</div>' +
         '<div class="lot-grid">' +
           '<div><div class="lot-grid__label">วันที่รับเข้า</div><div class="lot-grid__value">' + lot.date + '</div></div>' +
-          '<div><div class="lot-grid__label">จำนวนที่รับ</div><div class="lot-grid__value num">' + lot.qty + ' ' + item.unit + '</div></div>' +
+          '<div><div class="lot-grid__label">รับเข้า / คงเหลือ</div><div class="lot-grid__value num">' +
+            lot.qty + ' &rarr; <b style="color:' + (lot.remaining > 0 ? 'var(--color-success)' : 'var(--color-muted)') + '">' +
+            lot.remaining + '</b> ' + item.unit + '</div></div>' +
           '<div><div class="lot-grid__label">ผู้จำหน่าย</div><div class="lot-grid__value">' + lot.supplier + '</div></div>' +
           '<div><div class="lot-grid__label">ราคา/หน่วย</div><div class="lot-grid__value num">' + lot.unitPrice + '</div></div>' +
           '<div><div class="lot-grid__label">ประกันถึง</div><div class="lot-grid__value">' +
             (lot.warrantyEnd ? lot.warrantyEnd : '<span class="text-faint">ไม่มีประกัน</span>') + '</div></div>' +
         '</div>' +
+        serialHtml +
       '</div>'
     );
   });
+
+// ---- ส่งซ่อม / เคลม / ชำรุด / ตัดจำหน่าย ----
+var service = item.service || [];
+if (service.length) {
+  $('#detServiceCard').removeClass('d-none');
+  var $svc = $('#detService').empty();
+  service.forEach(function (rec) {
+    var meta = SERVICE_META[rec.state] || SERVICE_META.repair;
+    var claim = findClaim(rec.ref);
+    var claimHtml = claim
+      ? ' &middot; <a href="claims.html?ref=' + encodeURIComponent(claim.claimRef) + '" class="num">' + claim.claimRef + '</a>'
+      : ' &middot; <span class="num">' + rec.ref + '</span>';
+    $svc.append(
+      '<div class="deploy-row">' +
+        '<div class="deploy-row__main">' +
+          '<div class="deploy-row__holder">' + (rec.serial ? '<span class="serial-tag">' + rec.serial + '</span>' : (rec.qty || 1) + ' ' + item.unit) + '</div>' +
+          '<div class="deploy-row__meta">' + rec.note + '</div>' +
+          '<div class="deploy-row__meta">ตั้งแต่ ' + rec.since + claimHtml + '</div>' +
+        '</div>' +
+        '<span class="status-badge status-badge--' + meta.badge + '"><i class="bi ' + meta.icon + '"></i>&nbsp;' + meta.label + '</span>' +
+      '</div>'
+    );
+  });
+}
+
+// ---- Serial summary on the info card, for serialized items only ----
+if (item.serialized) {
+  var inStock = lots.reduce(function (n, l) { return n + ((l.serials || []).length); }, 0);
+  $('#detSerialRow').removeClass('d-none');
+  $('#detSerialCount').text(inStock + ' เลข');
+}
 }
 
 function stockBarColorFor(status) {
