@@ -116,27 +116,27 @@
         <span class="status-badge status-badge--neutral" id="detUpdated">-</span>
       </div>
 
-      <div class="grid-2" style="grid-template-columns: 1fr 1.4fr; align-items:start">
+      <div class="grid-detail">
         <div class="card card-body">
           <div class="section-title mb-3">ข้อมูลอุปกรณ์</div>
           <div class="d-flex flex-column gap-3">
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">คงเหลือ</span><span class="fw-700 num" id="detStock">-</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">จุดสั่งซื้อ (Minimum)</span><span class="fw-700 num" id="detMin">-</span></div>
+            <div class="detail-row"><span class="detail-row__label">คงเหลือ</span><span class="detail-row__value num" id="detStock">-</span></div>
+            <div class="detail-row"><span class="detail-row__label">จุดสั่งซื้อ (Minimum)</span><span class="detail-row__value num" id="detMin">-</span></div>
             <div class="stock-mini__bar" style="height:8px"><div class="stock-mini__fill" id="detBar" style="width:0%"></div></div>
             <hr class="my-1" style="border-color:var(--color-border)">
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">หมวดหมู่</span><span class="fw-700" id="detCategory">-</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">ยี่ห้อ</span><span class="fw-700" id="detBrand">-</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">รุ่น</span><span class="fw-700" id="detModel">-</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">หน่วย</span><span class="fw-700" id="detUnit">-</span></div>
+            <div class="detail-row"><span class="detail-row__label">หมวดหมู่</span><span class="detail-row__value" id="detCategory">-</span></div>
+            <div class="detail-row"><span class="detail-row__label">ยี่ห้อ</span><span class="detail-row__value" id="detBrand">-</span></div>
+            <div class="detail-row"><span class="detail-row__label">รุ่น</span><span class="detail-row__value" id="detModel">-</span></div>
+            <div class="detail-row"><span class="detail-row__label">หน่วย</span><span class="detail-row__value" id="detUnit">-</span></div>
           </div>
         </div>
 
         <div class="card card-body">
-          <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="card-head-row mb-3">
             <div class="section-title mb-0">Stock Movement</div>
             <span class="text-muted-2" style="font-size:12px">ประวัติการเคลื่อนไหวทั้งหมด</span>
           </div>
-          <div class="table-wrap" style="border:none">
+          <div class="table-scroll">
             <table class="data-table">
               <thead><tr><th>วันที่</th><th>รายการ</th><th>จำนวน</th><th>คงเหลือ</th><th>ผู้ทำรายการ</th><th>เลขที่อ้างอิง</th></tr></thead>
               <tbody id="detMovements"></tbody>

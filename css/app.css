@@ -258,7 +258,8 @@ button { font-family: inherit; }
 .header-search input { border: none; background: none; outline: none; flex: 1; font: inherit; color: var(--color-text); }
 @media (max-width: 575px) { .header-search { display: none; } }
 
-.header-actions { display: flex; align-items: center; gap: var(--sp-2); flex-shrink: 0; }
+/* margin-left:auto keeps this flush right even when .header-search is hidden on mobile */
+.header-actions { display: flex; align-items: center; gap: var(--sp-2); flex-shrink: 0; margin-left: auto; }
 .icon-btn {
   position: relative; width: 44px; height: 44px; border-radius: var(--r-full);
   border: none; background: none; color: var(--color-muted); font-size: 17px;
@@ -368,6 +369,14 @@ a.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); te
 .kpi-card__icon { width: 38px; height: 38px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 17px; background: color-mix(in srgb, var(--kpi-accent) 14%, white); color: var(--kpi-accent); }
 .kpi-card__value { font-size: 26px; font-weight: 800; font-family: "Inter", sans-serif; letter-spacing: -.02em; }
 .kpi-card__label { font-size: 12.5px; color: var(--color-muted); }
+/* Mobile: lay the card out as a row so the number sits beside the icon instead of
+   stacking in a tall card with the whole right half empty. */
+@media (max-width: 575px) {
+  .kpi-card { flex-direction: row; align-items: center; gap: var(--sp-4); padding: var(--sp-4) var(--sp-5); }
+  .kpi-card__icon { flex-shrink: 0; }
+  .kpi-card__value { font-size: 22px; }
+  .kpi-card__trend { margin-left: auto; flex-shrink: 0; }
+}
 .kpi-card__trend { font-size: 11.5px; font-weight: 600; }
 .kpi-card__trend.up { color: var(--color-success); }
 .kpi-card__trend.down { color: var(--color-danger); }
@@ -581,3 +590,21 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .gap-row { display: flex; gap: var(--sp-3); flex-wrap: wrap; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); }
 @media (max-width: 767px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* Item detail: info column + wider movement column. Defined as a class (not an
+   inline style) so the single-column mobile rule can actually win the cascade. */
+.grid-detail { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--sp-6); align-items: start; }
+/* Grid items default to min-width:auto and refuse to shrink below their content,
+   so the 6-column movement table would push the whole page wider than the screen.
+   min-width:0 lets the column shrink and hands the scrolling to .table-scroll. */
+.grid-detail > * { min-width: 0; }
+@media (max-width: 991px) { .grid-detail { grid-template-columns: 1fr; gap: var(--sp-4); } }
+
+/* Label/value rows on the detail card: keep them on one line with real breathing
+   room, and let the value wrap on its own side instead of colliding with the label. */
+.detail-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-4); }
+.detail-row__label { font-size: 12.5px; color: var(--color-muted); flex-shrink: 0; }
+.detail-row__value { font-weight: 700; text-align: right; min-width: 0; word-break: break-word; }
+
+.card-head-row { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
