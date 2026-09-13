@@ -111,7 +111,7 @@
         <div class="search-input"><i class="bi bi-search"></i><input type="text" id="invSearch" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial..."></div>
         <select class="filter-select"><option>ทุกหมวดหมู่</option><option>Peripheral</option><option>Network</option><option>Storage</option><option>Power</option><option>Cable</option><option>Consumable</option><option>Other</option></select>
         <select class="filter-select"><option>ทุกประเภท</option><option>Notebook/PC</option><option>Cable</option><option>Network</option></select>
-        <select class="filter-select"><option>ทุกสถานะ</option><option>พร้อมใช้งาน</option><option>ใกล้หมด</option><option>หมดสต๊อก</option></select>
+        <select class="filter-select" id="statusFilter"><option value="">ทุกสถานะ</option><option value="available">พร้อมใช้งาน</option><option value="low">ใกล้หมด</option><option value="out">หมดสต๊อก</option></select>
         <select class="filter-select"><option>ทุกหน่วย</option><option>ชิ้น</option><option>เมตร</option><option>กล่อง</option></select>
       </div>
 
@@ -352,17 +352,34 @@ setTimeout(function () {
   $('#invTableWrap').removeClass('d-none');
 }, 450);
 
-// Live search filter
-$('#invSearch').on('input', function () {
-  var q = $(this).val().trim().toLowerCase();
+// Combined search + status filter (reachable from Dashboard KPI/Critical-Items links via ?status=)
+var STATUS_LABEL = { available: 'พร้อมใช้งาน', low: 'ใกล้หมด', out: 'หมดสต๊อก' };
+
+function applyFilters() {
+  var q = $('#invSearch').val().trim().toLowerCase();
+  var statusLabel = STATUS_LABEL[$('#statusFilter').val()] || '';
   var visible = 0;
   $('#invTbody tr').each(function () {
-    var match = $(this).text().toLowerCase().indexOf(q) > -1;
-    $(this).toggle(match);
+    var $row = $(this);
+    var matchesText = $row.text().toLowerCase().indexOf(q) > -1;
+    var matchesStatus = !statusLabel || $row.find('.status-badge').text().trim().indexOf(statusLabel) > -1;
+    var match = matchesText && matchesStatus;
+    $row.toggle(match);
     if (match) visible++;
   });
-  $('#invEmptyState').toggleClass('d-none', visible !== 0 || q === '');
-});
+  $('#invEmptyState').toggleClass('d-none', visible !== 0);
+}
+
+$('#statusFilter').on('change', applyFilters);
+
+var qStatus = new URLSearchParams(location.search).get('status');
+if (qStatus && STATUS_LABEL[qStatus]) {
+  $('#statusFilter').val(qStatus);
+}
+$(applyFilters);
+
+// Live search filter (composes with the status filter above)
+$('#invSearch').on('input', applyFilters);
 </script>
 </body>
 </html>
