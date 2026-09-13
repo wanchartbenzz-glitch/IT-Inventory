@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - IT Inventory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link href="css/app.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- ======== Sidebar ======== -->
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <div class="sidebar__brand-icon"><i class="bi bi-boxes"></i></div>
+      <div class="sidebar__brand-text">
+        <div class="sidebar__brand-title">IT INVENTORY</div>
+        <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div>
+      </div>
+    </div>
+
+    <div class="sidebar__group">
+      <a href="index.html" class="nav-item active"><span class="nav-item__icon"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
+    </div>
+
+    <div class="sidebar__group">
+      <div class="sidebar__group-label">การดำเนินการ</div>
+      <a href="issue.html" class="nav-item"><span class="nav-item__icon"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+      <a href="receive.html" class="nav-item"><span class="nav-item__icon"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
+      <a href="return.html" class="nav-item"><span class="nav-item__icon"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+    </div>
+
+    <div class="sidebar__group">
+      <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
+      <a href="inventory.html" class="nav-item"><span class="nav-item__icon"><i class="bi bi-hdd-stack"></i></span><span>ข้อมูลอุปกรณ์ IT</span></a>
+      <a href="categories.html" class="nav-item"><span class="nav-item__icon"><i class="bi bi-diagram-3"></i></span><span>หมวดอุปกรณ์</span></a>
+      <a href="types.html" class="nav-item"><span class="nav-item__icon"><i class="bi bi-tags"></i></span><span>ประเภทอุปกรณ์</span></a>
+      <a href="units.html" class="nav-item"><span class="nav-item__icon"><i class="bi bi-rulers"></i></span><span>หน่วยนับ</span></a>
+    </div>
+
+    <div class="sidebar__group">
+      <div class="sidebar__group-label">ทรัพย์สิน IT</div>
+      <span class="nav-item is-disabled"><span class="nav-item__icon"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
+    </div>
+
+    <button class="sidebar-collapse-btn" type="button"><i class="bi bi-layout-sidebar-inset"></i><span>ย่อเมนู</span></button>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <div class="app-main-col">
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <button class="header-menu-btn" type="button" aria-label="เปิดเมนู"><i class="bi bi-list"></i></button>
+      <div class="header-search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial...">
+      </div>
+      <div class="header-actions" style="position:relative">
+        <button class="icon-btn" type="button" data-panel-toggle="#notifPanel"><i class="bi bi-bell"></i><span class="icon-btn__dot"></span></button>
+        <div class="dropdown-panel d-none" id="notifPanel">
+          <div class="dropdown-panel__head">การแจ้งเตือน</div>
+          <div class="dropdown-panel__body">
+            <div class="notif-row">
+              <div class="notif-row__icon" style="background:var(--color-warning-bg);color:var(--color-warning)"><i class="bi bi-exclamation-triangle-fill"></i></div>
+              <div><div class="notif-row__title">SSD M.2 1TB เหลือ 4 ชิ้น</div><div class="notif-row__time">5 นาทีที่แล้ว</div></div>
+            </div>
+            <div class="notif-row">
+              <div class="notif-row__icon" style="background:var(--color-danger-bg);color:var(--color-danger)"><i class="bi bi-x-circle-fill"></i></div>
+              <div><div class="notif-row__title">UPS 1000VA หมดสต็อก</div><div class="notif-row__time">1 ชั่วโมงที่แล้ว</div></div>
+            </div>
+            <div class="notif-row">
+              <div class="notif-row__icon" style="background:var(--color-success-bg);color:var(--color-success)"><i class="bi bi-check-circle-fill"></i></div>
+              <div><div class="notif-row__title">รับเข้า LAN Cable Cat6 สำเร็จ</div><div class="notif-row__time">วันนี้ 14:32</div></div>
+            </div>
+          </div>
+        </div>
+        <button class="user-chip" type="button" data-panel-toggle="#userPanel">
+          <div class="user-avatar">IT</div>
+          <div class="user-chip__text">
+            <div class="user-chip__name">IT Support</div>
+            <div class="user-chip__role">แผนก IT</div>
+          </div>
+          <i class="bi bi-chevron-down" style="font-size:11px;color:var(--color-muted)"></i>
+        </button>
+        <div class="dropdown-panel d-none" id="userPanel" style="width:200px">
+          <div class="dropdown-panel__body">
+            <a class="notif-row" href="#" style="text-decoration:none;color:inherit"><i class="bi bi-person"></i>&nbsp; โปรไฟล์</a>
+            <a class="notif-row" href="#" style="text-decoration:none;color:var(--color-danger)"><i class="bi bi-box-arrow-right"></i>&nbsp; ออกจากระบบ</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+      <div class="breadcrumb-row"><span class="current">Dashboard</span></div>
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-header__title">สวัสดีตอนเช้า, ทีม IT 👋</h1>
+          <p class="page-header__desc">ภาพรวม Stock วันนี้ &middot; 13 ก.ย. 2569, 14:32 น.</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <a href="issue.html" class="quick-action quick-action--issue">
+          <div class="quick-action__icon"><i class="bi bi-box-arrow-up"></i></div>
+          <div><div class="quick-action__title">เบิกอุปกรณ์</div><div class="quick-action__sub">Create Issue</div></div>
+          <i class="bi bi-arrow-right quick-action__arrow"></i>
+        </a>
+        <a href="receive.html" class="quick-action quick-action--receive">
+          <div class="quick-action__icon"><i class="bi bi-box-arrow-in-down"></i></div>
+          <div><div class="quick-action__title">รับเข้าอุปกรณ์</div><div class="quick-action__sub">Receive Stock</div></div>
+          <i class="bi bi-arrow-right quick-action__arrow"></i>
+        </a>
+        <a href="return.html" class="quick-action quick-action--return">
+          <div class="quick-action__icon"><i class="bi bi-arrow-return-left"></i></div>
+          <div><div class="quick-action__title">คืนอุปกรณ์</div><div class="quick-action__sub">Return</div></div>
+          <i class="bi bi-arrow-right quick-action__arrow"></i>
+        </a>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-card--total">
+          <div class="kpi-card__icon"><i class="bi bi-boxes"></i></div>
+          <div><div class="kpi-card__value num">128</div><div class="kpi-card__label">รายการทั้งหมด (SKU)</div></div>
+        </div>
+        <div class="kpi-card kpi-card--available">
+          <div class="kpi-card__icon"><i class="bi bi-check-circle"></i></div>
+          <div><div class="kpi-card__value num">98</div><div class="kpi-card__label">พร้อมใช้งาน</div></div>
+          <div class="kpi-card__trend up"><i class="bi bi-arrow-up-short"></i>76.6%</div>
+        </div>
+        <div class="kpi-card kpi-card--low">
+          <div class="kpi-card__icon"><i class="bi bi-exclamation-triangle"></i></div>
+          <div><div class="kpi-card__value num">21</div><div class="kpi-card__label">ใกล้หมด</div></div>
+          <div class="kpi-card__trend down">16.4%</div>
+        </div>
+        <div class="kpi-card kpi-card--out">
+          <div class="kpi-card__icon"><i class="bi bi-x-circle"></i></div>
+          <div><div class="kpi-card__value num">9</div><div class="kpi-card__label">หมดสต๊อก</div></div>
+          <div class="kpi-card__trend down">7.0%</div>
+        </div>
+      </div>
+
+      <!-- Stock Health + Category -->
+      <div class="stock-health-row">
+        <div class="card card-body">
+          <div class="section-title">Stock Health</div>
+          <div class="section-desc mb-3">ภาพรวมสุขภาพสต๊อกทั้งหมด</div>
+          <div class="d-flex align-items-center gap-4 mb-4">
+            <div class="donut-ring" style="--pct:77"><div class="donut-ring__hole"><div class="donut-ring__pct num">77%</div><div class="donut-ring__label">Healthy</div></div></div>
+            <div class="flex-fill d-flex flex-column gap-2">
+              <div class="legend-row"><span class="legend-dot" style="background:var(--color-success)"></span> พร้อมใช้งาน <span class="num fw-700 ms-auto">98</span></div>
+              <div class="legend-row"><span class="legend-dot" style="background:var(--color-warning)"></span> ใกล้หมด <span class="num fw-700 ms-auto">21</span></div>
+              <div class="legend-row"><span class="legend-dot" style="background:var(--color-danger)"></span> หมดสต๊อก <span class="num fw-700 ms-auto">9</span></div>
+            </div>
+          </div>
+          <div class="section-title" style="font-size:13px">Critical Items</div>
+          <div class="critical-item-row"><span>SSD M.2 1TB</span><span class="qty num">4 ชิ้น</span></div>
+          <div class="critical-item-row"><span>UPS 1000VA</span><span class="qty num">0 ชิ้น</span></div>
+          <div class="critical-item-row"><span>Power Supply 650W</span><span class="qty num">3 ชิ้น</span></div>
+          <a href="inventory.html?filter=low" class="btn btn-soft btn-sm mt-3">ดูรายการทั้งหมด</a>
+        </div>
+
+        <div class="card card-body">
+          <div class="section-title">หมวดอุปกรณ์ (ตาม SKU)</div>
+          <div class="section-desc mb-3">สัดส่วนรายการอุปกรณ์แต่ละหมวด</div>
+          <div class="category-bar-row">
+            <div class="category-bar-row__top"><span>Peripheral</span><span class="num text-muted-2">34</span></div>
+            <div class="category-bar-track"><div class="category-bar-fill" style="width:26.5%;background:var(--color-primary)"></div></div>
+          </div>
+          <div class="category-bar-row">
+            <div class="category-bar-row__top"><span>Cable</span><span class="num text-muted-2">21</span></div>
+            <div class="category-bar-track"><div class="category-bar-fill" style="width:16.4%;background:var(--color-teal)"></div></div>
+          </div>
+          <div class="category-bar-row">
+            <div class="category-bar-row__top"><span>Network</span><span class="num text-muted-2">22</span></div>
+            <div class="category-bar-track"><div class="category-bar-fill" style="width:17.2%;background:var(--color-cyan)"></div></div>
+          </div>
+          <div class="category-bar-row">
+            <div class="category-bar-row__top"><span>Storage</span><span class="num text-muted-2">18</span></div>
+            <div class="category-bar-track"><div class="category-bar-fill" style="width:14.1%;background:var(--color-purple)"></div></div>
+          </div>
+          <div class="category-bar-row">
+            <div class="category-bar-row__top"><span>Consumable</span><span class="num text-muted-2">16</span></div>
+            <div class="category-bar-track"><div class="category-bar-fill" style="width:12.5%;background:var(--color-success)"></div></div>
+          </div>
+          <div class="category-bar-row">
+            <div class="category-bar-row__top"><span>Power</span><span class="num text-muted-2">9</span></div>
+            <div class="category-bar-track"><div class="category-bar-fill" style="width:7%;background:var(--color-orange)"></div></div>
+          </div>
+          <div class="category-bar-row mb-0">
+            <div class="category-bar-row__top"><span>Other</span><span class="num text-muted-2">8</span></div>
+            <div class="category-bar-track"><div class="category-bar-fill" style="width:6.3%;background:var(--color-faint)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity + Most issued -->
+      <div class="grid-2">
+        <div class="card card-body">
+          <div class="section-title mb-3">Recent Activity</div>
+          <div class="activity-feed">
+            <div class="activity-item activity-item--receive">
+              <div class="activity-item__icon"><i class="bi bi-box-arrow-in-down"></i></div>
+              <div><div class="activity-item__title">รับเข้า RAM DDR4 16GB × 20</div><div class="activity-item__meta">วันนี้ 14:32 &middot; Admin</div></div>
+              <div class="activity-item__qty plus num">+20</div>
+            </div>
+            <div class="activity-item activity-item--issue">
+              <div class="activity-item__icon"><i class="bi bi-box-arrow-up"></i></div>
+              <div><div class="activity-item__title">เบิก Wireless Mouse × 5</div><div class="activity-item__meta">วันนี้ 13:50 &middot; กมล ศรีสุข (IT Support)</div></div>
+              <div class="activity-item__qty minus num">-5</div>
+            </div>
+            <div class="activity-item activity-item--return">
+              <div class="activity-item__icon"><i class="bi bi-arrow-return-left"></i></div>
+              <div><div class="activity-item__title">คืน Keyboard × 2</div><div class="activity-item__meta">วันนี้ 11:24 &middot; กมล ศรีสุข</div></div>
+              <div class="activity-item__qty plus num">+2</div>
+            </div>
+            <div class="activity-item activity-item--receive">
+              <div class="activity-item__icon"><i class="bi bi-box-arrow-in-down"></i></div>
+              <div><div class="activity-item__title">รับเข้า LAN Cable Cat6 × 1 กล่อง (305 ม.)</div><div class="activity-item__meta">เมื่อวาน 16:05 &middot; Admin</div></div>
+              <div class="activity-item__qty plus num">+305 ม.</div>
+            </div>
+            <div class="activity-item activity-item--issue">
+              <div class="activity-item__icon"><i class="bi bi-box-arrow-up"></i></div>
+              <div><div class="activity-item__title">เบิก SSD M.2 1TB × 2</div><div class="activity-item__meta">เมื่อวาน 10:12 &middot; IT Support</div></div>
+              <div class="activity-item__qty minus num">-2</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-body">
+          <div class="section-title mb-3">Most Issued Items <span class="text-muted-2 fw-normal" style="font-size:12px">(30 วันล่าสุด)</span></div>
+          <div class="rank-bar-row">
+            <span>Mouse</span>
+            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:100%"></div></div>
+            <span class="rank-bar-row__count">86</span>
+          </div>
+          <div class="rank-bar-row">
+            <span>Keyboard</span>
+            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:63%"></div></div>
+            <span class="rank-bar-row__count">54</span>
+          </div>
+          <div class="rank-bar-row">
+            <span>LAN Cable</span>
+            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:46%"></div></div>
+            <span class="rank-bar-row__count">40</span>
+          </div>
+          <div class="rank-bar-row">
+            <span>HDMI Cable</span>
+            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:33%"></div></div>
+            <span class="rank-bar-row__count">28</span>
+          </div>
+          <div class="rank-bar-row">
+            <span>SSD</span>
+            <div class="rank-bar-track"><div class="rank-bar-fill" style="width:22%"></div></div>
+            <span class="rank-bar-row__count">19</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
