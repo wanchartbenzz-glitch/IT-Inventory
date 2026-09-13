@@ -21,9 +21,13 @@ const NAV = [
     { href: 'index.html', icon: 'bi-grid-1x2-fill', label: 'Dashboard' }
   ]},
   { label: 'การดำเนินการ', items: [
-    { href: 'issue.html', icon: 'bi-box-arrow-up', label: 'เบิกอุปกรณ์' },
     { href: 'receive.html', icon: 'bi-box-arrow-in-down', label: 'รับเข้าอุปกรณ์' },
+    { href: 'issue.html', icon: 'bi-box-arrow-up', label: 'เบิกอุปกรณ์' },
+    { href: 'borrow.html', icon: 'bi-arrow-left-right', label: 'ยืมอุปกรณ์' },
     { href: 'return.html', icon: 'bi-arrow-return-left', label: 'คืนอุปกรณ์' }
+  ]},
+  { label: 'ตรวจสอบ', items: [
+    { href: 'stock-count.html', icon: 'bi-clipboard-check', label: 'ตรวจนับสต๊อก' }
   ]},
   { label: 'จัดการข้อมูลอุปกรณ์', items: [
     { href: 'inventory.html', icon: 'bi-hdd-stack', label: 'ข้อมูลอุปกรณ์ IT', aliases: ['inventory-detail.html'] },

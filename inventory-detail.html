@@ -27,9 +27,14 @@
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">การดำเนินการ</div>
-    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
     <a href="receive.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
+    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+    <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
     <a href="return.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ตรวจสอบ</div>
+    <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -99,7 +104,7 @@
       <div class="page-header">
         <div class="d-flex align-items-center gap-3">
           <a href="inventory.html" class="btn btn-ghost btn-sm" style="width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center"><i class="bi bi-arrow-left"></i></a>
-          <div class="item-icon-box" id="detIconBox" style="width:52px;height:52px;font-size:22px"><i class="bi" id="detIcon"></i></div>
+          <div id="detThumb"></div>
           <div>
             <h1 class="page-header__title" style="font-size:20px" id="detName">-</h1>
             <p class="page-header__desc num" id="detSubtitle">-</p>
@@ -132,16 +137,34 @@
         </div>
 
         <div class="card card-body">
-          <div class="card-head-row mb-3">
-            <div class="section-title mb-0">Stock Movement</div>
-            <span class="text-muted-2" style="font-size:12px">ประวัติการเคลื่อนไหวทั้งหมด</span>
+          <div class="card-head-row mb-1">
+            <div class="section-title mb-0">ถูกนำไปใช้ที่ไหน</div>
+            <span class="text-muted-2" style="font-size:12px">รวม <b id="detDeployedTotal">0</b> <span id="detDeployedUnit"></span></span>
           </div>
-          <div class="table-scroll">
-            <table class="data-table">
-              <thead><tr><th>วันที่</th><th>รายการ</th><th>จำนวน</th><th>คงเหลือ</th><th>ผู้ทำรายการ</th><th>เลขที่อ้างอิง</th></tr></thead>
-              <tbody id="detMovements"></tbody>
-            </table>
-          </div>
+          <div class="section-desc mb-3">ติดตามว่าอุปกรณ์ออกไปอยู่กับใคร แผนกไหน และยืมหรือเบิกถาวร</div>
+          <div id="detDeployments"></div>
+        </div>
+      </div>
+
+      <div class="card card-body mt-4">
+        <div class="card-head-row mb-1">
+          <div class="section-title mb-0">ที่มาของสินค้า / การรับเข้า (Lot &amp; PO)</div>
+          <span class="badge-soon">ใช้ตอนส่งเคลม</span>
+        </div>
+        <div class="section-desc mb-3">ตรวจสอบย้อนกลับได้ว่าของล็อตไหนรับเข้าจาก PO ใด ซื้อจากผู้ขายรายไหน และประกันหมดเมื่อไร</div>
+        <div id="detLots"></div>
+      </div>
+
+      <div class="card card-body mt-4">
+        <div class="card-head-row mb-3">
+          <div class="section-title mb-0">Stock Movement</div>
+          <span class="text-muted-2" style="font-size:12px">ประวัติการเคลื่อนไหวทั้งหมด</span>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>วันที่</th><th>รายการ</th><th>จำนวน</th><th>คงเหลือ</th><th>ผู้ทำรายการ</th><th>เลขที่อ้างอิง</th></tr></thead>
+            <tbody id="detMovements"></tbody>
+          </table>
         </div>
       </div>
     </main>
@@ -181,8 +204,7 @@ var st = STATUS_META[item.status];
 
 document.title = item.name + ' - IT Inventory';
 $('#detCode').text(item.code);
-$('#detIconBox').css({ background: tone.bg, color: tone.fg });
-$('#detIcon').addClass(item.icon);
+$('#detThumb').html(itemThumbHtml(item, '56px', '24px'));
 $('#detName').text(item.name);
 $('#detSubtitle').text(item.code + ' · ' + item.category + ' / ' + (item.brand !== '-' ? item.brand + ' ' + item.model : item.type));
 $('#detStatusBadge').html('<span class="status-badge status-badge--' + st.badge + '"><span class="status-badge__dot"></span>' + st.label + '</span>');
@@ -219,6 +241,68 @@ item.movements.forEach(function (m) {
     '</tr>'
   );
 });
+
+// ---- ถูกนำไปใช้ที่ไหน (deployments) ----
+var deployments = item.deployments || [];
+var $dep = $('#detDeployments').empty();
+$('#detDeployedUnit').text(item.unit);
+$('#detDeployedTotal').text(deployments.reduce(function (sum, d) { return sum + d.qty; }, 0));
+
+if (!deployments.length) {
+  $dep.html('<div class="empty-state" style="padding:var(--sp-6) 0">' +
+              '<div class="empty-state__icon"><i class="bi bi-geo-alt"></i></div>' +
+              '<div class="empty-state__title">ยังไม่มีการนำออกไปใช้</div>' +
+              '<div class="empty-state__desc">อุปกรณ์ทั้งหมดยังอยู่ในคลัง</div>' +
+            '</div>');
+} else {
+  deployments.forEach(function (d) {
+    var meta = DEPLOY_META[d.kind] || DEPLOY_META.issue;
+    var lot = findLot(item, d.lotRef);
+    var dueHtml = d.kind === 'borrow' && d.due
+      ? ' &middot; กำหนดคืน <b style="color:var(--color-warning)">' + d.due + '</b>' : '';
+    var lotHtml = lot ? ' &middot; จาก <span class="num">' + lot.poRef + '</span>' : '';
+    $dep.append(
+      '<div class="deploy-row">' +
+        '<div class="deploy-row__main">' +
+          '<div class="deploy-row__holder">' + d.holder + '</div>' +
+          '<div class="deploy-row__meta">' + d.dept + ' &middot; ' + d.location + '</div>' +
+          '<div class="deploy-row__meta">ตั้งแต่ ' + d.since + dueHtml + lotHtml + '</div>' +
+        '</div>' +
+        '<div>' +
+          '<div class="deploy-row__qty">' + d.qty + ' ' + item.unit + '</div>' +
+          '<span class="status-badge status-badge--' + meta.badge + '" style="margin-top:4px">' +
+            '<span class="status-badge__dot"></span>' + meta.label + '</span>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+}
+
+// ---- ที่มา / Lot & PO (traceability for warranty claims) ----
+var lots = item.lots || [];
+var $lots = $('#detLots').empty();
+if (!lots.length) {
+  $lots.html('<div class="text-muted-2" style="font-size:13px">ยังไม่มีประวัติการรับเข้า</div>');
+} else {
+  lots.forEach(function (lot) {
+    $lots.append(
+      '<div class="lot-card">' +
+        '<div class="lot-card__top">' +
+          '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-card__po">' + lot.poRef + '</div></div>' +
+          '<span class="status-badge status-badge--neutral num">' + lot.lotRef + '</span>' +
+        '</div>' +
+        '<div class="lot-grid">' +
+          '<div><div class="lot-grid__label">วันที่รับเข้า</div><div class="lot-grid__value">' + lot.date + '</div></div>' +
+          '<div><div class="lot-grid__label">จำนวนที่รับ</div><div class="lot-grid__value num">' + lot.qty + ' ' + item.unit + '</div></div>' +
+          '<div><div class="lot-grid__label">ผู้จำหน่าย</div><div class="lot-grid__value">' + lot.supplier + '</div></div>' +
+          '<div><div class="lot-grid__label">ราคา/หน่วย</div><div class="lot-grid__value num">' + lot.unitPrice + '</div></div>' +
+          '<div><div class="lot-grid__label">ประกันถึง</div><div class="lot-grid__value">' +
+            (lot.warrantyEnd ? lot.warrantyEnd : '<span class="text-faint">ไม่มีประกัน</span>') + '</div></div>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+}
 
 function stockBarColorFor(status) {
   return status === 'available' ? 'var(--color-success)' : status === 'low' ? 'var(--color-warning)' : 'var(--color-danger)';

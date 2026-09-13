@@ -27,9 +27,14 @@
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">การดำเนินการ</div>
-    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
     <a href="receive.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
+    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+    <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
     <a href="return.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ตรวจสอบ</div>
+    <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -95,29 +100,37 @@
 
     <main class="app-main" style="max-width:760px">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">คืนอุปกรณ์</span></div>
-      <div class="page-header"><div><h1 class="page-header__title">คืนอุปกรณ์</h1><p class="page-header__desc">บันทึกการคืนอุปกรณ์จากรายการเบิกที่มีอยู่</p></div></div>
+      <div class="page-header"><div><h1 class="page-header__title">คืนอุปกรณ์</h1><p class="page-header__desc">รับคืนอุปกรณ์ที่ยืมไป และนำกลับเข้าสต๊อก</p></div></div>
+
+      <div class="card card-body mb-3" style="background:var(--color-primary-light);border-color:#c7dafb">
+        <div class="d-flex gap-2" style="font-size:12.5px;color:#1e429f"><i class="bi bi-info-circle-fill"></i>
+        <span>คืนได้เฉพาะรายการที่ <b>ยืม</b> เท่านั้น &middot; รายการที่ <b>เบิก</b> ถือว่าจ่ายออกถาวรไปแล้ว จึงไม่แสดงในหน้านี้</span></div>
+      </div>
+
+      <div class="card card-body mb-3">
+        <div class="card-head-row mb-3">
+          <div class="section-title mb-0">รายการยืมที่ค้างอยู่</div>
+          <span class="status-badge status-badge--warning"><span class="status-badge__dot"></span><span id="loanCount">0</span> รายการ</span>
+        </div>
+        <div class="item-picker" id="loanList"></div>
+      </div>
 
       <div class="card card-body">
         <div class="form-section">
-          <div class="section-title mb-3" style="font-size:14px">ค้นหารายการเบิก</div>
+          <div class="section-title mb-3" style="font-size:14px">ค้นหารายการยืม</div>
           <div class="row g-3">
-            <div class="col-md-8"><div class="search-input"><i class="bi bi-search"></i><input type="text" id="retSearch" placeholder="ค้นหาด้วยชื่อผู้เบิก / รหัสอุปกรณ์ / เลขที่อ้างอิง..."></div></div>
+            <div class="col-md-8"><div class="search-input"><i class="bi bi-search"></i><input type="text" id="retSearch" placeholder="ค้นหาด้วยชื่อผู้ยืม / รหัสอุปกรณ์ / เลขที่อ้างอิง..."></div></div>
             <div class="col-md-4"><button class="btn btn-outline-primary w-100" onclick="searchIssue()">ค้นหา</button></div>
           </div>
         </div>
 
         <div class="empty-state d-none" id="retNotFound">
           <div class="empty-state__icon"><i class="bi bi-search"></i></div>
-          <div class="empty-state__title">ไม่พบรายการเบิกที่ตรงกับคำค้นหา</div>
-          <div class="empty-state__desc">ลองค้นหาด้วยชื่อผู้เบิก รหัสอุปกรณ์ หรือเลขที่อ้างอิงอื่น</div>
+          <div class="empty-state__title">ไม่พบรายการยืมที่ตรงกับคำค้นหา</div>
+          <div class="empty-state__desc">รายการที่เบิกถาวรจะไม่แสดงที่นี่ ลองค้นด้วยชื่อผู้ยืม รหัสอุปกรณ์ หรือเลขที่อ้างอิง (BRW-...)</div>
         </div>
 
-        <div class="form-section d-none" id="consumableBlock">
-          <div class="d-flex gap-2 p-3" style="background:var(--color-warning-bg);border-radius:var(--r-md);font-size:12.5px;color:#92610a">
-            <i class="bi bi-info-circle-fill"></i>
-            <span><b id="consumableName"></b> เป็นอุปกรณ์สิ้นเปลือง (Consumable) ไม่รองรับการคืนสต๊อก เนื่องจากถือว่าถูกใช้งานแล้ว</span>
-          </div>
-        </div>
+        <div class="form-section d-none" id="consumableBlock"></div>
 
         <div class="form-section d-none" id="foundBlock">
           <div class="section-title mb-3" style="font-size:14px">รายการที่พบ</div>
@@ -125,8 +138,11 @@
             <div class="row g-3 w-100">
               <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">อุปกรณ์</div><div class="fw-700" id="foundName">-</div></div>
               <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">เลขอ้างอิง</div><div class="fw-700 num" id="foundRef">-</div></div>
-              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">ผู้เบิก</div><div class="fw-700" id="foundRequester">-</div></div>
-              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">จำนวนที่เบิก</div><div class="fw-700 num" id="foundQty">-</div></div>
+              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">ผู้ยืม</div><div class="fw-700" id="foundRequester">-</div></div>
+              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">กำหนดคืน</div><div class="fw-700" id="foundDue">-</div></div>
+            </div>
+            <div class="row g-3 w-100 mt-0">
+              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">จำนวนที่ยืม</div><div class="fw-700 num" id="foundQty">-</div></div>
             </div>
           </div>
         </div>
@@ -174,51 +190,67 @@
 <script>
 $('#retDate').val(new Date().toISOString().split('T')[0]);
 
-// Small mock issue log to search against (no backend yet -- consistent with the
-// same transactions already referenced in js/data.js's movement history).
-var ISSUED_RECORDS = [
-  { ref: 'ISS-2026-0311', code: 'IT-MOU-001', requester: 'กมล ศรีสุข (IT Support)', qty: 5 },
-  { ref: 'ISS-2026-0300', code: 'IT-KEY-001', requester: 'ทีมบัญชี', qty: 2 },
-  { ref: 'ISS-2026-0315', code: 'IT-SSD-001', requester: 'ทีม IT (อัปเกรดเครื่อง)', qty: 6 }
-];
+// Only ยืม can be returned. เบิก is a permanent deduction, so it is deliberately
+// NOT searchable here -- outstandingLoans() reads the borrow deployments from
+// js/data.js, which is the single source of truth for what is still out on loan.
 var currentRecord = null;
+
+function renderOutstanding() {
+  var loans = outstandingLoans();
+  var $list = $('#loanList').empty();
+  $('#loanCount').text(loans.length);
+  if (!loans.length) {
+    $list.html('<div class="text-muted-2" style="font-size:13px">ไม่มีรายการยืมค้างอยู่</div>');
+    return;
+  }
+  loans.forEach(function (l) {
+    $list.append(
+      '<div class="item-picker-row" data-ref="' + l.dep.txRef + '">' +
+        itemThumbHtml(l.item, '38px', '16px') +
+        '<div><div class="item-picker-row__name">' + l.item.name + '</div>' +
+        '<div class="item-picker-row__code">' + l.dep.holder + ' &middot; ' + l.dep.txRef + '</div></div>' +
+        '<div class="item-picker-row__stock num">' + l.dep.qty + ' ' + l.item.unit +
+        '<div class="text-faint" style="font-size:11px">คืน ' + (l.dep.due || '-') + '</div></div>' +
+      '</div>'
+    );
+  });
+  $list.find('.item-picker-row').on('click', function () {
+    $('#retSearch').val($(this).data('ref'));
+    searchIssue();
+  });
+}
 
 function searchIssue() {
   var q = $('#retSearch').val().trim().toLowerCase();
   if (!q) { showToast('warning', 'กรุณาระบุข้อมูลสำหรับค้นหา'); return; }
 
-  var record = ISSUED_RECORDS.find(function (r) {
-    var item = findInventoryItem(r.code);
-    return r.ref.toLowerCase().indexOf(q) > -1 ||
-           r.requester.toLowerCase().indexOf(q) > -1 ||
-           r.code.toLowerCase().indexOf(q) > -1 ||
-           (item && item.name.toLowerCase().indexOf(q) > -1);
+  var match = outstandingLoans().find(function (l) {
+    return l.dep.txRef.toLowerCase().indexOf(q) > -1 ||
+           l.dep.holder.toLowerCase().indexOf(q) > -1 ||
+           l.item.code.toLowerCase().indexOf(q) > -1 ||
+           l.item.name.toLowerCase().indexOf(q) > -1;
   });
 
   $('#foundBlock, #detailBlock, #consumableBlock, #retNotFound, #confirmReturnBtn').addClass('d-none');
   currentRecord = null;
 
-  if (!record) {
+  if (!match) {
     $('#retNotFound').removeClass('d-none');
     return;
   }
 
-  var item = findInventoryItem(record.code);
-  currentRecord = record;
+  var item = match.item;
+  currentRecord = { ref: match.dep.txRef, code: item.code, requester: match.dep.holder, qty: match.dep.qty, due: match.dep.due };
   $('#foundName').text(item.name);
-  $('#foundRef').text(record.ref);
-  $('#foundRequester').text(record.requester);
-  $('#foundQty').text(record.qty + ' ' + item.unit);
-  $('#retQty').attr('max', record.qty).val(record.qty);
-  $('#foundBlock').removeClass('d-none');
-
-  if (item.category === 'Consumable' || item.category === 'Cable') {
-    $('#consumableName').text(item.name);
-    $('#consumableBlock').removeClass('d-none');
-  } else {
-    $('#detailBlock, #confirmReturnBtn').removeClass('d-none');
-  }
+  $('#foundRef').text(match.dep.txRef);
+  $('#foundRequester').text(match.dep.holder + ' (' + match.dep.dept + ')');
+  $('#foundQty').text(match.dep.qty + ' ' + item.unit);
+  $('#foundDue').text(match.dep.due || '-');
+  $('#retQty').attr('max', match.dep.qty).val(match.dep.qty);
+  $('#foundBlock, #detailBlock, #confirmReturnBtn').removeClass('d-none');
 }
+
+renderOutstanding();
 
 function confirmReturn() {
   if (!currentRecord) return;

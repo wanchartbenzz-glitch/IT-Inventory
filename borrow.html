@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>เบิกอุปกรณ์ - IT Inventory</title>
+<title>ยืมอุปกรณ์ - IT Inventory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,8 +28,8 @@
   <div class="sidebar__group">
     <div class="sidebar__group-label">การดำเนินการ</div>
     <a href="receive.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
-    <a href="issue.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
-    <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
+    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+    <a href="borrow.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
     <a href="return.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
   </div>
   <div class="sidebar__group">
@@ -99,12 +99,12 @@
 <!-- /shell:header -->
 
     <main class="app-main" style="max-width:900px;padding-bottom:100px">
-      <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">เบิกอุปกรณ์</span></div>
-      <div class="page-header"><div><h1 class="page-header__title">เบิกอุปกรณ์</h1><p class="page-header__desc">จ่ายออกถาวร ตัดสต๊อกทันที ไม่ต้องนำมาคืน</p></div></div>
+      <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">ยืมอุปกรณ์</span></div>
+      <div class="page-header"><div><h1 class="page-header__title">ยืมอุปกรณ์</h1><p class="page-header__desc">ยืมชั่วคราว มีกำหนดคืน อุปกรณ์จะกลับเข้าสต๊อกเมื่อคืน</p></div></div>
 
-      <div class="card card-body mb-3" style="background:var(--color-danger-bg);border-color:#f7c4c4">
-        <div class="d-flex gap-2" style="font-size:12.5px;color:#9b1c1c"><i class="bi bi-exclamation-triangle-fill"></i>
-        <span><b>เบิก</b> = ตัดออกจากสต๊อกถาวร ไม่สามารถคืนได้ &middot; ถ้าเป็นการนำไปใช้ชั่วคราวแล้วต้องนำมาคืน ให้ใช้เมนู <a href="borrow.html" style="color:#9b1c1c;text-decoration:underline">ยืมอุปกรณ์</a> แทน</span></div>
+      <div class="card card-body mb-3" style="background:var(--color-warning-bg);border-color:#fbe3ad">
+        <div class="d-flex gap-2" style="font-size:12.5px;color:#92610a"><i class="bi bi-info-circle-fill"></i>
+        <span><b>ยืม</b> = ตัดสต๊อกชั่วคราวและต้องนำมาคืน &middot; ถ้าเป็นการจ่ายออกถาวรให้ใช้เมนู <a href="issue.html" style="color:#92610a;text-decoration:underline">เบิกอุปกรณ์</a> แทน</span></div>
       </div>
 
       <div class="search-input mb-3"><i class="bi bi-search"></i><input type="text" id="issueSearch" placeholder="ค้นหา Mouse / Keyboard / SSD..."></div>
@@ -112,21 +112,23 @@
       <!-- Quick add catalog -->
       <div class="item-picker mb-4" id="issuePicker"></div>
 
-      <div class="section-title mb-2">รายการที่เลือก (<span id="cartCount">0</span>)</div>
+      <div class="section-title mb-2">รายการที่ยืม (<span id="cartCount">0</span>)</div>
       <div id="cartList"></div>
       <div class="empty-state" id="cartEmpty">
         <div class="empty-state__icon"><i class="bi bi-cart3"></i></div>
-        <div class="empty-state__title">ยังไม่มีรายการเบิก</div>
-        <div class="empty-state__desc">ค้นหาและกด "+ เพิ่ม" เพื่อเลือกอุปกรณ์ที่ต้องการเบิก</div>
+        <div class="empty-state__title">ยังไม่มีรายการยืม</div>
+        <div class="empty-state__desc">ค้นหาและกด "+ เพิ่ม" เพื่อเลือกอุปกรณ์ที่ต้องการยืม</div>
       </div>
 
       <div class="card card-body mt-4">
-        <div class="section-title mb-3">ข้อมูลผู้เบิก</div>
+        <div class="section-title mb-3">ข้อมูลผู้ยืม</div>
         <div class="row g-3">
-          <div class="col-md-6"><label class="form-label">ผู้เบิก <span class="required">*</span></label><input class="form-control" id="reqName" placeholder="ชื่อ-นามสกุล" value="สมชาย ใจดี"></div>
+          <div class="col-md-6"><label class="form-label">ผู้ยืม <span class="required">*</span></label><input class="form-control" id="reqName" placeholder="ชื่อ-นามสกุล" value="สมชาย ใจดี"></div>
           <div class="col-md-6"><label class="form-label">แผนก <span class="required">*</span></label><select class="form-select" id="reqDept"><option>แผนก IT</option><option>บัญชี</option><option>ขาย</option><option>ทรัพยากรบุคคล</option></select></div>
-          <div class="col-md-6"><label class="form-label">เหตุผล</label><select class="form-select"><option>ใช้งานทั่วไป/ประจำ</option><option>อุปกรณ์ชำรุด</option><option>พนักงานใหม่</option><option>โครงการเฉพาะกิจ</option></select></div>
-          <div class="col-md-6"><label class="form-label">หมายเหตุ</label><input class="form-control" placeholder="งานซ่อม/ปรับปรุง"></div>
+          <div class="col-md-6"><label class="form-label">กำหนดคืน <span class="required">*</span></label><input type="date" class="form-control" id="dueDate"></div>
+          <div class="col-md-6"><label class="form-label">สถานที่ใช้งาน</label><input class="form-control" id="useLocation" placeholder="เช่น ห้องประชุม 2, อาคาร A ชั้น 3"></div>
+          <div class="col-md-6"><label class="form-label">เหตุผล</label><select class="form-select"><option>ใช้งานชั่วคราว</option><option>ยืมไปประชุม/อบรม</option><option>ยืมไปทดสอบ</option><option>ยืมไปงานนอกสถานที่</option></select></div>
+          <div class="col-md-6"><label class="form-label">หมายเหตุ</label><input class="form-control" placeholder="รายละเอียดเพิ่มเติม"></div>
         </div>
       </div>
     </main>
@@ -135,7 +137,7 @@
 
 <div class="cart-summary-bar">
   <span><b id="cartCount2">0</b> รายการ</span>
-  <button class="btn btn-primary" id="confirmIssueBtn" disabled><span class="btn-label">ยืนยันการเบิก <i class="bi bi-arrow-right"></i></span></button>
+  <button class="btn btn-primary" id="confirmIssueBtn" disabled><span class="btn-label">ยืนยันการยืม <i class="bi bi-arrow-right"></i></span></button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -160,7 +162,7 @@ function renderIssuePicker(filter) {
         '<div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div>' +
         '<div><div class="item-picker-row__name">' + item.name + '</div><div class="item-picker-row__code">' + item.code + '</div></div>' +
         '<div class="item-picker-row__stock num">' + (outOfStock ? 'หมดสต๊อก' : 'เหลือ ' + item.stock + ' ' + item.unit) + '</div>' +
-        '<button class="btn btn-soft btn-sm ms-2 add-to-cart"' + (outOfStock ? ' disabled title="หมดสต๊อก ไม่สามารถเบิกได้"' : '') + '>+ เพิ่ม</button>' +
+        '<button class="btn btn-soft btn-sm ms-2 add-to-cart"' + (outOfStock ? ' disabled title="หมดสต๊อก ไม่สามารถยืมได้"' : '') + '>+ เพิ่ม</button>' +
       '</div>'
     );
     $picker.append($row);
@@ -168,6 +170,11 @@ function renderIssuePicker(filter) {
 }
 $('#issueSearch').on('input', function () { renderIssuePicker($(this).val()); });
 renderIssuePicker('');
+
+// ยืมต้องมีกำหนดคืนเสมอ ตั้งค่าเริ่มต้นเป็นอีก 7 วัน
+var due = new Date();
+due.setDate(due.getDate() + 7);
+$('#dueDate').val(due.toISOString().split('T')[0]);
 
 $(document).on('click', '.add-to-cart', function () {
   var $row = $(this).closest('.item-picker-row');
@@ -198,7 +205,7 @@ function renderCart() {
         '<div class="cart-item__body">' +
           '<div class="cart-item__name">' + it.name + '</div>' +
           '<div class="cart-item__code">' + it.code + '</div>' +
-          '<div class="cart-item__remaining">เหลือหลังเบิก: <b class="num remain-text">' + remaining + '</b> ' + it.unit + '</div>' +
+          '<div class="cart-item__remaining">เหลือหลังยืม: <b class="num remain-text">' + remaining + '</b> ' + it.unit + '</div>' +
         '</div>' +
         '<div class="qty-stepper">' +
           '<button type="button" data-step="-1">-</button>' +
@@ -230,25 +237,27 @@ $(document).on('click', '.cart-remove', function () {
 $('#confirmIssueBtn').on('click', function () {
   var keys = Object.keys(cart);
   if (!keys.length) return;
+  if (!$('#dueDate').val()) { showToast('warning', 'กรุณาระบุกำหนดคืน'); $('#dueDate').focus(); return; }
   var rows = keys.map(function (code) {
     var it = cart[code];
     return '<div style="display:flex;justify-content:space-between;padding:4px 0"><span>' + it.name + '</span><span><b>' + it.qty + '</b> ' + it.unit + ' &rarr; เหลือ ' + (it.stock - it.qty) + '</span></div>';
   }).join('');
 
   Swal.fire({
-    title: 'ยืนยันการเบิกอุปกรณ์?',
+    title: 'ยืนยันการยืมอุปกรณ์?',
     html: '<div style="text-align:left;font-size:13.5px">' + rows + '</div>' +
-          '<hr><div style="text-align:left;font-size:13px;color:#64748b">ผู้เบิก: ' + $('#reqName').val() + ' &middot; ' + $('#reqDept').val() + '</div>',
+          '<hr><div style="text-align:left;font-size:13px;color:#64748b">ผู้ยืม: ' + $('#reqName').val() + ' &middot; ' + $('#reqDept').val() +
+          '<br>กำหนดคืน: <b style="color:#b45309">' + ($('#dueDate').val() || '-') + '</b></div>',
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#2563eb',
     cancelButtonColor: '#94a3b8',
-    confirmButtonText: 'ยืนยันการเบิก',
+    confirmButtonText: 'ยืนยันการยืม',
     cancelButtonText: 'ยกเลิก',
     reverseButtons: true
   }).then(function (result) {
     if (result.isConfirmed) {
-      showToast('success', 'เบิกอุปกรณ์สำเร็จ');
+      showToast('success', 'บันทึกการยืมสำเร็จ');
       cart = {};
       renderCart();
       setTimeout(function () { location.href = 'index.html'; }, 900);

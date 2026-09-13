@@ -27,9 +27,14 @@
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">การดำเนินการ</div>
-    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
     <a href="receive.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
+    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+    <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
     <a href="return.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ตรวจสอบ</div>
+    <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -229,7 +234,7 @@ function renderInventory() {
     var ariaLabel = item.name + ' ' + item.code + ' คงเหลือ ' + item.stock + ' ' + item.unit + ' ' + st.label + ' ดูรายละเอียด';
     var $row = $(
       '<tr data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" style="cursor:pointer" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
-        '<td><div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div></td>' +
+        '<td>' + itemThumbHtml(item, '38px', '16px') + '</td>' +
         '<td class="num text-muted-2">' + item.code + '</td>' +
         '<td><div class="fw-700">' + item.name + '</div><div class="text-muted-2" style="font-size:11.5px">' + (item.brand !== '-' ? item.brand + ' ' + item.model : '&nbsp;') + '</div></td>' +
         '<td>' + item.type + '</td>' +
@@ -246,7 +251,7 @@ function renderInventory() {
 
     var $card = $(
       '<div class="inv-card" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
-        '<div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div>' +
+        itemThumbHtml(item, '48px', '20px') +
         '<div class="inv-card__body">' +
           '<div class="inv-card__title">' + item.name + '</div>' +
           '<div class="inv-card__code">' + item.code + '</div>' +
