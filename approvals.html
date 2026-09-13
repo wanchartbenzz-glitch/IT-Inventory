@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -178,7 +179,7 @@ function requestCardHtml(req) {
 
   return '<div class="card card-body req-card" data-ref="' + req.ref + '" data-kind="' + req.kind + '">' +
     '<div class="req-card__head">' +
-      '<label class="req-card__pick"><input type="checkbox" class="req-select" value="' + req.ref + '" aria-label="เลือก ' + req.ref + '"></label>' +
+      '<label class="req-card__pick"><input type="checkbox" class="req-select" value="' + req.ref + '" aria-label="เลือก ' + req.ref + '"' + (shortWarning ? ' disabled title="เกินสต๊อก ต้องอนุมัติบางส่วนทีละรายการ"' : '') + '></label>' +
       (item ? itemThumbHtml(item, '40px', '18px') : '') +
       '<div class="req-card__title">' +
         '<div class="req-card__detail">' + req.detail + '</div>' +
@@ -200,11 +201,13 @@ function requestCardHtml(req) {
           ((req.kind === 'adjust' ? item.stock + req.qty : item.stock - req.qty) < item.min ? ' <span class="text-muted-2" style="font-size:12px">(ต่ำกว่า min ' + item.min + ')</span>' : '') + '</div></div>'
         : '') +
     '</div>' +
-    '<div class="req-card__reason"><b>เหตุผล:</b> ' + req.reason + '</div>' +
+    '<div class="req-card__reason"><b>เหตุผล:</b> ' + req.reason + (req.kind === 'issue' || req.kind === 'borrow' ? ' <span class="text-muted-2">· อนุมัติแล้วสต๊อกจะถูกตัดทันทีตามจำนวนที่อนุมัติ</span>' : req.kind === 'adjust' ? ' <span class="text-muted-2">· อนุมัติแล้วยอดในระบบจะถูกปรับตามผลนับ</span>' : '') + '</div>' +
     '<div class="req-card__actions">' +
       (item ? '<a href="inventory-detail.html?code=' + encodeURIComponent(item.code) + '" class="btn btn-ghost btn-sm">ดูอุปกรณ์</a>' : '') +
       '<button class="btn btn-outline-danger btn-sm req-reject" type="button">ไม่อนุมัติ</button>' +
-      '<button class="btn btn-commit btn-sm req-approve" type="button"><i class="bi bi-check-lg" aria-hidden="true"></i> อนุมัติ</button>' +
+      (shortWarning
+        ? '<button class="btn btn-commit btn-sm req-partial" type="button"><i class="bi bi-check-lg" aria-hidden="true"></i> อนุมัติบางส่วน (' + item.stock + ' ' + item.unit + ')</button>'
+        : '<button class="btn btn-commit btn-sm req-approve" type="button"><i class="bi bi-check-lg" aria-hidden="true"></i> อนุมัติ</button>') +
     '</div>' +
   '</div>';
 }
@@ -316,6 +319,26 @@ $(document).on('click', '.req-approve', function () {
     if (result.isConfirmed) {
       removeRequest(req.ref, 'approved');
     }
+  });
+});
+
+// A request for more than the shelf holds can only be approved for what exists.
+$(document).on('click', '.req-partial', function () {
+  var req = findRequest($(this).closest('.req-card').data('ref'));
+  var item = req && findInventoryItem(req.code);
+  if (!item) return;
+  Swal.fire({
+    title: 'อนุมัติบางส่วน',
+    html: '<div style="text-align:left;font-size:13.5px">' + req.detail + '<br><span style="color:#5b6b85">ขอ ' + req.qty + ' แต่มี ' + item.stock + ' ' + item.unit + ' — อนุมัติได้สูงสุด ' + item.stock + '</span></div>',
+    input: 'number', inputValue: item.stock, inputAttributes: { min: 1, max: item.stock, step: 1, inputmode: 'numeric' },
+    inputValidator: function (v) { var n = parseInt(v, 10); if (!n || n < 1) return 'ระบุจำนวนอย่างน้อย 1'; if (n > item.stock) return 'อนุมัติได้ไม่เกิน ' + item.stock + ' ' + item.unit; },
+    showCancelButton: true, confirmButtonColor: '#1d4ed8', cancelButtonColor: '#94a3b8',
+    confirmButtonText: 'อนุมัติจำนวนนี้', cancelButtonText: 'ยกเลิก', reverseButtons: true
+  }).then(function (r) {
+    if (!r.isConfirmed) return;
+    req.qty = parseInt(r.value, 10);
+    req.detail = req.detail.replace(/จำนวน \d+/, 'จำนวน ' + req.qty) + ' (อนุมัติบางส่วน)';
+    removeRequest(req.ref, 'approved');
   });
 });
 

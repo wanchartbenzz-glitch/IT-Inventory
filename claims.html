@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -129,6 +130,9 @@
         </div>
       </div>
 
+      <div class="toolbar">
+        <div class="search-input"><i class="bi bi-search" aria-hidden="true"></i><input type="search" id="claimSearch" placeholder="ค้นหาเลขเคลม / อุปกรณ์ / Serial / PO / ผู้จำหน่าย..." aria-label="ค้นหาประวัติการเคลม"></div>
+      </div>
       <div class="gap-row mb-3" role="group" aria-label="กรองตามสถานะ">
         <button class="filter-chip is-active" type="button" data-filter="">ทั้งหมด</button>
         <button class="filter-chip" type="button" data-filter="open">รอส่งเคลม</button>
@@ -244,7 +248,7 @@ function claimCardHtml(claim) {
       '<span class="status-badge status-badge--' + meta.badge + '"><span class="status-badge__dot"></span>' + meta.label + '</span>' +
     '</div>' +
     '<div class="req-card__grid">' +
-      '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-grid__value num">' + claim.poRef + '</div></div>' +
+      '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-grid__value">' + poLink(claim.poRef) + '</div></div>' +
       '<div><div class="lot-grid__label">ล็อต</div><div class="lot-grid__value num">' + claim.lotRef + '</div></div>' +
       '<div><div class="lot-grid__label">ผู้จำหน่าย</div><div class="lot-grid__value">' + claim.supplier + '</div></div>' +
       (claim.closed
@@ -264,7 +268,13 @@ function claimCardHtml(claim) {
 }
 
 function renderClaims() {
-  var shown = claims.filter(function (c) { return !activeFilter || c.status === activeFilter; });
+  var q = ($('#claimSearch').val() || '').trim().toLowerCase();
+  var shown = claims.filter(function (c) {
+    if (activeFilter && c.status !== activeFilter) return false;
+    if (!q) return true;
+    var item = findInventoryItem(c.code);
+    return [c.claimRef, c.code, item && item.name, c.serial, c.poRef, c.lotRef, c.supplier, c.issue].join(' ').toLowerCase().indexOf(q) > -1;
+  });
   $('#claimList').html(shown.map(claimCardHtml).join(''));
   $('#claimEmpty').toggleClass('d-none', shown.length > 0);
 
@@ -274,6 +284,7 @@ function renderClaims() {
   });
 }
 
+$('#claimSearch').on('input', renderClaims);
 $('.filter-chip').on('click', function () {
   $('.filter-chip').removeClass('is-active');
   $(this).addClass('is-active');
@@ -342,7 +353,7 @@ function refreshLotInfo() {
     return;
   }
 
-  $('#clPo').text(lot.poRef);
+  $('#clPo').html(poLink(lot.poRef));
   $('#clSupplier').text(lot.supplier);
   $('#clRecvDate').text(lot.date);
   $('#clPrice').text(lot.unitPrice);

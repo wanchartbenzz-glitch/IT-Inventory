@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -101,7 +102,7 @@
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">คืนอุปกรณ์</span></div>
       <div class="page-header"><div><h1 class="page-header__title">คืนอุปกรณ์</h1><p class="page-header__desc">รับคืนอุปกรณ์ที่ยืมไป และนำกลับเข้าสต๊อก</p></div></div>
 
-      <div class="card card-body mb-3" style="background:var(--color-primary-light);border-color:#c7dafb">
+      <div class="card card-body mb-3" style="background:var(--color-primary-light);border-color:var(--color-info-border)">
         <div class="d-flex gap-2" style="font-size:12.5px;color:#1e429f"><i class="bi bi-info-circle-fill"></i>
         <span>คืนได้เฉพาะรายการที่ <b>ยืม</b> เท่านั้น &middot; รายการที่ <b>เบิก</b> ถือว่าจ่ายออกถาวรไปแล้ว จึงไม่แสดงในหน้านี้</span></div>
       </div>
@@ -130,7 +131,7 @@
 
       <div class="card card-body">
         <div class="form-section">
-          <h2 class="section-title mb-3" style="font-size:14px">ค้นหารายการยืม</h2>
+          <h2 class="section-title mb-3" style="font-size:14px">หรือค้นหารายการยืม</h2>
           <div class="row g-3">
             <div class="col-md-8"><div class="search-input"><i class="bi bi-search"></i><input type="search" id="retSearch" placeholder="ค้นหาด้วยชื่อผู้ยืม / รหัสอุปกรณ์ / เลขที่อ้างอิง..." aria-label="ค้นหารายการยืม"></div></div>
             <div class="col-md-4"><button class="btn btn-outline-primary w-100" onclick="searchIssue()">ค้นหา</button></div>
@@ -147,7 +148,7 @@
 
         <div class="form-section d-none" id="foundBlock">
           <h2 class="section-title mb-3" style="font-size:14px">รายการที่พบ</h2>
-          <div class="conversion-box" style="background:var(--color-primary-light);border-color:#c7dafb">
+          <div class="conversion-box" style="background:var(--color-primary-light);border-color:var(--color-info-border)">
             <div class="row g-3 w-100">
               <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">อุปกรณ์</div><div class="fw-700" id="foundName">-</div></div>
               <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">เลขอ้างอิง</div><div class="fw-700 num" id="foundRef">-</div></div>
@@ -176,7 +177,7 @@
               </select>
               <div class="invalid-feedback">กรุณาเลือกสภาพอุปกรณ์</div>
             </div>
-            <div class="col-md-6"><label class="form-label" for="retReason">เหตุผลการคืน</label><select class="form-select" id="retReason"><option>ไม่ได้ใช้งานแล้ว</option><option>เปลี่ยนอุปกรณ์ใหม่</option><option>ลาออก/ย้ายแผนก</option></select></div>
+            <div class="col-md-6"><label class="form-label" for="retReason">เหตุผลการคืน</label><select class="form-select" id="retReason"><option value="" selected disabled>เลือกเหตุผล…</option><option>ไม่ได้ใช้งานแล้ว</option><option>เปลี่ยนอุปกรณ์ใหม่</option><option>ลาออก/ย้ายแผนก</option></select></div>
             <div class="col-12"><label class="form-label" for="retNote">หมายเหตุ</label><textarea class="form-control" id="retNote" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
           </div>
         </div>
@@ -187,7 +188,7 @@
         </div>
       </div>
 
-      <div class="card card-body mt-3" style="background:var(--color-warning-bg);border-color:#fbe3ad">
+      <div class="card card-body mt-3" style="background:var(--color-warning-bg);border-color:var(--color-warning-border)">
         <div class="d-flex gap-2" style="font-size:12.5px;color:var(--color-warning-text)"><i class="bi bi-info-circle-fill" aria-hidden="true"></i> อุปกรณ์สิ้นเปลือง (Consumable) เช่น สายเคเบิล เทป หัวต่อ ไม่รองรับการคืนสต๊อก เนื่องจากถือว่าถูกใช้งานแล้ว</div>
       </div>
     </main>

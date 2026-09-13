@@ -142,6 +142,10 @@ button { font-family: inherit; }
   .app-main { padding: var(--sp-4) var(--sp-4) var(--sp-8); }
 }
 
+/* A grid item's min-width:auto lets a wide table widen the whole column past the
+   viewport even when a descendant scrolls; pin both column and main to the track. */
+.app-main-col, .app-main { min-width: 0; }
+
 /* ---------- 4. Sidebar ---------- */
 .sidebar {
   background: var(--nav-bg);
@@ -155,8 +159,7 @@ button { font-family: inherit; }
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
-  padding: var(--sp-5) 0 var(--sp-6);
-  transition: width var(--dur) var(--ease);
+  padding: var(--sp-4) 0 var(--sp-5);
   z-index: 40;
 }
 .sidebar__brand {
@@ -272,8 +275,8 @@ button { font-family: inherit; }
 }
 .header-search:focus-within { border-color: var(--color-primary); background: var(--color-surface); box-shadow: 0 0 0 3px rgba(37,99,235,.18); }
 .header-search input { border: none; background: none; outline: none; flex: 1; font: inherit; color: var(--color-text); }
-.header-search-mobile { display: none; }
-@media (max-width: 575px) { .header-search-mobile { display: inline-flex; } }
+.header-actions .header-search-mobile { display: none; }
+@media (max-width: 575px) { .header-actions .header-search-mobile { display: inline-flex; } }
 @media (max-width: 575px) { .header-search { display: none; } }
 
 /* margin-left:auto keeps this flush right even when .header-search is hidden on mobile */
@@ -361,8 +364,9 @@ h2.section-title, h3.section-title { margin-top: 0; }
 .section-desc { font-size: 12.5px; color: var(--color-muted); }
 
 /* ---------- 9. Quick actions ---------- */
-.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-6); }
-@media (max-width: 767px) { .quick-actions { grid-template-columns: 1fr; } }
+.quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-6); }
+@media (max-width: 991px) { .quick-actions { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 575px) { .quick-actions { grid-template-columns: 1fr; } }
 .quick-action {
   display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-5);
   border-radius: var(--r-lg); border: 1px solid var(--color-border); background: var(--color-surface);
@@ -374,6 +378,7 @@ h2.section-title, h3.section-title { margin-top: 0; }
 .quick-action--issue .quick-action__icon { background: linear-gradient(135deg, var(--color-danger), var(--color-orange)); }
 .quick-action--receive .quick-action__icon { background: linear-gradient(135deg, var(--color-success), var(--color-teal)); }
 .quick-action--return .quick-action__icon { background: linear-gradient(135deg, var(--color-primary), var(--color-indigo)); }
+.quick-action--borrow .quick-action__icon { background: linear-gradient(135deg, var(--color-warning), var(--color-orange)); }
 .quick-action__title { font-weight: 700; font-size: 14.5px; color: var(--color-text); }
 .quick-action__sub { font-size: 12px; color: var(--color-muted); }
 .quick-action__arrow { margin-left: auto; color: var(--color-faint); }
@@ -404,9 +409,8 @@ a.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); te
   .kpi-card__value { font-size: 22px; }
   .kpi-card__trend { margin-left: auto; flex-shrink: 0; }
 }
-.kpi-card__trend { font-size: 12px; font-weight: 600; }
-.kpi-card__trend.up { color: var(--color-success-text); }
-.kpi-card__trend.down { color: var(--color-danger-text); }
+/* Shares of the catalogue, not trends — so no up/down colour. */
+.kpi-card__trend { font-size: 12px; font-weight: 600; color: var(--color-muted); }
 
 /* ---------- 11. Stock health ---------- */
 .stock-health-row { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--sp-4); margin-bottom: var(--sp-6); }
@@ -421,10 +425,10 @@ a.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); te
 .donut-ring__label { font-size: 11px; color: var(--color-muted); font-weight: 600; }
 .legend-row { display: flex; align-items: center; gap: var(--sp-2); font-size: 12.5px; color: var(--color-muted); }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.critical-item-row { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-2) 0; border-bottom: 1px dashed var(--color-border); font-size: 13px; transition: padding-left var(--dur) var(--ease); }
+.critical-item-row { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-2) 0; border-bottom: 1px dashed var(--color-border); font-size: 13px; transition: transform var(--dur) var(--ease); }
 .critical-item-row:last-of-type { border-bottom: none; }
 .critical-item-row .qty { font-weight: 700; color: var(--color-danger-text); font-family: "Inter", sans-serif; }
-a.critical-item-row:hover { padding-left: 4px; color: var(--color-primary); }
+a.critical-item-row:hover { transform: translateX(4px); color: var(--color-primary); }
 
 /* ---------- 12. Category chart ---------- */
 .category-bar-row { margin-bottom: var(--sp-3); }
@@ -442,7 +446,7 @@ a.critical-item-row:hover { padding-left: 4px; color: var(--color-primary); }
 .activity-item--return .activity-item__icon { background: var(--color-primary); }
 .activity-item--adjust .activity-item__icon { background: var(--color-purple-light); color: var(--color-purple); }
 .activity-item__title { font-size: 13px; font-weight: 600; }
-.activity-item__meta { font-size: 11.5px; color: var(--color-muted); margin-top: 2px; }
+.activity-item__meta { font-size: 12.5px; color: var(--color-muted); margin-top: 2px; }
 .activity-item__qty { margin-left: auto; font-weight: 700; font-family: "Inter", sans-serif; font-size: 13.5px; flex-shrink: 0; }
 .activity-item__qty.plus { color: var(--color-success); }
 .activity-item__qty.minus { color: var(--color-danger); }
@@ -456,7 +460,8 @@ a.critical-item-row:hover { padding-left: 4px; color: var(--color-primary); }
 /* ---------- 15. Toolbar / filters ---------- */
 .toolbar { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; margin-bottom: var(--sp-4); }
 .search-input { flex: 1; min-width: 220px; display: flex; align-items: center; gap: var(--sp-2); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--r-sm); padding: 9px var(--sp-3); }
-.search-input input { border: none; outline: none; flex: 1; font: inherit; background: none; }
+.search-input input { border: none; outline: none; flex: 1; font: inherit; background: none; min-width: 0; }
+.search-input:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(37,99,235,.18); }
 .search-input .bi { color: var(--color-faint); }
 .filter-select { border: 1px solid var(--color-border); border-radius: var(--r-sm); padding: 9px var(--sp-3); font-size: 13px; background: var(--color-surface); color: var(--color-text); }
 .badge-soon { font-size: 12px; padding: 3px 8px; border-radius: var(--r-full); background: var(--color-bg); color: var(--color-muted); border: 1px dashed var(--color-border); }
@@ -481,7 +486,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .deploy-row:last-child { border-bottom: none; }
 .deploy-row__main { flex: 1; min-width: 0; }
 .deploy-row__holder { font-weight: 700; font-size: 13.5px; }
-.deploy-row__meta { font-size: 11.5px; color: var(--color-muted); margin-top: 2px; }
+.deploy-row__meta { font-size: 12.5px; color: var(--color-muted); margin-top: 2px; }
 .deploy-row__qty { font-weight: 700; font-family: "Inter", sans-serif; font-size: 13.5px; flex-shrink: 0; text-align: right; }
 
 .lot-card { border: 1px solid var(--color-border); border-radius: var(--r-md); padding: var(--sp-4); background: var(--color-surface); }
@@ -667,7 +672,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
    Picking the lot is what keeps the PO trail intact, so it sits inside the cart
    row itself rather than behind a dialog nobody would open. */
 .cart-item__lot { margin-top: var(--sp-2); display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
-.cart-item__lot label { font-size: 11.5px; color: var(--color-muted); white-space: nowrap; }
+.cart-item__lot label { font-size: 12.5px; color: var(--color-muted); white-space: nowrap; }
 .lot-select {
   font-size: 12px; padding: 6px 10px; min-height: 36px; max-width: 100%;
   border: 1px solid var(--color-border); border-radius: var(--r-sm);
@@ -676,7 +681,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 @media (max-width: 575px) { .lot-select { min-height: 44px; } }
 .lot-note { font-size: 12px; color: var(--color-muted); }
 .cart-item__qty-fixed { font-weight: 700; font-size: 13.5px; white-space: nowrap; flex-shrink: 0; }
-.lot-note--warn { color: var(--color-warning); font-weight: 600; }
+.lot-note--warn { color: var(--color-warning-text); font-weight: 600; }
 
 .serial-picker { margin-top: var(--sp-2); border: 0; padding: 0; min-width: 0; }
 .serial-picker__label { font-size: 12px; color: var(--color-muted); margin-bottom: 5px; float: none; width: auto; padding: 0; line-height: 1.4; }
@@ -684,7 +689,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .serial-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .serial-chip {
   display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;
-  font-family: "Inter", sans-serif; font-size: 11.5px; padding: 6px 10px; min-height: 38px;
+  font-family: "Inter", sans-serif; font-size: 12px; padding: 6px 10px; min-height: 38px;
   border: 1px solid var(--color-border); border-radius: var(--r-full); background: var(--color-surface);
   transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
@@ -694,7 +699,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 
 /* Serial list on the item detail page */
 .serial-tag {
-  display: inline-block; font-family: "Inter", sans-serif; font-size: 11.5px; font-weight: 600;
+  display: inline-block; font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600;
   padding: 3px 8px; border-radius: var(--r-sm); background: var(--color-bg);
   border: 1px solid var(--color-border); color: var(--color-text); margin: 0 4px 4px 0;
 }
@@ -714,7 +719,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .action-tile__head { display: flex; align-items: center; gap: var(--sp-2); font-size: 18px; }
 .action-tile__value { font-size: 24px; font-weight: 800; }
 .action-tile__label { font-weight: 700; font-size: 13px; margin-top: 2px; }
-.action-tile__detail { font-size: 11.5px; color: var(--color-muted); margin-top: var(--sp-2); line-height: 1.5; }
+.action-tile__detail { font-size: 12.5px; color: var(--color-muted); margin-top: var(--sp-2); line-height: 1.5; }
 .action-tile--danger { border-left-color: var(--color-danger); } .action-tile--danger .action-tile__head { color: var(--color-danger); }
 .action-tile--warning { border-left-color: var(--color-warning); } .action-tile--warning .action-tile__head { color: #92610a; }
 .action-tile--primary { border-left-color: var(--color-primary); } .action-tile--primary .action-tile__head { color: var(--color-primary); }
@@ -752,6 +757,8 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .receipt__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
 @media (max-width: 575px) { .receipt__actions .btn { flex: 1 1 auto; } }
 
+@media (max-width: 575px) { .count-page .page-header__desc { display: none; } .count-page .page-header { margin-bottom: var(--sp-3); } .count-page .breadcrumb-row { display: none; } }
+
 /* ---------- Restore banner (stock count) ---------- */
 .restore-banner { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; background: var(--color-info-bg); border: 1px solid var(--color-info-border); color: var(--color-info-text); border-radius: var(--r-md); padding: var(--sp-3) var(--sp-4); font-size: 13px; margin-bottom: var(--sp-4); }
 .restore-banner .btn { margin-left: auto; }
@@ -759,7 +766,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 /* Progress strip for counting: one line instead of four stacked cards on a phone */
 .count-progress { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--r-md); padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-4); }
 .count-progress__bar { flex: 1 1 160px; height: 8px; border-radius: var(--r-full); background: var(--color-bg); overflow: hidden; }
-.count-progress__fill { height: 100%; border-radius: var(--r-full); background: var(--color-success); transition: width var(--dur) var(--ease); }
+.count-progress__fill { height: 100%; width: 100%; border-radius: var(--r-full); background: var(--color-success); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease); }
 .count-progress__stat { font-size: 13px; color: var(--color-muted); white-space: nowrap; }
 .count-progress__stat b { color: var(--color-text); }
 .cnt-system { color: var(--color-muted); font-size: 12px; }
@@ -767,6 +774,49 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 
 /* Date inputs are native (mm/dd/yyyy ค.ศ.); echo the Thai date beside them */
 .date-thai { font-size: 12px; color: var(--color-muted); margin-top: 4px; min-height: 16px; }
+
+/* Lot picker as radio rows (≤3 lots): PO on line 1, balance/warranty on line 2 —
+   a <select> that reads "PO-25" on a phone throws away the decision that keeps
+   the warranty trail intact. */
+.lot-radios { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.lot-radio { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border: 1px solid var(--color-border); border-radius: var(--r-sm); cursor: pointer; background: var(--color-surface); min-height: 44px; }
+.lot-radio input { margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; }
+.lot-radio.is-picked { border-color: var(--color-primary); background: var(--color-primary-light); }
+.lot-radio__po { font-family: "Inter", sans-serif; font-weight: 700; font-size: 13px; }
+.lot-radio__meta { font-size: 12.5px; color: var(--color-muted); }
+.lot-radio__meta .warn { color: var(--color-warning-text); font-weight: 600; }
+@media (max-width: 575px) {
+  .cart-item { flex-wrap: wrap; }
+  .cart-item__body { flex-basis: 100%; }
+  .cart-item__lot { flex-direction: column; align-items: stretch; }
+  .lot-select { width: 100%; }
+  .item-picker-row__stock, .add-to-cart { white-space: nowrap; }
+  .item-picker-row__name .text-faint { display: block; }
+}
+.qty-stepper input { pointer-events: auto; }
+.po-link { font-family: "Inter", sans-serif; font-weight: 700; color: var(--color-primary); text-decoration: none; border-bottom: 1px dashed currentColor; }
+.po-link:hover { color: var(--color-primary-dark); }
+.cart-hint { font-size: 12.5px; color: var(--color-warning-text); font-weight: 600; }
+
+/* Counting mode: while a count is in progress the rest of the app — sidebar,
+   dashboard, exports — would show the very numbers the blind count hides. */
+body.is-counting .sidebar, body.is-counting .sidebar-overlay, body.is-counting .header-menu-btn,
+body.is-counting .header-search, body.is-counting .header-search-mobile, body.is-counting .icon-btn[data-panel-toggle],
+body.is-counting #cntExport, body.is-counting #historyCard { display: none !important; }
+body.is-counting .app-shell { grid-template-columns: 1fr; }
+.count-mode-pill { display: none; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; color: var(--color-info-text); background: var(--color-info-bg); border: 1px solid var(--color-info-border); border-radius: var(--r-full); padding: 6px 12px; }
+body.is-counting .count-mode-pill { display: inline-flex; }
+.count-progress.is-sticky { position: sticky; top: 0; z-index: 20; box-shadow: var(--shadow-sm); }
+.count-help summary { cursor: pointer; font-weight: 700; font-size: 13px; color: var(--color-info-text); list-style: none; display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.count-help summary::-webkit-details-marker { display: none; }
+.count-help[open] summary { margin-bottom: 6px; }
+
+.drawer-close { display: none; }
+@media (max-width: 575px) {
+  .drawer-close { display: flex; position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; align-items: center; justify-content: center; border: none; background: var(--nav-hover); color: #fff; border-radius: var(--r-sm); font-size: 20px; }
+  .sidebar { position: fixed; }
+}
+.sidebar[inert] { pointer-events: none; }
 
 /* ---------- 18. Filter chips ---------- */
 .filter-chip {
@@ -788,7 +838,7 @@ table.data-table tbody tr:hover { background: #f9fafc; }
 .activity-item--adjust .activity-item__icon { background: var(--color-purple-light); color: var(--color-purple); }
 a.activity-item:hover { background: var(--color-bg); }
 .req-card__detail { font-weight: 700; font-size: 14px; }
-.req-card__meta { font-size: 11.5px; color: var(--color-muted); margin-top: 2px; }
+.req-card__meta { font-size: 12.5px; color: var(--color-muted); margin-top: 2px; }
 .req-card__grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--sp-3);
   padding: var(--sp-3) 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);

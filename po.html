@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ใบสั่งซื้อ (PO) - IT Inventory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.min.css" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%232563eb%27/%3E%3Cpath d=%27M8 11l8-4 8 4-8 4z%27 fill=%27%23fff%27/%3E%3Cpath d=%27M8 11v9l8 4v-9z%27 fill=%27%23bfdbfe%27/%3E%3Cpath d=%27M24 11v9l-8 4v-9z%27 fill=%27%2393c5fd%27/%3E%3C/svg%3E">
+<link href="css/app.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- shell:sidebar -->
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<aside class="sidebar" id="shellSidebarAside">
+  <div class="sidebar__brand">
+    <div class="sidebar__brand-icon" aria-hidden="true"><i class="bi bi-boxes"></i></div>
+    <div class="sidebar__brand-text"><div class="sidebar__brand-title">IT INVENTORY</div>
+    <div class="sidebar__brand-sub">ระบบจัดการสต๊อกอุปกรณ์ IT</div></div>
+  </div>
+<nav aria-label="เมนูหลัก">
+  <div class="sidebar__group">
+    <a href="index.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-grid-1x2-fill"></i></span><span>Dashboard</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">การดำเนินการ</div>
+    <a href="receive.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-in-down"></i></span><span>รับเข้าอุปกรณ์</span></a>
+    <a href="issue.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-box-arrow-up"></i></span><span>เบิกอุปกรณ์</span></a>
+    <a href="borrow.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-left-right"></i></span><span>ยืมอุปกรณ์</span></a>
+    <a href="return.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-arrow-return-left"></i></span><span>คืนอุปกรณ์</span></a>
+    <a href="service.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-tools"></i></span><span>ส่งซ่อม / ตัดจำหน่าย</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ตรวจสอบ & อนุมัติ</div>
+    <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
+    <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
+    <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
+    <a href="inventory.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-hdd-stack"></i></span><span>ข้อมูลอุปกรณ์ IT</span></a>
+    <a href="categories.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-diagram-3"></i></span><span>หมวดอุปกรณ์</span></a>
+    <a href="types.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-tags"></i></span><span>ประเภทอุปกรณ์</span></a>
+    <a href="units.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-rulers"></i></span><span>หน่วยนับ</span></a>
+  </div>
+  <div class="sidebar__group">
+    <div class="sidebar__group-label">ทรัพย์สิน IT</div>
+    <span class="nav-item is-disabled" aria-disabled="true"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-pc-display"></i></span><span>IT Assets</span><span class="nav-item__soon">Coming Soon</span></span>
+  </div>
+</nav>
+  <button class="sidebar-collapse-btn" type="button" aria-label="ย่อ/ขยายเมนู" aria-expanded="true"><i class="bi bi-layout-sidebar-inset" aria-hidden="true"></i><span>ย่อเมนู</span></button>
+</aside>
+<div class="sidebar-overlay"></div>
+<!-- /shell:sidebar -->
+
+  <div class="app-main-col">
+    <!-- shell:header -->
+<header class="app-header">
+  <button class="header-menu-btn" type="button" aria-label="เปิดเมนู" aria-controls="shellSidebarAside" aria-expanded="false">
+    <i class="bi bi-list" aria-hidden="true"></i>
+  </button>
+  <div class="header-search" role="search">
+    <i class="bi bi-search" aria-hidden="true"></i>
+    <input type="search" placeholder="ค้นหาอุปกรณ์ / รหัส / รุ่น / Serial แล้วกด Enter" aria-label="ค้นหาอุปกรณ์ รหัส รุ่น หรือ Serial แล้วกด Enter">
+  </div>
+  <div class="header-actions">
+    <a class="icon-btn header-search-mobile" href="inventory.html?focus=1" aria-label="ค้นหาอุปกรณ์">
+      <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
+    <button class="icon-btn" type="button" aria-label="การแจ้งเตือน" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#notifPanel">
+      <i class="bi bi-bell" aria-hidden="true"></i><span class="icon-btn__dot" aria-hidden="true"></span>
+    </button>
+    <div class="dropdown-panel d-none" id="notifPanel" role="menu">
+      <div class="dropdown-panel__head">การแจ้งเตือน</div>
+      <div class="dropdown-panel__body">
+        <div class="text-muted-2 text-center py-3" style="font-size:12.5px">กำลังโหลดการแจ้งเตือน…</div>
+      </div>
+    </div>
+    <button class="user-chip" type="button" aria-haspopup="true" aria-expanded="false" data-panel-toggle="#userPanel">
+      <div class="user-avatar" aria-hidden="true">IT</div>
+      <div class="user-chip__text"><div class="user-chip__name">IT Support</div><div class="user-chip__role">แผนก IT</div></div>
+      <i class="bi bi-chevron-down" aria-hidden="true" style="font-size:11px;color:var(--color-muted)"></i>
+    </button>
+    <div class="dropdown-panel d-none" id="userPanel" style="width:200px" role="menu">
+      <div class="dropdown-panel__body">
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:inherit"><i class="bi bi-person" aria-hidden="true"></i>&nbsp; โปรไฟล์</a>
+        <a class="notif-row" href="#" role="menuitem" style="text-decoration:none;color:var(--color-danger-text)"><i class="bi bi-box-arrow-right" aria-hidden="true"></i>&nbsp; ออกจากระบบ</a>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- /shell:header -->
+
+    <main class="app-main" id="main">
+      <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current" id="crumb">ใบสั่งซื้อ (PO)</span></div>
+
+      <!-- List view -->
+      <div id="poListView">
+        <div class="page-header">
+          <div>
+            <h1 class="page-header__title">ใบสั่งซื้อ (PO)</h1>
+            <p class="page-header__desc">ย้อนกลับจากใบสั่งซื้อไปหาทุกชิ้นที่รับเข้ามา — อยู่ในสต๊อกกี่ชิ้น ออกไปอยู่ที่ไหน เคลมอะไรไปแล้ว ประกันหมดเมื่อไร</p>
+          </div>
+          <div class="page-header__actions">
+            <button class="btn btn-ghost" type="button" id="exportBtn"><i class="bi bi-download" aria-hidden="true"></i> ส่งออก CSV</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-input"><i class="bi bi-search" aria-hidden="true"></i><input type="search" id="poSearch" placeholder="ค้นหาเลข PO / ผู้จำหน่าย / อุปกรณ์ / Serial..." aria-label="ค้นหาใบสั่งซื้อ"></div>
+          <select class="filter-select" id="poWarranty" aria-label="กรองตามสถานะประกัน">
+            <option value="">ทุกสถานะประกัน</option>
+            <option value="active">อยู่ในประกัน</option>
+            <option value="expiring">ใกล้หมดประกัน (30 วัน)</option>
+            <option value="expired">หมดประกันแล้ว</option>
+            <option value="none">ไม่มีประกัน</option>
+          </select>
+        </div>
+
+        <div id="poCards"></div>
+        <div class="empty-state d-none" id="poEmpty">
+          <div class="empty-state__icon"><i class="bi bi-receipt" aria-hidden="true"></i></div>
+          <div class="empty-state__title">ไม่พบใบสั่งซื้อที่ตรงกับคำค้น</div>
+          <div class="empty-state__desc">ลองค้นด้วยเลข PO, ชื่อผู้จำหน่าย, ชื่ออุปกรณ์ หรือ Serial</div>
+        </div>
+      </div>
+
+      <!-- Detail view -->
+      <div id="poDetailView" class="d-none">
+        <div class="page-header">
+          <div class="d-flex align-items-center gap-3">
+            <a href="po.html" class="btn btn-ghost btn-sm" style="width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center" aria-label="กลับไปรายการ PO"><i class="bi bi-arrow-left" aria-hidden="true"></i></a>
+            <div>
+              <h1 class="page-header__title num" id="dPo">PO-…</h1>
+              <p class="page-header__desc" id="dSub">-</p>
+            </div>
+          </div>
+          <div class="page-header__actions">
+            <a class="btn btn-soft" id="dClaimBtn" href="claims.html"><i class="bi bi-shield-check" aria-hidden="true"></i> เปิดเคลมจาก PO นี้</a>
+          </div>
+        </div>
+
+        <div class="kpi-grid mb-4">
+          <div class="kpi-card kpi-card--total"><div class="kpi-card__icon"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i></div><div><div class="kpi-card__value num" id="dReceived">0</div><div class="kpi-card__label">รับเข้าทั้งหมด</div></div></div>
+          <div class="kpi-card kpi-card--available"><div class="kpi-card__icon"><i class="bi bi-box-seam" aria-hidden="true"></i></div><div><div class="kpi-card__value num" id="dRemaining">0</div><div class="kpi-card__label">ยังอยู่ในสต๊อก</div></div></div>
+          <div class="kpi-card kpi-card--low"><div class="kpi-card__icon"><i class="bi bi-geo-alt" aria-hidden="true"></i></div><div><div class="kpi-card__value num" id="dDeployed">0</div><div class="kpi-card__label">ออกไปใช้งาน</div></div></div>
+          <div class="kpi-card kpi-card--out"><div class="kpi-card__icon"><i class="bi bi-shield-check" aria-hidden="true"></i></div><div><div class="kpi-card__value num" id="dClaims">0</div><div class="kpi-card__label">เคลม</div></div></div>
+        </div>
+
+        <div class="card card-body mb-4">
+          <h2 class="section-title mb-1">รายการที่รับเข้าจาก PO นี้</h2>
+          <div class="section-desc mb-3">แต่ละล็อตคือหนึ่งบรรทัดในใบสั่งซื้อ — ราคา ประกัน และ Serial ที่ยังอยู่ในสต๊อก</div>
+          <div id="dLines"></div>
+        </div>
+
+        <div class="grid-detail">
+          <div class="card card-body">
+            <h2 class="section-title mb-1">ออกไปอยู่ที่ไหน</h2>
+            <div class="section-desc mb-3">ทุกการเบิก/ยืมที่ตัดจากล็อตของ PO นี้</div>
+            <div id="dDeployments"></div>
+          </div>
+          <div class="card card-body">
+            <h2 class="section-title mb-1">ประวัติการเคลม</h2>
+            <div class="section-desc mb-3">เรื่องเคลมที่อ้าง PO นี้</div>
+            <div id="dClaimList"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/data.js"></script>
+<script>
+var POS = poIndex();
+
+// Worst warranty state across a PO's lots drives its badge.
+function poWarranty(po) {
+  var states = po.lines.map(function (l) { return warrantyState(l.lot); });
+  var rank = { expired: 3, expiring: 2, active: 1, none: 0 };
+  return states.sort(function (a, b) { return rank[b.state] - rank[a.state]; })[0] || { state: 'none', label: 'ไม่มีข้อมูลประกัน' };
+}
+function warrantyBadge(w) {
+  var b = w.state === 'expired' ? 'danger' : w.state === 'expiring' ? 'warning' : w.state === 'active' ? 'success' : 'neutral';
+  return '<span class="status-badge status-badge--' + b + '"><span class="status-badge__dot"></span>' + w.label + '</span>';
+}
+function poSearchText(po) {
+  return [po.poRef, po.supplier, po.date].concat(po.lines.map(function (l) {
+    return [l.item.name, l.item.code, l.lot.lotRef].concat(l.lot.serials || []).concat(l.deployments.reduce(function (a, d) { return a.concat(d.serials || [], [d.holder, d.location]); }, [])).join(' ');
+  })).join(' ').toLowerCase();
+}
+
+// ---------------------------------------------------------------------------
+// List
+// ---------------------------------------------------------------------------
+function renderList() {
+  var q = $('#poSearch').val().trim().toLowerCase();
+  var wf = $('#poWarranty').val();
+  var shown = POS.filter(function (po) {
+    if (wf && poWarranty(po).state !== wf) return false;
+    return !q || poSearchText(po).indexOf(q) > -1;
+  });
+  $('#poEmpty').toggleClass('d-none', shown.length > 0);
+  $('#poCards').html(shown.map(function (po) {
+    var w = poWarranty(po);
+    return '<a class="card card-body req-card" href="po.html?ref=' + encodeURIComponent(po.poRef) + '" style="display:block;text-decoration:none;color:inherit">' +
+      '<div class="req-card__head">' +
+        '<div class="req-card__title"><div class="req-card__detail num" style="color:var(--color-primary)">' + po.poRef + '</div>' +
+          '<div class="req-card__meta">' + po.supplier + ' &middot; รับเข้า ' + po.date + '</div></div>' +
+        warrantyBadge(w) +
+      '</div>' +
+      '<div class="req-card__grid" style="border-bottom:none">' +
+        '<div><div class="lot-grid__label">รายการ</div><div class="lot-grid__value">' + po.lines.map(function (l) { return l.item.name; }).join(', ') + '</div></div>' +
+        '<div><div class="lot-grid__label">รับเข้า</div><div class="lot-grid__value num">' + po.received + '</div></div>' +
+        '<div><div class="lot-grid__label">ในสต๊อก</div><div class="lot-grid__value num" style="color:var(--color-success-text)">' + po.remaining + '</div></div>' +
+        '<div><div class="lot-grid__label">ออกไปใช้</div><div class="lot-grid__value num">' + po.deployed + '</div></div>' +
+        '<div><div class="lot-grid__label">เคลม</div><div class="lot-grid__value num">' + po.claims.length + '</div></div>' +
+      '</div>' +
+    '</a>';
+  }).join(''));
+}
+$('#poSearch').on('input', renderList);
+$('#poWarranty').on('change', renderList);
+
+$('#exportBtn').on('click', function () {
+  downloadCsv('purchase-orders-' + new Date().toISOString().slice(0, 10) + '.csv',
+    ['PO', 'ผู้จำหน่าย', 'วันที่รับเข้า', 'ล็อต', 'รหัสอุปกรณ์', 'ชื่ออุปกรณ์', 'รับเข้า', 'ในสต๊อก', 'ออกไปใช้', 'ราคา/หน่วย', 'ประกันถึง', 'สถานะประกัน'],
+    POS.reduce(function (rows, po) {
+      po.lines.forEach(function (l) {
+        rows.push([po.poRef, po.supplier, l.lot.date, l.lot.lotRef, l.item.code, l.item.name, l.lot.qty, l.lot.remaining, l.deployedQty, l.lot.unitPrice, l.lot.warrantyEnd || 'ไม่มีประกัน', warrantyState(l.lot).label]);
+      });
+      return rows;
+    }, []));
+  showToast('success', 'ส่งออกไฟล์ CSV แล้ว');
+});
+
+// ---------------------------------------------------------------------------
+// Detail — the page the owner described: one PO, every unit it brought in, where
+// each one is now, and whether it can still be claimed.
+// ---------------------------------------------------------------------------
+function renderDetail(po) {
+  $('#poListView').addClass('d-none');
+  $('#poDetailView').removeClass('d-none');
+  document.title = po.poRef + ' - IT Inventory';
+  $('#crumb').html('<a href="po.html">ใบสั่งซื้อ (PO)</a><span class="sep">/</span><span class="current num">' + po.poRef + '</span>');
+  $('#dPo').text(po.poRef);
+  $('#dSub').text(po.supplier + ' · รับเข้า ' + po.date + ' · ' + po.lines.length + ' รายการ');
+  $('#dReceived').text(po.received); $('#dRemaining').text(po.remaining); $('#dDeployed').text(po.deployed); $('#dClaims').text(po.claims.length);
+  $('#dClaimBtn').attr('href', 'claims.html?code=' + encodeURIComponent(po.lines[0].item.code));
+
+  $('#dLines').html(po.lines.map(function (l) {
+    var w = warrantyState(l.lot);
+    var serials = l.item.serialized
+      ? '<div class="mt-3 pt-3" style="border-top:1px solid var(--color-border)"><div class="lot-grid__label mb-1">Serial ที่ยังอยู่ในสต๊อก (' + ((l.lot.serials || []).length) + ')</div>' +
+        ((l.lot.serials && l.lot.serials.length) ? l.lot.serials.map(function (sn) { return '<span class="serial-tag">' + sn + '</span>'; }).join('') : '<span class="text-muted-2" style="font-size:12.5px">จ่ายออกหมดแล้ว</span>') + '</div>'
+      : '';
+    return '<div class="lot-card">' +
+      '<div class="lot-card__top">' +
+        '<div class="d-flex align-items-center gap-3">' + itemThumbHtml(l.item, '40px', '18px') +
+          '<div><a class="fw-700" href="inventory-detail.html?code=' + encodeURIComponent(l.item.code) + '" style="font-size:14px">' + l.item.name + '</a>' +
+          '<div class="text-muted-2 num" style="font-size:12.5px">' + l.item.code + ' &middot; ล็อต ' + l.lot.lotRef + '</div></div></div>' +
+        warrantyBadge(w) +
+      '</div>' +
+      '<div class="lot-grid">' +
+        '<div><div class="lot-grid__label">รับเข้า</div><div class="lot-grid__value num">' + l.lot.qty + ' ' + l.item.unit + ' &middot; ' + l.lot.date + '</div></div>' +
+        '<div><div class="lot-grid__label">ยังอยู่ในสต๊อก</div><div class="lot-grid__value num" style="color:var(--color-success-text)">' + l.lot.remaining + ' ' + l.item.unit + '</div></div>' +
+        '<div><div class="lot-grid__label">ออกไปใช้</div><div class="lot-grid__value num">' + l.deployedQty + ' ' + l.item.unit + '</div></div>' +
+        '<div><div class="lot-grid__label">ราคา/หน่วย</div><div class="lot-grid__value num">' + l.lot.unitPrice + '</div></div>' +
+        '<div><div class="lot-grid__label">ประกันถึง</div><div class="lot-grid__value">' + (l.lot.warrantyEnd || '<span class="text-muted-2">ไม่มีประกัน</span>') + '</div></div>' +
+      '</div>' + serials +
+    '</div>';
+  }).join(''));
+
+  var deps = [];
+  po.lines.forEach(function (l) { l.deployments.forEach(function (d) { deps.push({ item: l.item, dep: d }); }); });
+  $('#dDeployments').html(deps.length ? deps.map(function (x) {
+    var meta = DEPLOY_META[x.dep.kind] || DEPLOY_META.issue;
+    var loan = x.dep.kind === 'borrow' && x.dep.due ? ' &middot; กำหนดคืน ' + x.dep.due + ' (' + loanStateLabel(x.dep) + ')' : '';
+    return '<div class="deploy-row">' +
+      '<div class="deploy-row__main">' +
+        '<div class="deploy-row__holder">' + x.dep.holder + ' <span class="text-muted-2 fw-normal">· ' + x.item.name + '</span></div>' +
+        '<div class="deploy-row__meta">' + x.dep.dept + ' &middot; ' + x.dep.location + ' &middot; ตั้งแต่ ' + x.dep.since + loan + ' &middot; <span class="num">' + x.dep.txRef + '</span></div>' +
+        ((x.dep.serials && x.dep.serials.length) ? '<div class="mt-1">' + x.dep.serials.map(function (sn) { return '<span class="serial-tag">' + sn + '</span>'; }).join('') + '</div>' : '') +
+      '</div>' +
+      '<div><div class="deploy-row__qty">' + x.dep.qty + ' ' + x.item.unit + '</div>' +
+        '<span class="status-badge status-badge--' + meta.badge + '" style="margin-top:4px"><span class="status-badge__dot"></span>' + meta.label + '</span></div>' +
+    '</div>';
+  }).join('') : '<div class="text-muted-2" style="font-size:13px">ของจาก PO นี้ยังอยู่ในคลังทั้งหมด</div>');
+
+  $('#dClaimList').html(po.claims.length ? po.claims.map(function (c) {
+    var meta = CLAIM_META[c.status] || CLAIM_META.open;
+    var item = findInventoryItem(c.code);
+    return '<div class="deploy-row">' +
+      '<div class="deploy-row__main">' +
+        '<div class="deploy-row__holder"><a href="claims.html?ref=' + encodeURIComponent(c.claimRef) + '" class="num">' + c.claimRef + '</a> <span class="text-muted-2 fw-normal">· ' + (item ? item.name : c.code) + (c.serial ? ' · ' + c.serial : '') + '</span></div>' +
+        '<div class="deploy-row__meta">' + c.issue + '</div>' +
+        '<div class="deploy-row__meta">เปิด ' + c.opened + (c.closed ? ' &middot; ปิด ' + c.closed : '') + '</div>' +
+      '</div>' +
+      '<span class="status-badge status-badge--' + meta.badge + '"><span class="status-badge__dot"></span>' + meta.label + '</span>' +
+    '</div>';
+  }).join('') : '<div class="text-muted-2" style="font-size:13px">ยังไม่มีการเคลมจาก PO นี้</div>');
+}
+
+var qsRef = new URLSearchParams(location.search).get('ref');
+var po = qsRef && findPo(qsRef);
+if (po) renderDetail(po);
+else {
+  if (qsRef) showToast('warning', 'ไม่พบ ' + qsRef + ' ในระบบ');
+  renderList();
+}
+</script>
+</body>
+</html>

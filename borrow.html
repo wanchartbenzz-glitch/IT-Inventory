@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -102,8 +103,8 @@
       <div class="page-header"><div><h1 class="page-header__title">ยืมอุปกรณ์</h1><p class="page-header__desc">ยืมชั่วคราว มีกำหนดคืน อุปกรณ์จะกลับเข้าสต๊อกเมื่อคืน</p></div></div>
 
       <div class="card card-body mb-3" style="background:var(--color-warning-bg);border-color:#fbe3ad">
-        <div class="d-flex gap-2" style="font-size:12.5px;color:#92610a"><i class="bi bi-info-circle-fill"></i>
-        <span><b>ยืม</b> = ตัดสต๊อกชั่วคราวและต้องนำมาคืน &middot; ถ้าเป็นการจ่ายออกถาวรให้ใช้เมนู <a href="issue.html" style="color:#92610a;text-decoration:underline">เบิกอุปกรณ์</a> แทน</span></div>
+        <div class="d-flex gap-2" style="font-size:12.5px;color:var(--color-warning-text)"><i class="bi bi-info-circle-fill"></i>
+        <span><b>ยืม</b> = ตัดสต๊อกชั่วคราวและต้องนำมาคืน &middot; ถ้าเป็นการจ่ายออกถาวรให้ใช้เมนู <a href="issue.html" style="color:var(--color-warning-text);text-decoration:underline">เบิกอุปกรณ์</a> แทน</span></div>
       </div>
 
       <div class="search-input mb-3"><i class="bi bi-search"></i><input type="search" id="issueSearch" placeholder="ค้นหา Mouse / Keyboard / SSD..." aria-label="ค้นหาอุปกรณ์ที่ต้องการ"></div>
@@ -123,10 +124,10 @@
         <h2 class="section-title mb-3">ข้อมูลผู้ยืม</h2>
         <div class="row g-3">
           <div class="col-md-6"><label class="form-label" for="reqName">ผู้ยืม <span class="required">*</span></label><input class="form-control" id="reqName" placeholder="ชื่อ-นามสกุล ผู้ยืม" autocomplete="name"></div>
-          <div class="col-md-6"><label class="form-label" for="reqDept">แผนก <span class="required">*</span></label><select class="form-select" id="reqDept"><option>แผนก IT</option><option>บัญชี</option><option>ขาย</option><option>ทรัพยากรบุคคล</option></select></div>
+          <div class="col-md-6"><label class="form-label" for="reqDept">แผนก <span class="required">*</span></label><select class="form-select" id="reqDept"><option value="" selected disabled>เลือกแผนก…</option><option>แผนก IT</option><option>บัญชี</option><option>ขาย</option><option>ทรัพยากรบุคคล</option></select></div>
           <div class="col-md-6"><label class="form-label" for="dueDate">กำหนดคืน <span class="required">*</span></label><input type="date" class="form-control" id="dueDate"></div>
           <div class="col-md-6"><label class="form-label" for="useLocation">สถานที่ใช้งาน</label><input class="form-control" id="useLocation" placeholder="เช่น ห้องประชุม 2, อาคาร A ชั้น 3"></div>
-          <div class="col-md-6"><label class="form-label" for="reqReason">เหตุผล</label><select class="form-select" id="reqReason"><option>ใช้งานชั่วคราว</option><option>ยืมไปประชุม/อบรม</option><option>ยืมไปทดสอบ</option><option>ยืมไปงานนอกสถานที่</option></select></div>
+          <div class="col-md-6"><label class="form-label" for="reqReason">เหตุผล</label><select class="form-select" id="reqReason"><option value="" selected disabled>เลือกเหตุผล…</option><option>ใช้งานชั่วคราว</option><option>ยืมไปประชุม/อบรม</option><option>ยืมไปทดสอบ</option><option>ยืมไปงานนอกสถานที่</option></select></div>
           <div class="col-md-6"><label class="form-label" for="reqNote">หมายเหตุ</label><input class="form-control" id="reqNote" placeholder="รายละเอียดเพิ่มเติม"></div>
         </div>
       </div>
@@ -149,6 +150,7 @@
 <script>
 renderPicker('#issuePicker', '');
 $('#issueSearch').on('input', function () { renderPicker('#issuePicker', $(this).val()); });
+restoreCart();
 renderCart();
 
 // Default กำหนดคืน to a week out — the common case, still editable.
@@ -162,6 +164,7 @@ $('#confirmBtn').on('click', function () {
   if (!Object.keys(cart).length) return;
   if (!cartIsValid()) { showToast('warning', 'กรุณาเลือก Serial ของอุปกรณ์ที่มีเลขเครื่อง'); return; }
 
+  if (!$('#reqDept').val()) { showFieldError('#reqDept', 'เลือกแผนกของผู้ยืม — ค่าเริ่มต้นที่ผิดจะถูกบันทึกเงียบๆ'); return; }
   if (!$('#reqName').val().trim()) { showFieldError('#reqName', 'ระบุชื่อผู้ยืม เพื่อให้รู้ว่าต้องตามคืนจากใคร'); return; }
   var dueRaw = $('#dueDate').val();
   if (!dueRaw) { showFieldError('#dueDate', 'ระบุกำหนดคืน'); return; }
@@ -172,11 +175,11 @@ $('#confirmBtn').on('click', function () {
   Swal.fire({
     title: 'ยืนยันการยืมอุปกรณ์?',
     html: '<div style="text-align:left;font-size:13.5px">' + cartSummaryRows() + '</div>' +
-          '<div style="text-align:left;font-size:12.5px;color:#64748b;margin-top:10px">' +
+          '<div style="text-align:left;font-size:12.5px;color:var(--color-muted);margin-top:10px">' +
             'ผู้ยืม: ' + $('#reqName').val() + ' &middot; ' + $('#reqDept').val() + '<br>' +
             'สถานที่ใช้งาน: ' + ($('#useLocation').val() || '-') +
           '</div>' +
-          '<div style="text-align:left;font-size:12.5px;color:#92610a;margin-top:8px">' +
+          '<div style="text-align:left;font-size:12.5px;color:var(--color-warning-text);margin-top:8px">' +
             '<i class="bi bi-clock"></i> ต้องนำมาคืนภายใน <b>' + dueThai + '</b></div>',
     icon: 'question',
     showCancelButton: true,
@@ -194,6 +197,7 @@ $('#confirmBtn').on('click', function () {
                value: e.qty + ' ' + e.item.unit };
     });
     lines.push({ label: 'กำหนดคืน', value: dueThai });
+    cartSubmitted = true;
     setBtnLoading($('#confirmBtn'));
     cart = {};
     renderCart();

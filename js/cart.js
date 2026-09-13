@@ -33,7 +33,7 @@ function renderPicker(targetSel, filter) {
         '<div><div class="item-picker-row__name">' + item.name + '</div>' +
           '<div class="item-picker-row__code">' + item.code + (item.serialized ? ' &middot; มี Serial' : '') + '</div></div>' +
         '<div class="item-picker-row__stock num">' + (outOfStock ? 'หมดสต๊อก' : 'เหลือ ' + item.stock + ' ' + item.unit) + '</div>' +
-        '<button class="btn btn-soft btn-sm ms-2 add-to-cart" type="button"' +
+        '<button class="btn btn-soft btn-sm ms-2 add-to-cart" type="button" aria-label="เพิ่ม ' + item.name + '"' +
           (outOfStock ? ' disabled title="หมดสต๊อก ไม่สามารถทำรายการได้"' : '') + '>+ เพิ่ม</button>' +
       '</div>'
     );
@@ -79,22 +79,34 @@ function lotPickerHtml(entry) {
   var lots = availableLots(item);
   if (!lots.length) return '';
 
+  // Up to three lots: radio rows that stay readable on a phone. More than that: a select.
+  if (lots.length <= 3) {
+    var rows = lots.map(function (lot) {
+      var w = warrantyState(lot);
+      var picked = lot.lotRef === entry.lotRef;
+      var warranty = w.state === 'expired' ? '<span class="warn">หมดประกันแล้ว</span>'
+                   : w.state === 'none' ? 'ไม่มีประกัน' : 'ประกันถึง ' + lot.warrantyEnd;
+      return '<label class="lot-radio' + (picked ? ' is-picked' : '') + '">' +
+               '<input type="radio" class="lot-radio-input" name="lot-' + item.code + '" data-code="' + item.code + '" value="' + lot.lotRef + '"' + (picked ? ' checked' : '') + '>' +
+               '<span><span class="lot-radio__po">' + lot.poRef + '</span> <span class="lot-radio__meta">· รับเข้า ' + lot.date + '</span>' +
+               '<div class="lot-radio__meta">เหลือ ' + lot.remaining + ' ' + item.unit + ' · ' + warranty + '</div></span>' +
+             '</label>';
+    }).join('');
+    return '<fieldset class="cart-item__lot"><legend class="visually-hidden">ตัดจากล็อต</legend>' +
+             '<label>ตัดจากล็อต</label><div class="lot-radios">' + rows + '</div></fieldset>';
+  }
+
   var options = lots.map(function (lot) {
     return '<option value="' + lot.lotRef + '"' + (lot.lotRef === entry.lotRef ? ' selected' : '') + '>' +
              lotOptionLabel(item, lot) + '</option>';
   }).join('');
-
   var lot = cartEntryLot(entry);
   var note = '';
   if (lot) {
     var w = warrantyState(lot);
-    if (w.state === 'expired') {
-      note = '<span class="lot-note lot-note--warn"><i class="bi bi-shield-exclamation"></i> ' + w.label + '</span>';
-    } else if (w.state !== 'none') {
-      note = '<span class="lot-note"><i class="bi bi-shield-check"></i> ' + w.label + '</span>';
-    }
+    if (w.state === 'expired') note = '<span class="lot-note lot-note--warn"><i class="bi bi-shield-exclamation" aria-hidden="true"></i> ' + w.label + '</span>';
+    else if (w.state !== 'none') note = '<span class="lot-note"><i class="bi bi-shield-check" aria-hidden="true"></i> ' + w.label + '</span>';
   }
-
   return '<div class="cart-item__lot">' +
            '<label for="lot-' + item.code + '">ตัดจากล็อต</label>' +
            '<select class="lot-select" id="lot-' + item.code + '" data-code="' + item.code + '">' + options + '</select>' +
@@ -130,7 +142,13 @@ function renderCart() {
   var keys = Object.keys(cart);
   $('#cartEmpty').toggleClass('d-none', keys.length > 0);
   $('#cartCount, #cartCount2').text(keys.length);
-  $('#confirmBtn').prop('disabled', keys.length === 0 || !cartIsValid());
+  var invalid = keys.filter(function (code) { var e = cart[code]; return e.item.serialized && !e.serials.length; });
+  $('#confirmBtn').prop('disabled', keys.length === 0 || invalid.length > 0);
+  // A dimmed button with no reason is a guess; say why it is dimmed.
+  var $hint = $('#cartHint');
+  if (!$hint.length) $hint = $('<div class="cart-hint" id="cartHint" role="status" aria-live="polite"></div>').insertBefore('.cart-summary-bar button');
+  $hint.text(invalid.length ? 'เลือก Serial ของ ' + invalid.map(function (c) { return cart[c].item.name; }).join(', ') + ' ก่อน' : '');
+  persistCart();
 
   keys.forEach(function (code) {
     var entry = cart[code];
@@ -143,7 +161,7 @@ function renderCart() {
       ? '<div class="cart-item__qty-fixed num">' + entry.qty + ' ' + item.unit + '</div>'
       : '<div class="qty-stepper">' +
           '<button type="button" data-step="-1" aria-label="ลดจำนวน">-</button>' +
-          '<input type="text" class="num qty-input" value="' + entry.qty + '" readonly aria-label="จำนวน">' +
+          '<input type="number" inputmode="numeric" min="1" max="' + maxQtyFor(entry) + '" class="num qty-input" value="' + entry.qty + '" data-code="' + code + '" aria-label="จำนวน ' + item.name + '">' +
           '<button type="button" data-step="1" aria-label="เพิ่มจำนวน">+</button>' +
         '</div>';
 
@@ -173,6 +191,40 @@ function cartIsValid() {
 }
 
 // ---------------------------------------------------------------------------
+// Persistence: a phone call mid-เบิก must not empty the cart. Same pattern as
+// the stock count. Keyed per page so an issue cart never leaks into borrow.
+// ---------------------------------------------------------------------------
+var CART_KEY = 'itinv.cart.' + location.pathname.split('/').pop();
+var cartSubmitted = false;
+function persistCart() {
+  try {
+    var keys = Object.keys(cart);
+    if (!keys.length || cartSubmitted) { localStorage.removeItem(CART_KEY); return; }
+    var slim = {};
+    keys.forEach(function (c) { slim[c] = { lotRef: cart[c].lotRef, qty: cart[c].qty, serials: cart[c].serials }; });
+    localStorage.setItem(CART_KEY, JSON.stringify({ at: Date.now(), cart: slim }));
+  } catch (e) { /* storage unavailable */ }
+}
+function restoreCart() {
+  var raw = null;
+  try { raw = localStorage.getItem(CART_KEY); } catch (e) { return false; }
+  if (!raw) return false;
+  try {
+    var saved = JSON.parse(raw).cart || {};
+    Object.keys(saved).forEach(function (code) {
+      var item = findInventoryItem(code);
+      if (!item) return;
+      cart[code] = { item: item, lotRef: saved[code].lotRef, qty: saved[code].qty, serials: saved[code].serials || [] };
+    });
+    if (Object.keys(cart).length) showToast('info', 'กู้คืนรายการที่เลือกค้างไว้ ' + Object.keys(cart).length + ' รายการ');
+    return Object.keys(cart).length > 0;
+  } catch (e) { return false; }
+}
+window.addEventListener('beforeunload', function (e) {
+  if (Object.keys(cart).length && !cartSubmitted) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// ---------------------------------------------------------------------------
 // Events
 // ---------------------------------------------------------------------------
 $(document).on('click', '.add-to-cart', function () {
@@ -191,8 +243,17 @@ $(document).on('click', '.cart-item .qty-stepper button', function () {
   renderCart();
 });
 
+// Typed quantity: clamp to the lot on change, keep the field live while typing.
+$(document).on('change', '.qty-input', function () {
+  var entry = cart[$(this).data('code')];
+  if (!entry) return;
+  var v = parseInt($(this).val(), 10);
+  entry.qty = isNaN(v) ? 1 : Math.max(1, Math.min(maxQtyFor(entry), v));
+  renderCart();
+});
+
 // Switching lot clears any serials picked from the previous one.
-$(document).on('change', '.lot-select', function () {
+$(document).on('change', '.lot-select, .lot-radio-input', function () {
   var entry = cart[$(this).data('code')];
   entry.lotRef = $(this).val();
   entry.serials = [];
@@ -255,7 +316,7 @@ function cartSummaryRows() {
   return Object.keys(cart).map(function (code) {
     var entry = cart[code];
     var lot = cartEntryLot(entry);
-    var trace = lot ? '<div style="font-size:11.5px;color:#64748b">ล็อต ' + lot.lotRef + ' &middot; ' + lot.poRef +
+    var trace = lot ? '<div style="font-size:12.5px;color:var(--color-muted)">ล็อต ' + lot.lotRef + ' &middot; ' + lot.poRef +
                       (entry.serials.length ? ' &middot; ' + entry.serials.join(', ') : '') + '</div>' : '';
     return '<div style="padding:6px 0;border-bottom:1px solid #eef1f6">' +
              '<div style="display:flex;justify-content:space-between;gap:8px">' +

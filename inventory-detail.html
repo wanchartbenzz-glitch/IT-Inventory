@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -189,7 +190,7 @@
         <div class="row g-3">
           <div class="col-12"><label class="form-label" for="editName">ชื่ออุปกรณ์</label><input class="form-control" id="editName"></div>
           <div class="col-md-6"><label class="form-label" for="editMin">จุดสั่งซื้อ (Minimum)</label><input type="number" class="form-control" id="editMin"></div>
-          <div class="col-md-6"><label class="form-label" for="fld4_c9701a">สถานะ</label><select class="form-select" id="fld4_c9701a"><option>ใช้งาน</option><option>ไม่ใช้งาน</option></select></div>
+          <div class="col-md-6"><label class="form-label" for="editStatus">สถานะ</label><select class="form-select" id="editStatus"><option>ใช้งาน</option><option>ไม่ใช้งาน</option></select></div>
         </div>
       </div>
       <div class="modal-footer">
@@ -237,7 +238,7 @@ if (item.movements && item.movements.length) {
 var $tbody = $('#detMovements').empty();
 item.movements.forEach(function (m) {
   var meta = MOVEMENT_META[m.type];
-  var qtyColor = m.qty > 0 ? 'var(--color-success)' : 'var(--color-danger)';
+  var qtyColor = m.qty > 0 ? 'var(--color-success-text)' : 'var(--color-danger-text)';
   var qtyText = (m.qty > 0 ? '+' : '') + m.qty;
   var dotStyle = meta.dotColor ? ' style="background:' + meta.dotColor + '"' : '';
   $tbody.append(
@@ -268,7 +269,7 @@ if (!deployments.length) {
   deployments.forEach(function (d) {
     var meta = DEPLOY_META[d.kind] || DEPLOY_META.issue;
     var lot = findLot(item, d.lotRef);
-    var lotHtml = lot ? ' &middot; จาก <span class="num">' + lot.poRef + '</span>' : '';
+    var lotHtml = lot ? ' &middot; จาก ' + poLink(lot.poRef) : '';
 
     // A loan carries its own clock: how it sits against กำหนดคืน matters more
     // than the raw date, so the state drives the colour.
@@ -277,8 +278,8 @@ if (!deployments.length) {
     if (d.kind === 'borrow' && d.due) {
       var ls = loanState(d);
       var lm = LOAN_STATE_META[ls.state];
-      var dueColor = ls.state === 'overdue' ? 'var(--color-danger)'
-                   : ls.state === 'ok' ? 'var(--color-muted)' : 'var(--color-warning)';
+      var dueColor = ls.state === 'overdue' ? 'var(--color-danger-text)'
+                   : ls.state === 'ok' ? 'var(--color-muted)' : 'var(--color-warning-text)';
       dueHtml = ' &middot; กำหนดคืน <b style="color:' + dueColor + '">' + d.due + '</b>';
       if (ls.state !== 'ok') {
         overdueBadge = '<div style="margin-top:4px"><span class="status-badge status-badge--' + lm.badge + '">' +
@@ -338,13 +339,13 @@ if (!lots.length) {
     $lots.append(
       '<div class="lot-card">' +
         '<div class="lot-card__top">' +
-          '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-card__po">' + lot.poRef + '</div></div>' +
+          '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-card__po">' + poLink(lot.poRef) + '</div></div>' +
           '<div class="gap-row">' + wBadge + '<span class="status-badge status-badge--neutral num">' + lot.lotRef + '</span></div>' +
         '</div>' +
         '<div class="lot-grid">' +
           '<div><div class="lot-grid__label">วันที่รับเข้า</div><div class="lot-grid__value">' + lot.date + '</div></div>' +
           '<div><div class="lot-grid__label">รับเข้า / คงเหลือ</div><div class="lot-grid__value num">' +
-            lot.qty + ' &rarr; <b style="color:' + (lot.remaining > 0 ? 'var(--color-success)' : 'var(--color-muted)') + '">' +
+            lot.qty + ' &rarr; <b style="color:' + (lot.remaining > 0 ? 'var(--color-success-text)' : 'var(--color-muted)') + '">' +
             lot.remaining + '</b> ' + item.unit + '</div></div>' +
           '<div><div class="lot-grid__label">ผู้จำหน่าย</div><div class="lot-grid__value">' + lot.supplier + '</div></div>' +
           '<div><div class="lot-grid__label">ราคา/หน่วย</div><div class="lot-grid__value num">' + lot.unitPrice + '</div></div>' +

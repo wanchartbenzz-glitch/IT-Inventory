@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -110,11 +111,11 @@
         </div>
       </div>
 
-      <div class="card card-body mb-4" style="background:var(--color-primary-light);border-color:#c7ddfb">
-        <div class="d-flex gap-2" style="font-size:12.5px;color:#1e40af"><i class="bi bi-info-circle-fill"></i>
+      <div class="card card-body mb-4" style="background:var(--color-primary-light);border-color:var(--color-info-border)">
+        <div class="d-flex gap-2" style="font-size:12.5px;color:var(--color-info-text)"><i class="bi bi-info-circle-fill"></i>
         <span><b>ส่งซ่อม</b> และ <b>ส่งเคลม</b> ของยังเป็นของเรา แค่ไม่ได้อยู่ในมือ &middot;
         <b>ตัดจำหน่าย</b> คือตัดออกจากบัญชีทรัพย์สินถาวร &middot;
-        ถ้าอุปกรณ์ยังอยู่ในประกัน ให้เปิดเรื่องที่เมนู <a href="claims.html" style="color:#1e40af;text-decoration:underline">ประวัติการเคลม</a> แทน จะได้อ้าง PO ได้</span></div>
+        ถ้าอุปกรณ์ยังอยู่ในประกัน ให้เปิดเรื่องที่เมนู <a href="claims.html" style="color:var(--color-info-text);text-decoration:underline">ประวัติการเคลม</a> แทน จะได้อ้าง PO ได้</span></div>
       </div>
 
       <div class="kpi-grid mb-4">
@@ -193,8 +194,8 @@
           </div>
         </div>
 
-        <div class="card card-body d-none" id="svcWarrantyHint" style="background:var(--color-success-bg);border-color:#bbe8cd">
-          <div class="d-flex gap-2" style="font-size:12.5px;color:#166534"><i class="bi bi-shield-check"></i>
+        <div class="card card-body d-none" id="svcWarrantyHint" style="background:var(--color-success-bg);border-color:var(--color-success-border)">
+          <div class="d-flex gap-2" style="font-size:12.5px;color:var(--color-success-text)"><i class="bi bi-shield-check"></i>
           <span id="svcWarrantyText"></span></div>
         </div>
       </div>
@@ -238,7 +239,7 @@ function recordCardHtml(rec) {
       '<span class="status-badge status-badge--' + meta.badge + '"><i class="bi ' + meta.icon + '"></i>&nbsp;' + meta.label + '</span>' +
     '</div>' +
     '<div class="req-card__grid">' +
-      '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-grid__value num">' + (lot ? lot.poRef : '-') + '</div></div>' +
+      '<div><div class="lot-grid__label">เลขที่ PO</div><div class="lot-grid__value">' + (lot ? poLink(lot.poRef) : '-') + '</div></div>' +
       '<div><div class="lot-grid__label">ผู้จำหน่าย</div><div class="lot-grid__value">' + (lot ? lot.supplier : '-') + '</div></div>' +
       '<div><div class="lot-grid__label">ประกัน</div><div class="lot-grid__value">' +
         (lot ? warrantyState(lot).label : '-') + '</div></div>' +
@@ -340,7 +341,7 @@ function refreshSvcLotInfo() {
   if (showHint) {
     $('#svcWarrantyText').html('อุปกรณ์ล็อตนี้<b>ยังอยู่ในประกัน</b> (' + w.label + ') — ' +
       'ควรเปิดเรื่องที่เมนู <a href="claims.html?code=' + encodeURIComponent(item.code) +
-      '" style="color:#166534;text-decoration:underline">ประวัติการเคลม</a> ก่อนตัดจำหน่าย');
+      '" style="color:var(--color-success-text);text-decoration:underline">ประวัติการเคลม</a> ก่อนตัดจำหน่าย');
   }
 }
 

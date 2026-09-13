@@ -42,6 +42,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -111,20 +112,25 @@
 
       <!-- Quick Actions -->
       <div class="quick-actions">
-        <a href="issue.html" class="quick-action quick-action--issue">
-          <div class="quick-action__icon"><i class="bi bi-box-arrow-up"></i></div>
-          <div><div class="quick-action__title">เบิกอุปกรณ์</div><div class="quick-action__sub">ตัดสต๊อกถาวร</div></div>
-          <i class="bi bi-arrow-right quick-action__arrow"></i>
-        </a>
         <a href="receive.html" class="quick-action quick-action--receive">
-          <div class="quick-action__icon"><i class="bi bi-box-arrow-in-down"></i></div>
+          <div class="quick-action__icon"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i></div>
           <div><div class="quick-action__title">รับเข้าอุปกรณ์</div><div class="quick-action__sub">บันทึกล็อต / PO</div></div>
-          <i class="bi bi-arrow-right quick-action__arrow"></i>
+          <i class="bi bi-arrow-right quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a href="issue.html" class="quick-action quick-action--issue">
+          <div class="quick-action__icon"><i class="bi bi-box-arrow-up" aria-hidden="true"></i></div>
+          <div><div class="quick-action__title">เบิกอุปกรณ์</div><div class="quick-action__sub">ตัดสต๊อกถาวร</div></div>
+          <i class="bi bi-arrow-right quick-action__arrow" aria-hidden="true"></i>
+        </a>
+        <a href="borrow.html" class="quick-action quick-action--borrow">
+          <div class="quick-action__icon"><i class="bi bi-arrow-left-right" aria-hidden="true"></i></div>
+          <div><div class="quick-action__title">ยืมอุปกรณ์</div><div class="quick-action__sub">มีกำหนดคืน</div></div>
+          <i class="bi bi-arrow-right quick-action__arrow" aria-hidden="true"></i>
         </a>
         <a href="return.html" class="quick-action quick-action--return">
-          <div class="quick-action__icon"><i class="bi bi-arrow-return-left"></i></div>
+          <div class="quick-action__icon"><i class="bi bi-arrow-return-left" aria-hidden="true"></i></div>
           <div><div class="quick-action__title">คืนอุปกรณ์</div><div class="quick-action__sub">รับคืนของที่ยืม</div></div>
-          <i class="bi bi-arrow-right quick-action__arrow"></i>
+          <i class="bi bi-arrow-right quick-action__arrow" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -137,17 +143,17 @@
         <a href="inventory.html?status=available" class="kpi-card kpi-card--available">
           <div class="kpi-card__icon"><i class="bi bi-check-circle" aria-hidden="true"></i></div>
           <div><div class="kpi-card__value num" id="kpiOk">0</div><div class="kpi-card__label">พร้อมใช้งาน</div></div>
-          <div class="kpi-card__trend up" id="kpiOkPct"></div>
+          <div class="kpi-card__trend" id="kpiOkPct"></div>
         </a>
         <a href="inventory.html?status=low" class="kpi-card kpi-card--low">
           <div class="kpi-card__icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></div>
           <div><div class="kpi-card__value num" id="kpiLow">0</div><div class="kpi-card__label">ใกล้หมด</div></div>
-          <div class="kpi-card__trend down" id="kpiLowPct"></div>
+          <div class="kpi-card__trend" id="kpiLowPct"></div>
         </a>
         <a href="inventory.html?status=out" class="kpi-card kpi-card--out">
           <div class="kpi-card__icon"><i class="bi bi-x-circle" aria-hidden="true"></i></div>
           <div><div class="kpi-card__value num" id="kpiOut">0</div><div class="kpi-card__label">หมดสต๊อก</div></div>
-          <div class="kpi-card__trend down" id="kpiOutPct"></div>
+          <div class="kpi-card__trend" id="kpiOutPct"></div>
         </a>
       </div>
 
@@ -215,7 +221,7 @@
   $('#dashGreeting').text((h < 12 ? 'สวัสดีตอนเช้า' : h < 17 ? 'สวัสดีตอนบ่าย' : 'สวัสดีตอนเย็น') + ', ทีม IT');
   $('#dashDate').text(formatThaiDate(today()));
   $('#kpiTotal').text(n); $('#kpiOk').text(ok); $('#kpiLow').text(low); $('#kpiOut').text(out);
-  $('#kpiOkPct').text(pct(ok) + '%'); $('#kpiLowPct').text(pct(low) + '%'); $('#kpiOutPct').text(pct(out) + '%');
+  $('#kpiOkPct').text(pct(ok) + '% ของ SKU'); $('#kpiLowPct').text(pct(low) + '% ของ SKU'); $('#kpiOutPct').text(pct(out) + '% ของ SKU');
   $('#donut').css('--pct', pct(ok)); $('#donutPct').text(pct(ok) + '%');
   $('#healthLegend').html(
     '<div class="legend-row"><span class="legend-dot" style="background:var(--color-success)"></span> พร้อมใช้งาน <span class="num fw-700 ms-auto">' + ok + '</span></div>' +
@@ -227,19 +233,20 @@
     .sort(function (a, b) { return (a.stock / Math.max(a.min, 1)) - (b.stock / Math.max(b.min, 1)); });
   $('#criticalList').html(critical.length ? critical.slice(0, 5).map(function (i) {
     return '<a class="critical-item-row" href="inventory-detail.html?code=' + encodeURIComponent(i.code) + '" style="color:inherit;text-decoration:none">' +
-      '<span>' + i.name + ' <span class="text-muted-2" style="font-size:12px">min ' + i.min + '</span></span>' +
+      '<span>' + i.name + ' <span class="text-muted-2" style="font-size:12px">จุดสั่งซื้อ ' + i.min + '</span></span>' +
       '<span class="qty num">' + i.stock + ' ' + i.unit + '</span></a>';
   }).join('') : '<div class="text-muted-2" style="font-size:13px">ทุกรายการอยู่เหนือจุดสั่งซื้อ</div>');
 
   // Category bars
-  var tones = ['primary', 'cyan', 'purple', 'orange', 'teal', 'success', 'indigo'];
+  // Colour follows the category's own tone (same as item icons), not its rank.
+  var catTone = {};
   var cats = {};
-  items.forEach(function (i) { cats[i.category] = (cats[i.category] || 0) + 1; });
+  items.forEach(function (i) { cats[i.category] = (cats[i.category] || 0) + 1; if (!catTone[i.category]) catTone[i.category] = i.tone; });
   var catList = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; });
   $('#categoryBars').html(catList.map(function (c, idx) {
     return '<div class="category-bar-row' + (idx === catList.length - 1 ? ' mb-0' : '') + '">' +
       '<div class="category-bar-row__top"><span>' + c + '</span><span class="num text-muted-2">' + cats[c] + ' รายการ</span></div>' +
-      '<div class="category-bar-track"><div class="category-bar-fill" style="width:' + pct(cats[c]) + '%;background:var(--color-' + tones[idx % tones.length] + ')"></div></div></div>';
+      '<div class="category-bar-track"><div class="category-bar-fill" style="width:' + pct(cats[c]) + '%;background:' + (TONE_META[catTone[c]] || TONE_META.primary).fg + '"></div></div></div>';
   }).join(''));
 
   // Recent activity: flatten movements, newest first

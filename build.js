@@ -30,7 +30,8 @@ const NAV = [
   { label: 'ตรวจสอบ & อนุมัติ', items: [
     { href: 'stock-count.html', icon: 'bi-clipboard-check', label: 'ตรวจนับสต๊อก' },
     { href: 'approvals.html', icon: 'bi-check2-square', label: 'รออนุมัติ' },
-    { href: 'claims.html', icon: 'bi-shield-check', label: 'ประวัติการเคลม' }
+    { href: 'claims.html', icon: 'bi-shield-check', label: 'ประวัติการเคลม' },
+    { href: 'po.html', icon: 'bi-receipt', label: 'ใบสั่งซื้อ (PO)' }
   ]},
   { label: 'จัดการข้อมูลอุปกรณ์', items: [
     { href: 'inventory.html', icon: 'bi-hdd-stack', label: 'ข้อมูลอุปกรณ์ IT', aliases: ['inventory-detail.html'] },

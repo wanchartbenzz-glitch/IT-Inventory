@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -123,9 +124,9 @@
         <h2 class="section-title mb-3">ข้อมูลผู้เบิก</h2>
         <div class="row g-3">
           <div class="col-md-6"><label class="form-label" for="reqName">ผู้เบิก <span class="required">*</span></label><input class="form-control" id="reqName" placeholder="ชื่อ-นามสกุล ผู้รับอุปกรณ์" autocomplete="name"></div>
-          <div class="col-md-6"><label class="form-label" for="reqDept">แผนก <span class="required">*</span></label><select class="form-select" id="reqDept"><option>แผนก IT</option><option>บัญชี</option><option>ขาย</option><option>ทรัพยากรบุคคล</option></select></div>
+          <div class="col-md-6"><label class="form-label" for="reqDept">แผนก <span class="required">*</span></label><select class="form-select" id="reqDept"><option value="" selected disabled>เลือกแผนก…</option><option>แผนก IT</option><option>บัญชี</option><option>ขาย</option><option>ทรัพยากรบุคคล</option></select></div>
           <div class="col-md-6"><label class="form-label" for="useLocation">สถานที่ใช้งาน <span class="required">*</span></label><input class="form-control" id="useLocation" placeholder="เช่น อาคาร A ชั้น 2, ห้อง Server"></div>
-          <div class="col-md-6"><label class="form-label" for="reqReason">เหตุผล</label><select class="form-select" id="reqReason"><option>ใช้งานทั่วไป/ประจำ</option><option>อุปกรณ์ชำรุด</option><option>พนักงานใหม่</option><option>โครงการเฉพาะกิจ</option></select></div>
+          <div class="col-md-6"><label class="form-label" for="reqReason">เหตุผล</label><select class="form-select" id="reqReason"><option value="" selected disabled>เลือกเหตุผล…</option><option>ใช้งานทั่วไป/ประจำ</option><option>อุปกรณ์ชำรุด</option><option>พนักงานใหม่</option><option>โครงการเฉพาะกิจ</option></select></div>
           <div class="col-md-6"><label class="form-label" for="reqNote">หมายเหตุ</label><input class="form-control" id="reqNote" placeholder="งานซ่อม/ปรับปรุง"></div>
         </div>
       </div>
@@ -148,23 +149,25 @@
 <script>
 renderPicker('#issuePicker', '');
 $('#issueSearch').on('input', function () { renderPicker('#issuePicker', $(this).val()); });
+restoreCart();
 renderCart();
 
 $('#confirmBtn').on('click', function () {
   if (!Object.keys(cart).length) return;
   if (!cartIsValid()) { showToast('warning', 'กรุณาเลือก Serial ของอุปกรณ์ที่มีเลขเครื่อง'); return; }
+  if (!$('#reqDept').val()) { showFieldError('#reqDept', 'เลือกแผนกของผู้เบิก — ค่าเริ่มต้นที่ผิดจะถูกบันทึกเงียบๆ'); return; }
   if (!$('#reqName').val().trim()) { showFieldError('#reqName', 'ระบุชื่อผู้เบิก เพื่อให้รู้ว่าอุปกรณ์อยู่กับใคร'); return; }
   if (!$('#useLocation').val().trim()) { showFieldError('#useLocation', 'ระบุสถานที่ใช้งาน เพื่อให้ตรวจสอบได้ว่าอุปกรณ์ถูกนำไปใช้ที่ไหน'); return; }
 
   Swal.fire({
-    title: 'ยืนยันการเบิกอุปกรณ์?',
-    html: '<div style="text-align:left;font-size:13.5px">' + cartSummaryRows() + '</div>' +
-          '<div style="text-align:left;font-size:12.5px;color:#64748b;margin-top:10px">' +
+    title: 'เบิก = ตัดออกจากสต๊อกถาวร',
+    html: '<div style="text-align:left;font-size:13.5px;color:#b91c1c;margin-bottom:8px"><b>คืนไม่ได้</b> — ถ้าเป็นการใช้ชั่วคราวให้ยกเลิกแล้วไปที่เมนูยืม</div>' +
+          '<div style="text-align:left;font-size:13.5px">' + cartSummaryRows() + '</div>' +
+          '<div style="text-align:left;font-size:12.5px;color:var(--color-muted);margin-top:10px">' +
             'ผู้เบิก: ' + $('#reqName').val() + ' &middot; ' + $('#reqDept').val() + '<br>' +
             'สถานที่ใช้งาน: ' + $('#useLocation').val() +
           '</div>' +
-          '<div style="text-align:left;font-size:12px;color:#9b1c1c;margin-top:8px">' +
-            '<b>เบิก = ตัดออกจากสต๊อกถาวร</b> ไม่สามารถคืนได้</div>',
+          '',
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#2563eb',
@@ -180,6 +183,7 @@ $('#confirmBtn').on('click', function () {
       return { label: e.item.name + (lot ? ' <span class="text-muted-2">· ' + lot.poRef + '</span>' : '') + (e.serials.length ? '<br><span class="text-muted-2">' + e.serials.join(', ') + '</span>' : ''),
                value: e.qty + ' ' + e.item.unit };
     });
+    cartSubmitted = true;
     setBtnLoading($('#confirmBtn'));
     cart = {};
     renderCart();

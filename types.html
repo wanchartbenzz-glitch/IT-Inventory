@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -110,21 +111,23 @@
       </div>
 
       <div class="table-wrap">
+        <div class="table-scroll">
         <table class="data-table">
-          <thead><tr><th>ประเภทอุปกรณ์</th><th>หมวด</th><th>หน่วยหลัก</th><th>จำนวน SKU</th><th>สถานะ</th><th></th></tr></thead>
+          <thead><tr><th>ประเภทอุปกรณ์</th><th>หมวด</th><th>หน่วยหลัก</th><th>จำนวน SKU</th><th>สถานะ</th><th><span class="visually-hidden">แก้ไข</span></th></tr></thead>
           <tbody>
-            <tr><td class="fw-700">Mouse</td><td>Peripheral</td><td>ชิ้น</td><td class="num">12</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">Keyboard</td><td>Peripheral</td><td>ชิ้น</td><td class="num">9</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">LAN Cable</td><td>Network</td><td>เมตร</td><td class="num">4</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">Switch</td><td>Network</td><td>ชิ้น</td><td class="num">6</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">SSD</td><td>Storage</td><td>ชิ้น</td><td class="num">8</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">RAM</td><td>Storage</td><td>ชิ้น</td><td class="num">5</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">Power Supply</td><td>Power</td><td>ชิ้น</td><td class="num">5</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">UPS</td><td>Power</td><td>ชิ้น</td><td class="num">4</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
-            <tr><td class="fw-700">RJ45 / Connector</td><td>Network</td><td>ชิ้น</td><td class="num">3</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><i class="bi bi-pencil text-muted-2" style="cursor:pointer"></i></td></tr>
+            <tr><td class="fw-700">Mouse</td><td>Peripheral</td><td>ชิ้น</td><td class="num">12</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="Mouse" aria-label="แก้ไข Mouse"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">Keyboard</td><td>Peripheral</td><td>ชิ้น</td><td class="num">9</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="Keyboard" aria-label="แก้ไข Keyboard"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">LAN Cable</td><td>Network</td><td>เมตร</td><td class="num">4</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="LAN Cable" aria-label="แก้ไข LAN Cable"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">Switch</td><td>Network</td><td>ชิ้น</td><td class="num">6</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="Switch" aria-label="แก้ไข Switch"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">SSD</td><td>Storage</td><td>ชิ้น</td><td class="num">8</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="SSD" aria-label="แก้ไข SSD"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">RAM</td><td>Storage</td><td>ชิ้น</td><td class="num">5</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="RAM" aria-label="แก้ไข RAM"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">Power Supply</td><td>Power</td><td>ชิ้น</td><td class="num">5</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="Power Supply" aria-label="แก้ไข Power Supply"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">UPS</td><td>Power</td><td>ชิ้น</td><td class="num">4</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="UPS" aria-label="แก้ไข UPS"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
+            <tr><td class="fw-700">RJ45 / Connector</td><td>Network</td><td>ชิ้น</td><td class="num">3</td><td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ใช้งาน</span></td><td><button class="btn btn-ghost btn-sm type-edit" type="button" data-name="RJ45 / Connector" aria-label="แก้ไข RJ45 / Connector"><i class="bi bi-pencil" aria-hidden="true"></i></button></td></tr>
           </tbody>
         </table>
-        <div class="table-footer"><span>แสดง 1-9 จาก 34 รายการ</span></div>
+        </div>
+        <div class="table-footer"><span>แสดง 9 ประเภท</span></div>
       </div>
     </main>
   </div>
@@ -152,5 +155,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
+<script>
+// Edit reuses the add modal, prefilled — the pencil used to be a bare <i> with no handler.
+$(document).on('click', '.type-edit', function () {
+  var name = $(this).data('name');
+  $('#typeModalTitle').text('แก้ไขประเภท: ' + name);
+  $('#typeModal input').first().val(name);
+  if (window.bootstrap && bootstrap.Modal) bootstrap.Modal.getOrCreateInstance(document.getElementById('typeModal')).show();
+});
+$('#typeModal').on('hidden.bs.modal', function () { $('#typeModalTitle').text('เพิ่มประเภทอุปกรณ์'); $('#typeModal input').first().val(''); });
+</script>
 </body>
 </html>

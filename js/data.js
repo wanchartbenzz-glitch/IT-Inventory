@@ -36,17 +36,17 @@ var INVENTORY_ITEMS = [
       { lotRef: 'LOT-2567-0142', poRef: 'PO-2567-0142', date: '15 มี.ค. 2567', qty: 30, remaining: 24, supplier: 'บจก. ไอที โซลูชัน', unitPrice: '430 บาท', warrantyEnd: '14 มี.ค. 2568' }
     ],
     deployments: [
-      { kind: 'issue', holder: 'สมชาย วิชัย', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 1, since: '12 ก.ย. 2569', txRef: 'ISS-2026-0311', lotRef: 'LOT-2567-0142' },
-      { kind: 'issue', holder: 'วิชัย ทองดี', dept: 'Sales', location: 'อาคาร B ชั้น 1', qty: 2, since: '10 ก.ย. 2569', txRef: 'ISS-2026-0298', lotRef: 'LOT-2567-0142' },
-      { kind: 'borrow', holder: 'กมล ศรีสุข', dept: 'IT Support', location: 'ห้องประชุม 2', qty: 2, since: '12 ก.ย. 2569', due: '19 ก.ย. 2569', txRef: 'BRW-2026-0042', lotRef: 'LOT-2569-0142' }
+      { kind: 'issue', holder: 'สมชาย วิชัย', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 1, since: '12 ก.ย. 2569', txRef: 'ISS-2569-0311', lotRef: 'LOT-2567-0142' },
+      { kind: 'issue', holder: 'วิชัย ทองดี', dept: 'Sales', location: 'อาคาร B ชั้น 1', qty: 2, since: '10 ก.ย. 2569', txRef: 'ISS-2569-0298', lotRef: 'LOT-2567-0142' },
+      { kind: 'borrow', holder: 'กมล ศรีสุข', dept: 'IT Support', location: 'ห้องประชุม 2', qty: 2, since: '12 ก.ย. 2569', due: '19 ก.ย. 2569', txRef: 'BRW-2569-0042', lotRef: 'LOT-2569-0142' }
     ],
     movements: [
-      { date: '13 ก.ย. 2569', type: 'receive', qty: 20, balance: 42, user: 'Admin', ref: 'RCV-2026-0142', lotRef: 'LOT-2569-0142' },
-      { date: '12 ก.ย. 2569', type: 'borrow', qty: -2, balance: 22, user: 'กมล ศรีสุข (IT Support)', ref: 'BRW-2026-0042' },
-      { date: '12 ก.ย. 2569', type: 'issue', qty: -3, balance: 24, user: 'กมล ศรีสุข (IT Support)', ref: 'ISS-2026-0311' },
-      { date: '10 ก.ย. 2569', type: 'issue', qty: -2, balance: 27, user: 'วิชัย ทองดี (Sales)', ref: 'ISS-2026-0298' },
-      { date: '5 ก.ย. 2569', type: 'return', qty: 1, balance: 29, user: 'กมล ศรีสุข', ref: 'RET-2026-0044' },
-      { date: '1 ก.ย. 2569', type: 'receive', qty: 10, balance: 28, user: 'Admin', ref: 'RCV-2026-0098', lotRef: 'LOT-2567-0142' }
+      { date: '13 ก.ย. 2569', type: 'receive', qty: 20, balance: 42, user: 'Admin', ref: 'RCV-2569-0142', lotRef: 'LOT-2569-0142' },
+      { date: '12 ก.ย. 2569', type: 'borrow', qty: -2, balance: 22, user: 'กมล ศรีสุข (IT Support)', ref: 'BRW-2569-0042' },
+      { date: '12 ก.ย. 2569', type: 'issue', qty: -3, balance: 24, user: 'กมล ศรีสุข (IT Support)', ref: 'ISS-2569-0311' },
+      { date: '10 ก.ย. 2569', type: 'issue', qty: -2, balance: 27, user: 'วิชัย ทองดี (Sales)', ref: 'ISS-2569-0298' },
+      { date: '5 ก.ย. 2569', type: 'return', qty: 1, balance: 29, user: 'กมล ศรีสุข', ref: 'RET-2569-0044' },
+      { date: '1 ก.ย. 2569', type: 'adjust', qty: 10, balance: 28, user: 'หัวหน้าแผนก IT', ref: 'ADJ-2569-0006', note: 'ปรับยอดจากผลตรวจนับ ส.ค. 2569' }
     ]
   },
   {
@@ -58,13 +58,13 @@ var INVENTORY_ITEMS = [
       { lotRef: 'LOT-2569-0071', poRef: 'PO-2567-0210', date: '1 ส.ค. 2569', qty: 20, remaining: 16, supplier: 'บจก. ไอที โซลูชัน', unitPrice: '890 บาท', warrantyEnd: '31 ก.ค. 2570' }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ทีมบัญชี', dept: 'บัญชี', location: 'อาคาร A ชั้น 3', qty: 2, since: '5 ก.ย. 2569', txRef: 'ISS-2026-0300', lotRef: 'LOT-2569-0071' },
-      { kind: 'borrow', holder: 'ฝ่ายขาย', dept: 'Sales', location: 'อาคาร B ชั้น 1', qty: 2, since: '29 ส.ค. 2569', due: '5 ก.ย. 2569', txRef: 'BRW-2026-0035', lotRef: 'LOT-2569-0071' }
+      { kind: 'issue', holder: 'ทีมบัญชี', dept: 'บัญชี', location: 'อาคาร A ชั้น 3', qty: 2, since: '5 ก.ย. 2569', txRef: 'ISS-2569-0300', lotRef: 'LOT-2569-0071' },
+      { kind: 'borrow', holder: 'ฝ่ายขาย', dept: 'Sales', location: 'อาคาร B ชั้น 1', qty: 2, since: '29 ส.ค. 2569', due: '5 ก.ย. 2569', txRef: 'BRW-2569-0035', lotRef: 'LOT-2569-0071' }
     ],
     movements: [
-      { date: '5 ก.ย. 2569', type: 'issue', qty: -2, balance: 16, user: 'ทีมบัญชี', ref: 'ISS-2026-0300' },
-      { date: '29 ส.ค. 2569', type: 'borrow', qty: -2, balance: 18, user: 'ฝ่ายขาย', ref: 'BRW-2026-0035' },
-      { date: '1 ส.ค. 2569', type: 'receive', qty: 20, balance: 20, user: 'Admin', ref: 'RCV-2026-0071', lotRef: 'LOT-2569-0071' }
+      { date: '5 ก.ย. 2569', type: 'issue', qty: -2, balance: 16, user: 'ทีมบัญชี', ref: 'ISS-2569-0300' },
+      { date: '29 ส.ค. 2569', type: 'borrow', qty: -2, balance: 18, user: 'ฝ่ายขาย', ref: 'BRW-2569-0035' },
+      { date: '1 ส.ค. 2569', type: 'receive', qty: 20, balance: 20, user: 'Admin', ref: 'RCV-2569-0071', lotRef: 'LOT-2569-0071' }
     ]
   },
   {
@@ -77,11 +77,11 @@ var INVENTORY_ITEMS = [
       { lotRef: 'LOT-2569-0142N', poRef: 'PO-2569-0142', date: '1 ก.ย. 2569', qty: 305, remaining: 125, supplier: 'บจก. เน็ตเวิร์ค ซัพพลาย', unitPrice: '4,200 บาท/กล่อง', warrantyEnd: null }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ทีม IT', dept: 'IT', location: 'เดินสายอาคาร A ชั้น 3', qty: 180, since: '8 ก.ย. 2569', txRef: 'ISS-2026-0320', lotRef: 'LOT-2569-0142N' }
+      { kind: 'issue', holder: 'ทีม IT', dept: 'IT', location: 'เดินสายอาคาร A ชั้น 3', qty: 180, since: '8 ก.ย. 2569', txRef: 'ISS-2569-0320', lotRef: 'LOT-2569-0142N' }
     ],
     movements: [
-      { date: '8 ก.ย. 2569', type: 'issue', qty: -180, balance: 125, user: 'ทีม IT (เดินสายชั้น 3)', ref: 'ISS-2026-0320' },
-      { date: '1 ก.ย. 2569', type: 'receive', qty: 305, balance: 305, user: 'Admin', ref: 'RCV-2026-0142', lotRef: 'LOT-2569-0142N', note: '1 กล่อง = 305 เมตร' }
+      { date: '8 ก.ย. 2569', type: 'issue', qty: -180, balance: 125, user: 'ทีม IT (เดินสายชั้น 3)', ref: 'ISS-2569-0320' },
+      { date: '1 ก.ย. 2569', type: 'receive', qty: 305, balance: 305, user: 'Admin', ref: 'RCV-2569-0142', lotRef: 'LOT-2569-0142N', note: '1 กล่อง = 305 เมตร' }
     ]
   },
   {
@@ -97,15 +97,15 @@ var INVENTORY_ITEMS = [
       }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ทีม IT (อัปเกรดเครื่อง)', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 4, since: '9 ก.ย. 2569', txRef: 'ISS-2026-0315', lotRef: 'LOT-2569-0055', serials: ['SN-SSD-0001', 'SN-SSD-0002', 'SN-SSD-0003', 'SN-SSD-0004'] },
-      { kind: 'issue', holder: 'ห้อง Server', dept: 'IT', location: 'ห้อง Server', qty: 2, since: '9 ก.ย. 2569', txRef: 'ISS-2026-0315', lotRef: 'LOT-2569-0055', serials: ['SN-SSD-0005', 'SN-SSD-0006'] }
+      { kind: 'issue', holder: 'ทีม IT (อัปเกรดเครื่อง)', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 4, since: '9 ก.ย. 2569', txRef: 'ISS-2569-0315', lotRef: 'LOT-2569-0055', serials: ['SN-SSD-0001', 'SN-SSD-0002', 'SN-SSD-0003', 'SN-SSD-0004'] },
+      { kind: 'issue', holder: 'ห้อง Server', dept: 'IT', location: 'ห้อง Server', qty: 2, since: '9 ก.ย. 2569', txRef: 'ISS-2569-0315', lotRef: 'LOT-2569-0055', serials: ['SN-SSD-0005', 'SN-SSD-0006'] }
     ],
     service: [
       { state: 'claim', serial: 'SN-SSD-0003', lotRef: 'LOT-2569-0055', since: '10 ก.ย. 2569', ref: 'CLM-2569-001', note: 'อ่านไม่เจอไดรฟ์ ส่งเคลมตามประกัน' }
     ],
     movements: [
-      { date: '9 ก.ย. 2569', type: 'issue', qty: -6, balance: 4, user: 'ทีม IT (อัปเกรดเครื่อง)', ref: 'ISS-2026-0315' },
-      { date: '20 ก.ค. 2569', type: 'receive', qty: 10, balance: 10, user: 'Admin', ref: 'RCV-2026-0055', lotRef: 'LOT-2569-0055' }
+      { date: '9 ก.ย. 2569', type: 'issue', qty: -6, balance: 4, user: 'ทีม IT (อัปเกรดเครื่อง)', ref: 'ISS-2569-0315' },
+      { date: '20 ก.ค. 2569', type: 'receive', qty: 10, balance: 10, user: 'Admin', ref: 'RCV-2569-0055', lotRef: 'LOT-2569-0055' }
     ]
   },
   {
@@ -118,12 +118,12 @@ var INVENTORY_ITEMS = [
       { lotRef: 'LOT-2569-0072', poRef: 'PO-2569-0072', date: '1 ส.ค. 2569', qty: 20, remaining: 8, supplier: 'บจก. คอมพิวเตอร์ พาร์ท', unitPrice: '1,150 บาท', warrantyEnd: '31 ก.ค. 2574' }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ทีม IT (อัปเกรดเครื่อง)', dept: 'IT', location: 'อาคาร A ชั้น 1-2', qty: 12, since: '2 ก.ย. 2569', txRef: 'ISS-2026-0305', lotRef: 'LOT-2569-0072' }
+      { kind: 'issue', holder: 'ทีม IT (อัปเกรดเครื่อง)', dept: 'IT', location: 'อาคาร A ชั้น 1-2', qty: 12, since: '2 ก.ย. 2569', txRef: 'ISS-2569-0305', lotRef: 'LOT-2569-0072' }
     ],
     movements: [
-      { date: '13 ก.ย. 2569', type: 'receive', qty: 20, balance: 28, user: 'Admin', ref: 'RCV-2026-0143', lotRef: 'LOT-2569-0143' },
-      { date: '2 ก.ย. 2569', type: 'issue', qty: -12, balance: 8, user: 'ทีม IT (อัปเกรดเครื่อง)', ref: 'ISS-2026-0305' },
-      { date: '1 ส.ค. 2569', type: 'receive', qty: 20, balance: 20, user: 'Admin', ref: 'RCV-2026-0072', lotRef: 'LOT-2569-0072' }
+      { date: '13 ก.ย. 2569', type: 'receive', qty: 20, balance: 28, user: 'Admin', ref: 'RCV-2569-0143', lotRef: 'LOT-2569-0143' },
+      { date: '2 ก.ย. 2569', type: 'issue', qty: -12, balance: 8, user: 'ทีม IT (อัปเกรดเครื่อง)', ref: 'ISS-2569-0305' },
+      { date: '1 ส.ค. 2569', type: 'receive', qty: 20, balance: 20, user: 'Admin', ref: 'RCV-2569-0072', lotRef: 'LOT-2569-0072' }
     ]
   },
   {
@@ -139,14 +139,14 @@ var INVENTORY_ITEMS = [
       }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ตู้ Rack ชั้น 2', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 1, since: '3 ก.ย. 2569', txRef: 'ISS-2026-0308', lotRef: 'LOT-2569-0031', serials: ['SN-SW-0001'] },
-      { kind: 'issue', holder: 'ตู้ Rack ชั้น 3', dept: 'IT', location: 'อาคาร A ชั้น 3', qty: 1, since: '3 ก.ย. 2569', txRef: 'ISS-2026-0308', lotRef: 'LOT-2569-0031', serials: ['SN-SW-0002'] },
-      { kind: 'borrow', holder: 'ทีมติดตั้งสาขา', dept: 'IT', location: 'สาขารังสิต', qty: 1, since: '6 ก.ย. 2569', due: '13 ก.ย. 2569', txRef: 'BRW-2026-0040', lotRef: 'LOT-2569-0031', serials: ['SN-SW-0003'] }
+      { kind: 'issue', holder: 'ตู้ Rack ชั้น 2', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 1, since: '3 ก.ย. 2569', txRef: 'ISS-2569-0308', lotRef: 'LOT-2569-0031', serials: ['SN-SW-0001'] },
+      { kind: 'issue', holder: 'ตู้ Rack ชั้น 3', dept: 'IT', location: 'อาคาร A ชั้น 3', qty: 1, since: '3 ก.ย. 2569', txRef: 'ISS-2569-0308', lotRef: 'LOT-2569-0031', serials: ['SN-SW-0002'] },
+      { kind: 'borrow', holder: 'ทีมติดตั้งสาขา', dept: 'IT', location: 'สาขารังสิต', qty: 1, since: '6 ก.ย. 2569', due: '13 ก.ย. 2569', txRef: 'BRW-2569-0040', lotRef: 'LOT-2569-0031', serials: ['SN-SW-0003'] }
     ],
     movements: [
-      { date: '6 ก.ย. 2569', type: 'borrow', qty: -1, balance: 5, user: 'ทีมติดตั้งสาขา', ref: 'BRW-2026-0040' },
-      { date: '3 ก.ย. 2569', type: 'issue', qty: -2, balance: 6, user: 'ทีม IT (ขยายเครือข่ายชั้น 2)', ref: 'ISS-2026-0308' },
-      { date: '10 มิ.ย. 2569', type: 'receive', qty: 8, balance: 8, user: 'Admin', ref: 'RCV-2026-0031', lotRef: 'LOT-2569-0031' }
+      { date: '6 ก.ย. 2569', type: 'borrow', qty: -1, balance: 5, user: 'ทีมติดตั้งสาขา', ref: 'BRW-2569-0040' },
+      { date: '3 ก.ย. 2569', type: 'issue', qty: -2, balance: 6, user: 'ทีม IT (ขยายเครือข่ายชั้น 2)', ref: 'ISS-2569-0308' },
+      { date: '10 มิ.ย. 2569', type: 'receive', qty: 8, balance: 8, user: 'Admin', ref: 'RCV-2569-0031', lotRef: 'LOT-2569-0031' }
     ]
   },
   {
@@ -162,14 +162,14 @@ var INVENTORY_ITEMS = [
       }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ทีม IT (ซ่อมเครื่อง)', dept: 'IT', location: 'อาคาร A ชั้น 1', qty: 7, since: '11 ก.ย. 2569', txRef: 'ISS-2026-0318', lotRef: 'LOT-2569-0022', serials: ['SN-PSU-0001', 'SN-PSU-0002', 'SN-PSU-0003', 'SN-PSU-0004', 'SN-PSU-0005', 'SN-PSU-0006', 'SN-PSU-0007'] }
+      { kind: 'issue', holder: 'ทีม IT (ซ่อมเครื่อง)', dept: 'IT', location: 'อาคาร A ชั้น 1', qty: 7, since: '11 ก.ย. 2569', txRef: 'ISS-2569-0318', lotRef: 'LOT-2569-0022', serials: ['SN-PSU-0001', 'SN-PSU-0002', 'SN-PSU-0003', 'SN-PSU-0004', 'SN-PSU-0005', 'SN-PSU-0006', 'SN-PSU-0007'] }
     ],
     service: [
       { state: 'disposed', serial: 'SN-PSU-0004', lotRef: 'LOT-2569-0022', since: '11 ก.ย. 2569', ref: 'DSP-2569-003', note: 'ไฟกระชากจนบอร์ดไหม้ หมดประกัน ตัดจำหน่าย' }
     ],
     movements: [
-      { date: '11 ก.ย. 2569', type: 'issue', qty: -7, balance: 3, user: 'ทีม IT (ซ่อมเครื่อง)', ref: 'ISS-2026-0318' },
-      { date: '5 พ.ค. 2569', type: 'receive', qty: 10, balance: 10, user: 'Admin', ref: 'RCV-2026-0022', lotRef: 'LOT-2569-0022' }
+      { date: '11 ก.ย. 2569', type: 'issue', qty: -7, balance: 3, user: 'ทีม IT (ซ่อมเครื่อง)', ref: 'ISS-2569-0318' },
+      { date: '5 พ.ค. 2569', type: 'receive', qty: 10, balance: 10, user: 'Admin', ref: 'RCV-2569-0022', lotRef: 'LOT-2569-0022' }
     ]
   },
   {
@@ -185,15 +185,15 @@ var INVENTORY_ITEMS = [
       }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ห้อง Server', dept: 'IT', location: 'ห้อง Server', qty: 3, since: '7 ก.ย. 2569', txRef: 'ISS-2026-0312', lotRef: 'LOT-2569-0015', serials: ['SN-UPS-0001', 'SN-UPS-0002', 'SN-UPS-0003'] },
-      { kind: 'issue', holder: 'ตู้ Rack ชั้น 2', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 2, since: '7 ก.ย. 2569', txRef: 'ISS-2026-0312', lotRef: 'LOT-2569-0015', serials: ['SN-UPS-0004', 'SN-UPS-0005'] }
+      { kind: 'issue', holder: 'ห้อง Server', dept: 'IT', location: 'ห้อง Server', qty: 3, since: '7 ก.ย. 2569', txRef: 'ISS-2569-0312', lotRef: 'LOT-2569-0015', serials: ['SN-UPS-0001', 'SN-UPS-0002', 'SN-UPS-0003'] },
+      { kind: 'issue', holder: 'ตู้ Rack ชั้น 2', dept: 'IT', location: 'อาคาร A ชั้น 2', qty: 2, since: '7 ก.ย. 2569', txRef: 'ISS-2569-0312', lotRef: 'LOT-2569-0015', serials: ['SN-UPS-0004', 'SN-UPS-0005'] }
     ],
     service: [
       { state: 'repair', serial: 'SN-UPS-0002', lotRef: 'LOT-2569-0015', since: '8 ก.ย. 2569', ref: 'REP-2569-007', note: 'แบตเตอรี่เสื่อม ไม่สำรองไฟ ส่งศูนย์บริการ' }
     ],
     movements: [
-      { date: '7 ก.ย. 2569', type: 'issue', qty: -5, balance: 0, user: 'ทีม IT (ห้อง Server)', ref: 'ISS-2026-0312' },
-      { date: '2 เม.ย. 2569', type: 'receive', qty: 5, balance: 5, user: 'Admin', ref: 'RCV-2026-0015', lotRef: 'LOT-2569-0015' }
+      { date: '7 ก.ย. 2569', type: 'issue', qty: -5, balance: 0, user: 'ทีม IT (ห้อง Server)', ref: 'ISS-2569-0312' },
+      { date: '2 เม.ย. 2569', type: 'receive', qty: 5, balance: 5, user: 'Admin', ref: 'RCV-2569-0015', lotRef: 'LOT-2569-0015' }
     ]
   },
   {
@@ -205,13 +205,13 @@ var INVENTORY_ITEMS = [
       { lotRef: 'LOT-2569-0138', poRef: 'PO-2569-0140', date: '1 ก.ย. 2569', qty: 80, remaining: 62, supplier: 'บจก. ไอที โซลูชัน', unitPrice: '150 บาท', warrantyEnd: null }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ห้องประชุมใหญ่', dept: 'Admin', location: 'อาคาร A ชั้น 4', qty: 12, since: '6 ก.ย. 2569', txRef: 'ISS-2026-0309', lotRef: 'LOT-2569-0138' },
-      { kind: 'borrow', holder: 'ฝ่ายการตลาด', dept: 'Marketing', location: 'ห้องประชุม 1', qty: 6, since: '6 ก.ย. 2569', due: '20 ก.ย. 2569', txRef: 'BRW-2026-0039', lotRef: 'LOT-2569-0138' }
+      { kind: 'issue', holder: 'ห้องประชุมใหญ่', dept: 'Admin', location: 'อาคาร A ชั้น 4', qty: 12, since: '6 ก.ย. 2569', txRef: 'ISS-2569-0309', lotRef: 'LOT-2569-0138' },
+      { kind: 'borrow', holder: 'ฝ่ายการตลาด', dept: 'Marketing', location: 'ห้องประชุม 1', qty: 6, since: '6 ก.ย. 2569', due: '20 ก.ย. 2569', txRef: 'BRW-2569-0039', lotRef: 'LOT-2569-0138' }
     ],
     movements: [
-      { date: '6 ก.ย. 2569', type: 'borrow', qty: -6, balance: 62, user: 'ฝ่ายการตลาด', ref: 'BRW-2026-0039' },
-      { date: '6 ก.ย. 2569', type: 'issue', qty: -12, balance: 68, user: 'ทีม IT (ห้องประชุม)', ref: 'ISS-2026-0309' },
-      { date: '1 ก.ย. 2569', type: 'receive', qty: 80, balance: 80, user: 'Admin', ref: 'RCV-2026-0138', lotRef: 'LOT-2569-0138' }
+      { date: '6 ก.ย. 2569', type: 'borrow', qty: -6, balance: 62, user: 'ฝ่ายการตลาด', ref: 'BRW-2569-0039' },
+      { date: '6 ก.ย. 2569', type: 'issue', qty: -12, balance: 68, user: 'ทีม IT (ห้องประชุม)', ref: 'ISS-2569-0309' },
+      { date: '1 ก.ย. 2569', type: 'receive', qty: 80, balance: 80, user: 'Admin', ref: 'RCV-2569-0138', lotRef: 'LOT-2569-0138' }
     ]
   },
   {
@@ -224,14 +224,24 @@ var INVENTORY_ITEMS = [
       { lotRef: 'LOT-2569-0140', poRef: 'PO-2569-0141', date: '4 ก.ย. 2569', qty: 1000, remaining: 700, supplier: 'บจก. เน็ตเวิร์ค ซัพพลาย', unitPrice: '350 บาท/กล่อง', warrantyEnd: null }
     ],
     deployments: [
-      { kind: 'issue', holder: 'ทีม IT', dept: 'IT', location: 'เดินสายอาคาร A ชั้น 3', qty: 300, since: '9 ก.ย. 2569', txRef: 'ISS-2026-0316', lotRef: 'LOT-2569-0140' }
+      { kind: 'issue', holder: 'ทีม IT', dept: 'IT', location: 'เดินสายอาคาร A ชั้น 3', qty: 300, since: '9 ก.ย. 2569', txRef: 'ISS-2569-0316', lotRef: 'LOT-2569-0140' }
     ],
     movements: [
-      { date: '9 ก.ย. 2569', type: 'issue', qty: -300, balance: 700, user: 'ทีม IT (เดินสายชั้น 3)', ref: 'ISS-2026-0316', note: '3 กล่อง' },
-      { date: '4 ก.ย. 2569', type: 'receive', qty: 1000, balance: 1000, user: 'Admin', ref: 'RCV-2026-0140', lotRef: 'LOT-2569-0140', note: '10 กล่อง (1 กล่อง = 100 ชิ้น)' }
+      { date: '9 ก.ย. 2569', type: 'issue', qty: -300, balance: 700, user: 'ทีม IT (เดินสายชั้น 3)', ref: 'ISS-2569-0316', note: '3 กล่อง' },
+      { date: '4 ก.ย. 2569', type: 'receive', qty: 1000, balance: 1000, user: 'Admin', ref: 'RCV-2569-0140', lotRef: 'LOT-2569-0140', note: '10 กล่อง (1 กล่อง = 100 ชิ้น)' }
     ]
   }
 ];
+
+// Stock status is derived, never typed: out = 0, low = at or below the reorder
+// point (จุดสั่งซื้อ), otherwise available. The hand-written `status` in the sample
+// rows above is overwritten here so the dashboard, badges and filters agree.
+function deriveStatus(item) {
+  if (item.stock <= 0) return 'out';
+  if (item.stock <= item.min) return 'low';
+  return 'available';
+}
+INVENTORY_ITEMS.forEach(function (item) { item.status = deriveStatus(item); });
 
 var STATUS_META = {
   available: { badge: 'success', label: 'พร้อมใช้งาน' },
@@ -411,6 +421,35 @@ function findClaim(claimRef) {
 
 function lowStockItems() {
   return INVENTORY_ITEMS.filter(function (item) { return item.status !== 'available'; });
+}
+
+// ---------------------------------------------------------------------------
+// Purchase orders — the reason this system exists. A PO is not stored on its own;
+// it is reconstructed from every lot that names it, so it can never drift from
+// what was actually received.
+// ---------------------------------------------------------------------------
+function poIndex() {
+  var pos = {};
+  INVENTORY_ITEMS.forEach(function (item) {
+    (item.lots || []).forEach(function (lot) {
+      var po = pos[lot.poRef] || (pos[lot.poRef] = { poRef: lot.poRef, supplier: lot.supplier, date: lot.date, lines: [], received: 0, remaining: 0, deployed: 0, claims: [] });
+      if (parseThaiDate(lot.date) < parseThaiDate(po.date)) po.date = lot.date;
+      var deps = (item.deployments || []).filter(function (d) { return d.lotRef === lot.lotRef; });
+      var deployedQty = deps.reduce(function (a, d) { return a + d.qty; }, 0);
+      po.lines.push({ item: item, lot: lot, deployments: deps, deployedQty: deployedQty });
+      po.received += lot.qty; po.remaining += lot.remaining; po.deployed += deployedQty;
+    });
+  });
+  CLAIMS.forEach(function (c) { if (pos[c.poRef]) pos[c.poRef].claims.push(c); });
+  return Object.keys(pos).map(function (k) { return pos[k]; })
+    .sort(function (a, b) { return parseThaiDate(b.date) - parseThaiDate(a.date); });
+}
+function findPo(poRef) {
+  return poIndex().filter(function (p) { return p.poRef === poRef; })[0] || null;
+}
+// Every PO string in the UI is a link to its page.
+function poLink(poRef, cls) {
+  return '<a class="po-link ' + (cls || '') + '" href="po.html?ref=' + encodeURIComponent(poRef) + '">' + poRef + '</a>';
 }
 
 // ---------------------------------------------------------------------------

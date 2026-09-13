@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -131,7 +132,7 @@
       <div class="table-wrap responsive-table d-none" id="invTableWrap">
         <table class="data-table">
           <thead>
-            <tr><th></th><th>รหัส</th><th>อุปกรณ์</th><th>ประเภท</th><th>หน่วย</th><th>คงเหลือ</th><th>จุดสั่งซื้อ</th><th>สถานะ</th><th></th></tr>
+            <tr><th><span class="visually-hidden">รูป</span></th><th>รหัส</th><th>อุปกรณ์</th><th>ประเภท</th><th>หน่วย</th><th>คงเหลือ</th><th>จุดสั่งซื้อ</th><th>สถานะ</th><th><span class="visually-hidden">เปิดรายละเอียด</span></th></tr>
           </thead>
           <tbody id="invTbody"></tbody>
         </table>
@@ -339,10 +340,9 @@ function renderInventory() {
 
 // Simulate initial load then reveal table (skeleton -> content)
 renderInventory();
-setTimeout(function () {
-  $('#invSkeleton').addClass('d-none');
-  $('#invTableWrap').removeClass('d-none');
-}, 450);
+// No artificial delay: the data is local, so the list is ready as soon as it is rendered.
+$('#invSkeleton').addClass('d-none');
+$('#invTableWrap').removeClass('d-none');
 
 // ---- Filters: search + category + type + status + unit, all combined (AND) ----
 var STATUS_LABEL = { available: 'พร้อมใช้งาน', low: 'ใกล้หมด', out: 'หมดสต๊อก' };

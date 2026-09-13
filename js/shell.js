@@ -14,8 +14,25 @@ $(function () {
   // Opening the drawer moves focus into it (first link, or the current page's link);
   // closing hands focus back to the button, so keyboard and screen-reader users are
   // never left "behind" an overlay.
+  // A closed drawer is off-screen but, without inert, still 13 tab stops on every
+  // page. Mirror the CSS breakpoint here so the sidebar is only reachable when shown.
+  var mq = window.matchMedia('(max-width: 575px)');
+  function syncInert() {
+    var sb = document.querySelector('.sidebar');
+    if (!sb) return;
+    var hidden = mq.matches && !sb.classList.contains('is-open');
+    if (hidden) sb.setAttribute('inert', ''); else sb.removeAttribute('inert');
+  }
+  if (mq.addEventListener) mq.addEventListener('change', syncInert); else mq.addListener(syncInert);
+  syncInert();
+  if (!document.querySelector('.drawer-close')) {
+    $('.sidebar').prepend('<button class="drawer-close" type="button" aria-label="ปิดเมนู"><i class="bi bi-x-lg" aria-hidden="true"></i></button>');
+  }
+  $doc.on('click', '.drawer-close', function () { closeDrawer(true); });
+
   function openDrawer() {
     $('.sidebar, .sidebar-overlay').addClass('is-open');
+    syncInert();
     $('.header-menu-btn').attr('aria-expanded', 'true');
     var target = document.querySelector('.sidebar .nav-item.active') || document.querySelector('.sidebar .nav-item');
     if (target) setTimeout(function () { target.focus(); }, 200);
@@ -25,6 +42,7 @@ $(function () {
     $('.sidebar, .sidebar-overlay').removeClass('is-open');
     $('.header-menu-btn').attr('aria-expanded', 'false');
     if (returnFocus) $('.header-menu-btn').trigger('focus');
+    syncInert();
   }
   $doc.on('click', '.header-menu-btn', openDrawer);
   $doc.on('click', '.sidebar-overlay', function () { closeDrawer(true); });
@@ -100,7 +118,7 @@ $(function () {
   var $body = $('#notifPanel .dropdown-panel__body');
   if (!$body.length) return;
   $body.html(rows.length ? rows.map(function (r) {
-    return '<a class="notif-row" href="' + r.href + '" style="text-decoration:none;color:inherit">' +
+    return '<a class="notif-row" role="menuitem" href="' + r.href + '" style="text-decoration:none;color:inherit">' +
       '<div class="notif-row__icon" style="background:' + bg[r.tone] + ';color:' + fg[r.tone] + '"><i class="bi ' + r.icon + '"></i></div>' +
       '<div><div class="notif-row__title">' + r.title + '</div><div class="notif-row__time">' + r.meta + '</div></div></a>';
   }).join('') : '<div class="text-muted-2 text-center py-3" style="font-size:12.5px">ไม่มีการแจ้งเตือน</div>');

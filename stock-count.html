@@ -41,6 +41,7 @@
     <a href="stock-count.html" class="nav-item active" aria-current="page"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-clipboard-check"></i></span><span>ตรวจนับสต๊อก</span></a>
     <a href="approvals.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-check2-square"></i></span><span>รออนุมัติ</span></a>
     <a href="claims.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span><span>ประวัติการเคลม</span></a>
+    <a href="po.html" class="nav-item"><span class="nav-item__icon" aria-hidden="true"><i class="bi bi-receipt"></i></span><span>ใบสั่งซื้อ (PO)</span></a>
   </div>
   <div class="sidebar__group">
     <div class="sidebar__group-label">จัดการข้อมูลอุปกรณ์</div>
@@ -97,7 +98,7 @@
 </header>
 <!-- /shell:header -->
 
-    <main class="app-main" id="main" style="padding-bottom:100px">
+    <main class="app-main count-page" id="main" style="padding-bottom:100px">
       <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><span class="current">ตรวจนับสต๊อก</span></div>
 
       <div class="page-header">
@@ -106,7 +107,7 @@
           <p class="page-header__desc">นับของจริงในคลังแล้วกรอกจำนวนที่นับได้ ระบบจะเทียบกับยอดในระบบให้อัตโนมัติ</p>
         </div>
         <div class="page-header__actions">
-          <button class="btn btn-ghost" type="button" id="cntExport"><i class="bi bi-download"></i> ส่งออก CSV</button>
+          <button class="btn btn-ghost" type="button" id="cntExport"><i class="bi bi-download" aria-hidden="true"></i> ส่งออก CSV</button>
           <select class="filter-select" id="countPeriod" aria-label="รอบเดือน">
             <option>รอบเดือน ก.ย. 2569</option>
           </select>
@@ -121,17 +122,17 @@
       </div>
 
       <!-- Progress: one strip, so the first count field is one scroll away on a phone -->
-      <div class="count-progress" aria-live="polite">
+      <div class="count-progress is-sticky" aria-live="polite"><span class="count-mode-pill"><i class="bi bi-lock-fill" aria-hidden="true"></i> โหมดนับ</span>
         <span class="count-progress__stat">นับแล้ว <b id="cntDone">0</b>/<b id="cntTotal">0</b></span>
-        <div class="count-progress__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="cntBar"><div class="count-progress__fill" id="cntFill" style="width:0%"></div></div>
+        <div class="count-progress__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="cntBar"><div class="count-progress__fill" id="cntFill"></div></div>
         <span class="count-progress__stat">ผลต่าง <b id="cntDiff" style="color:var(--color-danger-text)">0</b></span>
         <span class="count-progress__stat">ยังไม่ได้นับ <b id="cntPending">0</b></span>
       </div>
 
-      <div class="card card-body mb-3" style="background:var(--color-info-bg);border-color:var(--color-info-border)">
-        <div class="d-flex gap-2" style="font-size:12.5px;color:var(--color-info-text)"><i class="bi bi-eye-slash-fill" aria-hidden="true"></i>
-        <span><b>นับแบบไม่เห็นยอด (blind count)</b> — ยอดในระบบจะโผล่ให้เห็นก็ต่อเมื่อคุณกรอกตัวเลขของแถวนั้นแล้ว เพื่อให้ตัวเลขที่บันทึกมาจากชั้นวางจริง ไม่ใช่จากหน้าจอ &middot; กด Enter เพื่อไปแถวถัดไป</span></div>
-      </div>
+      <details class="card card-body mb-3 count-help" style="background:var(--color-info-bg);border-color:var(--color-info-border)">
+        <summary><i class="bi bi-eye-slash-fill" aria-hidden="true"></i> นับแบบไม่เห็นยอด (blind count) — ทำไม?</summary>
+        <div style="font-size:12.5px;color:var(--color-info-text)">ยอดในระบบจะโผล่ให้เห็นก็ต่อเมื่อคุณกรอกตัวเลขของแถวนั้นแล้ว เพื่อให้ตัวเลขที่บันทึกมาจากชั้นวางจริง ไม่ใช่จากหน้าจอ &middot; ระหว่างนับ เมนูและการค้นหาจะถูกซ่อน &middot; กด Enter เพื่อไปแถวถัดไป &middot; ผลนับถูกเก็บไว้ในเครื่อง ปิดหน้าแล้วกลับมานับต่อได้</div>
+      </details>
 
       <div class="toolbar">
         <div class="search-input"><i class="bi bi-search" aria-hidden="true"></i><input type="search" id="cntSearch" placeholder="ค้นหาอุปกรณ์ / รหัส..." aria-label="ค้นหาอุปกรณ์ในรายการนับ"></div>
@@ -165,15 +166,17 @@
       <!-- ประวัติการตรวจนับย้อนหลัง -->
       <div class="card card-body mt-4" id="historyCard">
         <div class="card-head-row mb-1">
-          <h2 class="section-title mb-0">ประวัติการตรวจนับย้อนหลัง</h2>
+          <h2 class="section-title mb-0"><button class="btn btn-ghost btn-sm" type="button" id="histToggle" aria-expanded="false" aria-controls="histBody"><i class="bi bi-chevron-right" aria-hidden="true"></i> ประวัติการตรวจนับย้อนหลัง</button></h2>
           <span class="text-muted-2" style="font-size:12px"><span id="histCount">0</span> รอบ</span>
         </div>
+        <div id="histBody" class="d-none">
         <div class="section-desc mb-3">ผลต่างที่พบในแต่ละรอบ และใครเป็นผู้อนุมัติการปรับยอด</div>
         <div class="table-scroll">
           <table class="data-table">
             <thead><tr><th>รอบ</th><th>วันที่นับ</th><th>ผู้นับ</th><th>รายการ</th><th>ผลต่าง</th><th>สถานะ</th><th>ผู้อนุมัติ</th></tr></thead>
             <tbody id="histTbody"></tbody>
           </table>
+        </div>
         </div>
       </div>
     </main>
@@ -191,6 +194,7 @@
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
 <script src="js/data.js"></script>
+<script src="js/cart.js"></script>
 <script>
 // counted[code] = number typed by staff. undefined = ยังไม่ได้นับ
 //
@@ -345,9 +349,12 @@ function updateSummary() {
   $('#cntDone, #cntDone2').text(done);
   $('#cntDiff').text(diff);
   $('#cntPending').text(total - done);
-  $('#cntFill').css('width', pct + '%');
+  $('#cntFill').css('transform', 'scaleX(' + (pct / 100) + ')');
   $('#cntBar').attr('aria-valuenow', pct);
   $('#cntSubmit').prop('disabled', done === 0);
+  // Counting mode: once a number is in, the rest of the app (sidebar, dashboard,
+  // exports) would show the very quantities the blind count hides.
+  document.body.classList.toggle('is-counting', done > 0 && !submitted);
 }
 
 // Typing a count updates that row live without re-rendering (keeps focus in the field)
@@ -448,11 +455,27 @@ $('#cntSubmit').on('click', function () {
       });
     });
     try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    document.body.classList.remove('is-counting');
     renderHistory();
-    showToast('success', diffs.length
-      ? 'บันทึกผลแล้ว — ส่งผลต่าง ' + diffs.length + ' รายการเข้ารออนุมัติ'
-      : 'บันทึกผลการตรวจนับเรียบร้อย ยอดตรงทุกรายการ');
-    if (diffs.length) setTimeout(function () { location.href = 'approvals.html'; }, 1400);
+    var cntRef = nextRef('CNT');
+    var lines = [
+      { label: 'รอบ', value: round.period },
+      { label: 'นับจริง', value: round.items + ' / ' + INVENTORY_ITEMS.length + ' รายการ' },
+      { label: 'ไม่ได้นับ', value: pending.length + ' รายการ' },
+      { label: 'พบผลต่าง', value: diffs.length + ' รายการ' }
+    ];
+    diffs.forEach(function (i) { var d = diffOf(i); lines.push({ label: '<span class="text-muted-2">ผลต่าง</span> ' + i.name, value: (d > 0 ? '+' : '') + d + ' ' + i.unit }); });
+    $('.cart-summary-bar').hide();
+    $('.app-main').children().not('#receiptHost').hide();
+    showReceipt({
+      title: 'บันทึกผลการตรวจนับแล้ว',
+      ref: cntRef,
+      lines: lines,
+      meta: (diffs.length ? 'ส่งคำขอปรับยอด ' + diffs.length + ' รายการให้หัวหน้าอนุมัติแล้ว ยอดในระบบยังไม่เปลี่ยนจนกว่าจะอนุมัติ' : 'ยอดตรงทุกรายการที่นับ ไม่มีอะไรต้องอนุมัติ') + ' · ' + formatThaiDate(today()) + ' · ' + round.countedBy,
+      nextLabel: 'ดูประวัติการนับ',
+      onNext: function () { location.reload(); },
+      nextHref: diffs.length ? { href: 'approvals.html', label: 'ดูคำขอปรับยอด' } : null
+    });
   });
 });
 
@@ -463,10 +486,10 @@ function renderHistory() {
     var st = HIST_STATUS[h.status] || HIST_STATUS.pending;
     return '<tr>' +
       '<td class="fw-700">' + h.period + '</td>' +
-      '<td class="num text-muted-2">' + h.countedOn + '</td>' +
+      '<td class="num text-muted-2" style="font-size:12.5px">' + h.countedOn + '</td>' +
       '<td>' + h.countedBy + '</td>' +
       '<td class="num">' + h.items + '</td>' +
-      '<td class="num fw-700" style="color:' + (h.diffs ? 'var(--color-danger)' : 'var(--color-success)') + '">' + h.diffs + '</td>' +
+      '<td class="num fw-700" style="color:' + (h.diffs ? 'var(--color-danger-text)' : 'var(--color-success-text)') + '">' + h.diffs + '</td>' +
       '<td><span class="status-badge status-badge--' + st.badge + '"><span class="status-badge__dot"></span>' + st.label + '</span></td>' +
       '<td class="text-muted-2">' + (h.approvedBy ? h.approvedBy + '<div style="font-size:11px">' + (h.approvedOn || '') + '</div>' : '-') + '</td>' +
     '</tr>';
@@ -476,15 +499,22 @@ function renderHistory() {
 $('#cntExport').on('click', function () {
   downloadCsv(
     'stock-count-' + new Date().toISOString().slice(0, 10) + '.csv',
-    ['รหัส', 'ชื่ออุปกรณ์', 'หน่วย', 'ยอดในระบบ', 'นับได้จริง', 'ผลต่าง'],
+    submitted ? ['รหัส', 'ชื่ออุปกรณ์', 'หน่วย', 'ยอดในระบบ', 'นับได้จริง', 'ผลต่าง'] : ['รหัส', 'ชื่ออุปกรณ์', 'หน่วย', 'นับได้จริง'],
     INVENTORY_ITEMS.map(function (i) {
       var d = diffOf(i);
-      return [i.code, i.name, i.unit, i.stock, counted[i.code] || '', d === null ? 'ยังไม่ได้นับ' : d];
+      // The system figure never leaves this page before the count is submitted.
+      return submitted ? [i.code, i.name, i.unit, i.stock, counted[i.code] || '', d === null ? 'ยังไม่ได้นับ' : d]
+                       : [i.code, i.name, i.unit, counted[i.code] || ''];
     })
   );
   showToast('success', 'ส่งออกใบตรวจนับเป็น CSV แล้ว');
 });
 
+$('#histToggle').on('click', function () {
+  var open = $('#histBody').hasClass('d-none');
+  $('#histBody').toggleClass('d-none', !open);
+  $(this).attr('aria-expanded', String(open)).find('i').attr('class', open ? 'bi bi-chevron-down' : 'bi bi-chevron-right');
+});
 renderHistory();
 restore();
 render();
