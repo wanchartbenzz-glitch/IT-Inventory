@@ -385,9 +385,10 @@ a.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); te
 .donut-ring__label { font-size: 9.5px; color: var(--color-muted); }
 .legend-row { display: flex; align-items: center; gap: var(--sp-2); font-size: 12.5px; color: var(--color-muted); }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.critical-item-row { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-2) 0; border-bottom: 1px dashed var(--color-border); font-size: 13px; }
+.critical-item-row { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-2) 0; border-bottom: 1px dashed var(--color-border); font-size: 13px; transition: padding-left var(--dur) var(--ease); }
 .critical-item-row:last-of-type { border-bottom: none; }
 .critical-item-row .qty { font-weight: 700; color: var(--color-danger); font-family: "Inter"; }
+a.critical-item-row:hover { padding-left: 4px; color: var(--color-primary); }
 
 /* ---------- 12. Category chart ---------- */
 .category-bar-row { margin-bottom: var(--sp-3); }

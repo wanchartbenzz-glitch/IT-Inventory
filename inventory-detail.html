@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wireless Mouse - IT Inventory</title>
+<title>รายละเอียดอุปกรณ์ - IT Inventory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -94,15 +94,15 @@
 <!-- /shell:header -->
 
     <main class="app-main">
-      <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><a href="inventory.html">ข้อมูลอุปกรณ์ IT</a><span class="sep">/</span><span class="current">IT-MOU-001</span></div>
+      <div class="breadcrumb-row"><a href="index.html">Dashboard</a><span class="sep">/</span><a href="inventory.html">ข้อมูลอุปกรณ์ IT</a><span class="sep">/</span><span class="current" id="detCode">-</span></div>
 
       <div class="page-header">
         <div class="d-flex align-items-center gap-3">
           <a href="inventory.html" class="btn btn-ghost btn-sm" style="width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center"><i class="bi bi-arrow-left"></i></a>
-          <div class="item-icon-box" style="width:52px;height:52px;font-size:22px;background:var(--color-primary-light);color:var(--color-primary)"><i class="bi bi-mouse2"></i></div>
+          <div class="item-icon-box" id="detIconBox" style="width:52px;height:52px;font-size:22px"><i class="bi" id="detIcon"></i></div>
           <div>
-            <h1 class="page-header__title" style="font-size:20px">Wireless Mouse</h1>
-            <p class="page-header__desc num">IT-MOU-001 &middot; Peripheral / Logitech M185</p>
+            <h1 class="page-header__title" style="font-size:20px" id="detName">-</h1>
+            <p class="page-header__desc num" id="detSubtitle">-</p>
           </div>
         </div>
         <div class="page-header__actions">
@@ -112,22 +112,22 @@
       </div>
 
       <div class="gap-row mb-4">
-        <span class="status-badge status-badge--success"><span class="status-badge__dot"></span>พร้อมใช้งาน</span>
-        <span class="status-badge status-badge--neutral">อัปเดตล่าสุด 13 ก.ย. 2569</span>
+        <span id="detStatusBadge"></span>
+        <span class="status-badge status-badge--neutral" id="detUpdated">-</span>
       </div>
 
       <div class="grid-2" style="grid-template-columns: 1fr 1.4fr; align-items:start">
         <div class="card card-body">
           <div class="section-title mb-3">ข้อมูลอุปกรณ์</div>
           <div class="d-flex flex-column gap-3">
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">คงเหลือ</span><span class="fw-700 num">42 ชิ้น</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">จุดสั่งซื้อ (Minimum)</span><span class="fw-700 num">10 ชิ้น</span></div>
-            <div class="stock-mini__bar" style="height:8px"><div class="stock-mini__fill" style="width:100%;background:var(--color-success)"></div></div>
+            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">คงเหลือ</span><span class="fw-700 num" id="detStock">-</span></div>
+            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">จุดสั่งซื้อ (Minimum)</span><span class="fw-700 num" id="detMin">-</span></div>
+            <div class="stock-mini__bar" style="height:8px"><div class="stock-mini__fill" id="detBar" style="width:0%"></div></div>
             <hr class="my-1" style="border-color:var(--color-border)">
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">หมวดหมู่</span><span class="fw-700">Peripheral</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">ยี่ห้อ</span><span class="fw-700">Logitech</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">รุ่น</span><span class="fw-700">M185</span></div>
-            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">หน่วย</span><span class="fw-700">ชิ้น</span></div>
+            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">หมวดหมู่</span><span class="fw-700" id="detCategory">-</span></div>
+            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">ยี่ห้อ</span><span class="fw-700" id="detBrand">-</span></div>
+            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">รุ่น</span><span class="fw-700" id="detModel">-</span></div>
+            <div class="d-flex justify-content-between"><span class="text-muted-2" style="font-size:12.5px">หน่วย</span><span class="fw-700" id="detUnit">-</span></div>
           </div>
         </div>
 
@@ -139,48 +139,7 @@
           <div class="table-wrap" style="border:none">
             <table class="data-table">
               <thead><tr><th>วันที่</th><th>รายการ</th><th>จำนวน</th><th>คงเหลือ</th><th>ผู้ทำรายการ</th><th>เลขที่อ้างอิง</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td class="num text-muted-2">13 ก.ย. 2569</td>
-                  <td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>รับเข้า</span></td>
-                  <td class="num fw-700" style="color:var(--color-success)">+20</td>
-                  <td class="num fw-700">42 ชิ้น</td>
-                  <td>Admin</td>
-                  <td class="num text-muted-2">RCV-2026-0142</td>
-                </tr>
-                <tr>
-                  <td class="num text-muted-2">12 ก.ย. 2569</td>
-                  <td><span class="status-badge status-badge--danger"><span class="status-badge__dot"></span>เบิก</span></td>
-                  <td class="num fw-700" style="color:var(--color-danger)">-5</td>
-                  <td class="num fw-700">22 ชิ้น</td>
-                  <td>กมล ศรีสุข (IT Support)</td>
-                  <td class="num text-muted-2">ISS-2026-0311</td>
-                </tr>
-                <tr>
-                  <td class="num text-muted-2">10 ก.ย. 2569</td>
-                  <td><span class="status-badge status-badge--danger"><span class="status-badge__dot"></span>เบิก</span></td>
-                  <td class="num fw-700" style="color:var(--color-danger)">-2</td>
-                  <td class="num fw-700">27 ชิ้น</td>
-                  <td>วิชัย ทองดี (Sales)</td>
-                  <td class="num text-muted-2">ISS-2026-0298</td>
-                </tr>
-                <tr>
-                  <td class="num text-muted-2">5 ก.ย. 2569</td>
-                  <td><span class="status-badge status-badge--neutral"><span class="status-badge__dot" style="background:var(--color-primary)"></span>คืน</span></td>
-                  <td class="num fw-700" style="color:var(--color-success)">+1</td>
-                  <td class="num fw-700">29 ชิ้น</td>
-                  <td>กมล ศรีสุข</td>
-                  <td class="num text-muted-2">RET-2026-0044</td>
-                </tr>
-                <tr>
-                  <td class="num text-muted-2">1 ก.ย. 2569</td>
-                  <td><span class="status-badge status-badge--success"><span class="status-badge__dot"></span>รับเข้า</span></td>
-                  <td class="num fw-700" style="color:var(--color-success)">+10</td>
-                  <td class="num fw-700">28 ชิ้น</td>
-                  <td>Admin</td>
-                  <td class="num text-muted-2">RCV-2026-0098</td>
-                </tr>
-              </tbody>
+              <tbody id="detMovements"></tbody>
             </table>
           </div>
         </div>
@@ -195,8 +154,8 @@
       <div class="modal-header"><h5 class="modal-title">แก้ไขอุปกรณ์</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
       <div class="modal-body">
         <div class="row g-3">
-          <div class="col-12"><label class="form-label">ชื่ออุปกรณ์</label><input class="form-control" value="Wireless Mouse"></div>
-          <div class="col-md-6"><label class="form-label">จุดสั่งซื้อ (Minimum)</label><input type="number" class="form-control" value="10"></div>
+          <div class="col-12"><label class="form-label">ชื่ออุปกรณ์</label><input class="form-control" id="editName"></div>
+          <div class="col-md-6"><label class="form-label">จุดสั่งซื้อ (Minimum)</label><input type="number" class="form-control" id="editMin"></div>
           <div class="col-md-6"><label class="form-label">สถานะ</label><select class="form-select"><option>ใช้งาน</option><option>ไม่ใช้งาน</option></select></div>
         </div>
       </div>
@@ -213,5 +172,62 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
+<script src="js/data.js"></script>
+<script>
+var code = new URLSearchParams(location.search).get('code');
+var item = findInventoryItem(code) || INVENTORY_ITEMS[0];
+var tone = TONE_META[item.tone] || TONE_META.primary;
+var st = STATUS_META[item.status];
+
+document.title = item.name + ' - IT Inventory';
+$('#detCode').text(item.code);
+$('#detIconBox').css({ background: tone.bg, color: tone.fg });
+$('#detIcon').addClass(item.icon);
+$('#detName').text(item.name);
+$('#detSubtitle').text(item.code + ' · ' + item.category + ' / ' + (item.brand !== '-' ? item.brand + ' ' + item.model : item.type));
+$('#detStatusBadge').html('<span class="status-badge status-badge--' + st.badge + '"><span class="status-badge__dot"></span>' + st.label + '</span>');
+$('#detStock').text(item.stock + ' ' + item.unit);
+$('#detMin').text(item.min + ' ' + item.unit);
+$('#detBar').css({ width: stockBarWidthFor(item), background: stockBarColorFor(item.status) });
+$('#detCategory').text(item.category);
+$('#detBrand').text(item.brand);
+$('#detModel').text(item.model);
+$('#detUnit').text(item.unit);
+$('#editName').val(item.name);
+$('#editMin').val(item.min);
+
+if (item.movements && item.movements.length) {
+  $('#detUpdated').text('อัปเดตล่าสุด ' + item.movements[0].date);
+} else {
+  $('#detUpdated').text('ยังไม่มีความเคลื่อนไหว');
+}
+
+var $tbody = $('#detMovements').empty();
+item.movements.forEach(function (m) {
+  var meta = MOVEMENT_META[m.type];
+  var qtyColor = m.qty > 0 ? 'var(--color-success)' : 'var(--color-danger)';
+  var qtyText = (m.qty > 0 ? '+' : '') + m.qty;
+  var dotStyle = meta.dotColor ? ' style="background:' + meta.dotColor + '"' : '';
+  $tbody.append(
+    '<tr>' +
+      '<td class="num text-muted-2">' + m.date + '</td>' +
+      '<td><span class="status-badge status-badge--' + meta.badge + '"><span class="status-badge__dot"' + dotStyle + '></span>' + meta.label + '</span></td>' +
+      '<td class="num fw-700" style="color:' + qtyColor + '">' + qtyText + '</td>' +
+      '<td class="num fw-700">' + m.balance + ' ' + item.unit + '</td>' +
+      '<td>' + m.user + '</td>' +
+      '<td class="num text-muted-2">' + m.ref + '</td>' +
+    '</tr>'
+  );
+});
+
+function stockBarColorFor(status) {
+  return status === 'available' ? 'var(--color-success)' : status === 'low' ? 'var(--color-warning)' : 'var(--color-danger)';
+}
+function stockBarWidthFor(it) {
+  if (it.status === 'out') return '0%';
+  var pct = Math.min(100, Math.round((it.stock / (it.min * 2)) * 100));
+  return Math.max(pct, 6) + '%';
+}
+</script>
 </body>
 </html>
