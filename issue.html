@@ -125,8 +125,9 @@
         <div class="row g-3">
           <div class="col-md-6"><label class="form-label">ผู้เบิก <span class="required">*</span></label><input class="form-control" id="reqName" placeholder="ชื่อ-นามสกุล" value="สมชาย ใจดี"></div>
           <div class="col-md-6"><label class="form-label">แผนก <span class="required">*</span></label><select class="form-select" id="reqDept"><option>แผนก IT</option><option>บัญชี</option><option>ขาย</option><option>ทรัพยากรบุคคล</option></select></div>
-          <div class="col-md-6"><label class="form-label">เหตุผล</label><select class="form-select"><option>ใช้งานทั่วไป/ประจำ</option><option>อุปกรณ์ชำรุด</option><option>พนักงานใหม่</option><option>โครงการเฉพาะกิจ</option></select></div>
-          <div class="col-md-6"><label class="form-label">หมายเหตุ</label><input class="form-control" placeholder="งานซ่อม/ปรับปรุง"></div>
+          <div class="col-md-6"><label class="form-label">สถานที่ใช้งาน <span class="required">*</span></label><input class="form-control" id="useLocation" placeholder="เช่น อาคาร A ชั้น 2, ห้อง Server"></div>
+          <div class="col-md-6"><label class="form-label">เหตุผล</label><select class="form-select" id="reqReason"><option>ใช้งานทั่วไป/ประจำ</option><option>อุปกรณ์ชำรุด</option><option>พนักงานใหม่</option><option>โครงการเฉพาะกิจ</option></select></div>
+          <div class="col-md-6"><label class="form-label">หมายเหตุ</label><input class="form-control" id="reqNote" placeholder="งานซ่อม/ปรับปรุง"></div>
         </div>
       </div>
     </main>
@@ -135,7 +136,7 @@
 
 <div class="cart-summary-bar">
   <span><b id="cartCount2">0</b> รายการ</span>
-  <button class="btn btn-primary" id="confirmIssueBtn" disabled><span class="btn-label">ยืนยันการเบิก <i class="bi bi-arrow-right"></i></span></button>
+  <button class="btn btn-primary" id="confirmBtn" disabled><span class="btn-label">ยืนยันการเบิก <i class="bi bi-arrow-right"></i></span></button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -144,101 +145,30 @@
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
 <script src="js/data.js"></script>
+<script src="js/cart.js"></script>
 <script>
-var cart = {};
+renderPicker('#issuePicker', '');
+$('#issueSearch').on('input', function () { renderPicker('#issuePicker', $(this).val()); });
+renderCart();
 
-function renderIssuePicker(filter) {
-  var $picker = $('#issuePicker').empty();
-  var q = (filter || '').trim().toLowerCase();
-  INVENTORY_ITEMS.filter(function (item) {
-    return !q || item.name.toLowerCase().indexOf(q) > -1 || item.code.toLowerCase().indexOf(q) > -1;
-  }).forEach(function (item) {
-    var tone = TONE_META[item.tone] || TONE_META.primary;
-    var outOfStock = item.stock <= 0;
-    var $row = $(
-      '<div class="item-picker-row" data-name="' + item.name + '" data-code="' + item.code + '" data-unit="' + item.unit + '" data-stock="' + item.stock + '" data-icon="' + item.icon + '" data-tone="' + item.tone + '">' +
-        '<div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div>' +
-        '<div><div class="item-picker-row__name">' + item.name + '</div><div class="item-picker-row__code">' + item.code + '</div></div>' +
-        '<div class="item-picker-row__stock num">' + (outOfStock ? 'หมดสต๊อก' : 'เหลือ ' + item.stock + ' ' + item.unit) + '</div>' +
-        '<button class="btn btn-soft btn-sm ms-2 add-to-cart"' + (outOfStock ? ' disabled title="หมดสต๊อก ไม่สามารถเบิกได้"' : '') + '>+ เพิ่ม</button>' +
-      '</div>'
-    );
-    $picker.append($row);
-  });
-}
-$('#issueSearch').on('input', function () { renderIssuePicker($(this).val()); });
-renderIssuePicker('');
-
-$(document).on('click', '.add-to-cart', function () {
-  var $row = $(this).closest('.item-picker-row');
-  var code = $row.data('code');
-  if (cart[code]) { showToast('info', 'มีรายการนี้อยู่แล้ว'); return; }
-  cart[code] = {
-    name: $row.data('name'), code: code, unit: $row.data('unit'),
-    stock: parseFloat($row.data('stock')), icon: $row.data('icon'), color: $row.data('tone'), qty: 1
-  };
-  renderCart();
-});
-
-function renderCart() {
-  var $list = $('#cartList').empty();
-  var keys = Object.keys(cart);
-  $('#cartEmpty').toggleClass('d-none', keys.length > 0);
-  $('#confirmIssueBtn').prop('disabled', keys.length === 0);
-  $('#cartCount, #cartCount2').text(keys.length);
-
-  keys.forEach(function (code) {
-    var it = cart[code];
-    var toneMeta = TONE_META[it.color] || TONE_META.primary;
-    var c = [toneMeta.bg, toneMeta.fg];
-    var remaining = it.stock - it.qty;
-    var $el = $(
-      '<div class="cart-item" data-code="' + code + '">' +
-        '<div class="item-icon-box" style="background:' + c[0] + ';color:' + c[1] + '"><i class="bi ' + it.icon + '"></i></div>' +
-        '<div class="cart-item__body">' +
-          '<div class="cart-item__name">' + it.name + '</div>' +
-          '<div class="cart-item__code">' + it.code + '</div>' +
-          '<div class="cart-item__remaining">เหลือหลังเบิก: <b class="num remain-text">' + remaining + '</b> ' + it.unit + '</div>' +
-        '</div>' +
-        '<div class="qty-stepper">' +
-          '<button type="button" data-step="-1">-</button>' +
-          '<input type="text" class="num qty-input" value="' + it.qty + '" readonly>' +
-          '<button type="button" data-step="1">+</button>' +
-        '</div>' +
-        '<button class="cart-remove" type="button"><i class="bi bi-trash"></i></button>' +
-      '</div>'
-    );
-    $list.append($el);
-  });
-}
-
-$(document).on('click', '.cart-item .qty-stepper button', function () {
-  var $item = $(this).closest('.cart-item');
-  var code = $item.data('code');
-  var step = parseInt($(this).data('step'), 10);
-  var it = cart[code];
-  it.qty = Math.max(1, Math.min(it.stock, it.qty + step));
-  renderCart();
-});
-
-$(document).on('click', '.cart-remove', function () {
-  var code = $(this).closest('.cart-item').data('code');
-  delete cart[code];
-  renderCart();
-});
-
-$('#confirmIssueBtn').on('click', function () {
-  var keys = Object.keys(cart);
-  if (!keys.length) return;
-  var rows = keys.map(function (code) {
-    var it = cart[code];
-    return '<div style="display:flex;justify-content:space-between;padding:4px 0"><span>' + it.name + '</span><span><b>' + it.qty + '</b> ' + it.unit + ' &rarr; เหลือ ' + (it.stock - it.qty) + '</span></div>';
-  }).join('');
+$('#confirmBtn').on('click', function () {
+  if (!Object.keys(cart).length) return;
+  if (!cartIsValid()) { showToast('warning', 'กรุณาเลือก Serial ของอุปกรณ์ที่มีเลขเครื่อง'); return; }
+  if (!$('#useLocation').val().trim()) {
+    showToast('warning', 'กรุณาระบุสถานที่ใช้งาน เพื่อให้ตรวจสอบได้ว่าอุปกรณ์ถูกนำไปใช้ที่ไหน');
+    $('#useLocation').focus();
+    return;
+  }
 
   Swal.fire({
     title: 'ยืนยันการเบิกอุปกรณ์?',
-    html: '<div style="text-align:left;font-size:13.5px">' + rows + '</div>' +
-          '<hr><div style="text-align:left;font-size:13px;color:#64748b">ผู้เบิก: ' + $('#reqName').val() + ' &middot; ' + $('#reqDept').val() + '</div>',
+    html: '<div style="text-align:left;font-size:13.5px">' + cartSummaryRows() + '</div>' +
+          '<div style="text-align:left;font-size:12.5px;color:#64748b;margin-top:10px">' +
+            'ผู้เบิก: ' + $('#reqName').val() + ' &middot; ' + $('#reqDept').val() + '<br>' +
+            'สถานที่ใช้งาน: ' + $('#useLocation').val() +
+          '</div>' +
+          '<div style="text-align:left;font-size:12px;color:#9b1c1c;margin-top:8px">' +
+            '<b>เบิก = ตัดออกจากสต๊อกถาวร</b> ไม่สามารถคืนได้</div>',
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#2563eb',
@@ -248,7 +178,7 @@ $('#confirmIssueBtn').on('click', function () {
     reverseButtons: true
   }).then(function (result) {
     if (result.isConfirmed) {
-      showToast('success', 'เบิกอุปกรณ์สำเร็จ');
+      showToast('success', 'เบิกอุปกรณ์สำเร็จ (เลขที่ ' + nextRef('ISS') + ')');
       cart = {};
       renderCart();
       setTimeout(function () { location.href = 'index.html'; }, 900);

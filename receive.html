@@ -134,8 +134,8 @@
                 <input class="form-control" id="rcvUnitLabel" value="กล่อง" disabled>
               </div>
               <div class="col-md-4">
-                <label class="form-label">เลขที่อ้างอิง (PO)</label>
-                <input class="form-control" placeholder="PO-2026-XXX">
+                <label class="form-label">เลขที่อ้างอิง (PO) <span class="required">*</span></label>
+                <input class="form-control" id="rcvPo" placeholder="PO-2569-XXXX">
               </div>
             </div>
 
@@ -152,10 +152,30 @@
           </div>
 
           <div class="form-section">
+            <div class="section-title mb-1" style="font-size:13.5px">ข้อมูลสำหรับตรวจสอบย้อนกลับ &amp; การเคลม</div>
+            <div class="text-muted-2 mb-3" style="font-size:12px">ข้อมูลชุดนี้จะติดไปกับล็อตนี้ เพื่อให้ย้อนกลับได้ว่าอุปกรณ์มาจากใบสั่งซื้อไหน และยังอยู่ในประกันหรือไม่</div>
             <div class="row g-3">
-              <div class="col-md-6"><label class="form-label">ผู้จำหน่าย</label><input class="form-control" placeholder="ชื่อผู้จำหน่าย"></div>
+              <div class="col-md-6"><label class="form-label">ผู้จำหน่าย</label><input class="form-control" id="rcvSupplier" placeholder="ชื่อผู้จำหน่าย"></div>
+              <div class="col-md-6"><label class="form-label">ราคาต่อหน่วย</label>
+                <input type="number" class="form-control" id="rcvPrice" min="0" step="0.01" placeholder="0.00">
+                <div class="text-muted-2 mt-1" style="font-size:11.5px">บาท ต่อ <span id="rcvPriceUnit">หน่วย</span></div>
+              </div>
               <div class="col-md-6"><label class="form-label">วันที่รับเข้า</label><input type="date" class="form-control" id="rcvDate"></div>
-              <div class="col-12"><label class="form-label">หมายเหตุ</label><textarea class="form-control" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
+              <div class="col-md-6"><label class="form-label">วันหมดประกัน</label><input type="date" class="form-control" id="rcvWarranty">
+                <div class="text-muted-2 mt-1" style="font-size:11.5px">เว้นว่างได้ถ้าอุปกรณ์ไม่มีประกัน เช่น สายเคเบิล หัวต่อ</div>
+              </div>
+              <div class="col-12"><label class="form-label">หมายเหตุ</label><textarea class="form-control" id="rcvNote" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
+            </div>
+          </div>
+
+          <!-- Serial entry — only shown for items tracked individually -->
+          <div class="form-section d-none" id="rcvSerialSection">
+            <div class="section-title mb-1" style="font-size:13.5px">Serial Number รายชิ้น <span class="required">*</span></div>
+            <div class="text-muted-2 mb-2" style="font-size:12px">อุปกรณ์ชนิดนี้ติดตามเป็นรายชิ้น กรอก Serial บรรทัดละ 1 เลข เพื่อให้ระบุตัวเครื่องได้ตอนส่งเคลม</div>
+            <textarea class="form-control num" id="rcvSerials" rows="5" spellcheck="false" placeholder="SN-XXXX-0001&#10;SN-XXXX-0002"></textarea>
+            <div class="d-flex justify-content-between align-items-center mt-2 gap-2 flex-wrap" style="font-size:12px">
+              <span class="text-muted-2">กรอกแล้ว <b class="num" id="serialCount">0</b> / <b class="num" id="serialNeeded">0</b> เลข</span>
+              <span id="serialWarn" class="d-none fw-700" style="color:var(--color-danger)"><i class="bi bi-exclamation-circle"></i> <span id="serialWarnText"></span></span>
             </div>
           </div>
 
@@ -171,6 +191,22 @@
             <div class="empty-state__icon" style="color:var(--color-success)"><i class="bi bi-check-circle"></i></div>
             <div class="empty-state__title">ตรวจสอบข้อมูลก่อนยืนยัน</div>
             <div class="empty-state__desc">อุปกรณ์ <b id="confName">LAN Cable Cat6</b> จะเพิ่มสต๊อก <b id="confResult" style="color:var(--color-success)">+305 เมตร</b></div>
+          </div>
+          <div class="lot-card">
+            <div class="lot-card__top">
+              <div class="lot-card__po" id="confPo">PO-XXXX</div>
+              <span class="status-badge status-badge--success"><span class="status-badge__dot"></span>ล็อตใหม่</span>
+            </div>
+            <div class="lot-grid">
+              <div><div class="lot-grid__label">ผู้จำหน่าย</div><div class="lot-grid__value" id="confSupplier">-</div></div>
+              <div><div class="lot-grid__label">ราคาต่อหน่วย</div><div class="lot-grid__value num" id="confPrice">-</div></div>
+              <div><div class="lot-grid__label">วันที่รับเข้า</div><div class="lot-grid__value" id="confDate">-</div></div>
+              <div><div class="lot-grid__label">หมดประกัน</div><div class="lot-grid__value" id="confWarranty">-</div></div>
+            </div>
+            <div id="confSerialWrap" class="d-none mt-3 pt-3" style="border-top:1px solid var(--color-border)">
+              <div class="lot-grid__label mb-1">Serial ที่รับเข้า (<span class="num" id="confSerialCount">0</span>)</div>
+              <div id="confSerialList"></div>
+            </div>
           </div>
           <div class="d-flex justify-content-between mt-3">
             <button class="btn btn-ghost" data-back="2">ย้อนกลับ</button>
@@ -191,26 +227,37 @@
 <script>
 $('#rcvDate').val(new Date().toISOString().split('T')[0]);
 
-// Render the item picker from the shared catalog (all 10 items, not just 3)
+// The item currently selected in step 1 — everything downstream reads it from here.
+function selectedItem() {
+  return findInventoryItem($('.item-picker-row.selected').data('code'));
+}
+
 function renderReceivePicker(filter) {
   var $picker = $('#rcvItemPicker').empty();
   var q = (filter || '').trim().toLowerCase();
-  INVENTORY_ITEMS.filter(function (item) {
+  var matches = INVENTORY_ITEMS.filter(function (item) {
     return !q || item.name.toLowerCase().indexOf(q) > -1 || item.code.toLowerCase().indexOf(q) > -1;
-  }).forEach(function (item, i) {
-    var tone = TONE_META[item.tone] || TONE_META.primary;
+  });
+
+  if (!matches.length) {
+    $picker.append('<div class="text-muted-2 text-center py-4" style="font-size:13px">ไม่พบอุปกรณ์ที่ค้นหา</div>');
+    return;
+  }
+
+  matches.forEach(function (item) {
     var recvUnit = item.recvUnit || item.unit;
-    var factor = item.recvFactor || 1;
     var codeLabel = recvUnit === item.unit ? 'รับเป็น ' + recvUnit : 'รับเป็น ' + recvUnit + ' &middot; เก็บสต๊อกเป็น ' + item.unit;
-    var $row = $(
-      '<div class="item-picker-row" data-name="' + item.name + '" data-code="' + item.code + '" data-recv-unit="' + recvUnit + '" data-base-unit="' + item.unit + '" data-factor="' + factor + '" data-current="' + item.stock + '">' +
-        '<div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div>' +
-        '<div><div class="item-picker-row__name">' + item.name + ' <span class="text-faint fw-normal">(' + item.code + ')</span></div><div class="item-picker-row__code">' + codeLabel + '</div></div>' +
+    if (item.serialized) codeLabel += ' &middot; ติดตามรายชิ้น (Serial)';
+    $picker.append(
+      '<div class="item-picker-row" data-code="' + item.code + '">' +
+        itemThumbHtml(item, '34px', '15px') +
+        '<div><div class="item-picker-row__name">' + item.name + ' <span class="text-faint fw-normal">(' + item.code + ')</span></div>' +
+          '<div class="item-picker-row__code">' + codeLabel + '</div></div>' +
         '<div class="item-picker-row__stock num">คงเหลือ ' + item.stock + ' ' + item.unit + '</div>' +
       '</div>'
     );
-    $picker.append($row);
   });
+
   var $first = $picker.find('.item-picker-row').first();
   if ($first.length) {
     $first.addClass('selected').append('<i class="bi bi-check-circle-fill ms-2" style="color:var(--color-primary)"></i>');
@@ -233,47 +280,123 @@ renderReceivePicker('');
 function goStep(n) {
   $('.rcv-step').addClass('d-none');
   $('.rcv-step[data-step="' + n + '"]').removeClass('d-none');
-  $('.wizard-step').removeClass('active done');
-  $('.wizard-step').each(function () {
+  $('.wizard-step').removeClass('active done').each(function () {
     var s = parseInt($(this).data('step-indicator'), 10);
     if (s < n) $(this).addClass('done');
     if (s === n) $(this).addClass('active');
   });
 }
 
-$('#toStep2').on('click', function () { updateConversion(); goStep(2); });
-$('#toStep3').on('click', function () {
-  $('#confName').text($('.item-picker-row.selected').data('name'));
-  $('#confResult').text($('#cvResult').text());
-  goStep(3);
-});
-$('[data-back]').on('click', function () { goStep($(this).data('back')); });
+// ---- Step 2: quantity, unit conversion and the serial block ----
+function baseQty() {
+  var item = selectedItem();
+  if (!item) return 0;
+  return (parseFloat($('#rcvQty').val()) || 0) * (item.recvFactor || 1);
+}
+
+function enteredSerials() {
+  return $('#rcvSerials').val().split('\n')
+    .map(function (s) { return s.trim(); })
+    .filter(function (s) { return s.length > 0; });
+}
+
+// Serial count must match the quantity received, and no serial may repeat.
+function serialProblem() {
+  var item = selectedItem();
+  if (!item || !item.serialized) return null;
+  var serials = enteredSerials();
+  var need = baseQty();
+  var seen = {}, dupes = [];
+  serials.forEach(function (s) {
+    if (seen[s]) { if (dupes.indexOf(s) === -1) dupes.push(s); }
+    seen[s] = true;
+  });
+  if (dupes.length) return 'Serial ซ้ำกัน: ' + dupes.join(', ');
+  if (serials.length !== need) return 'ต้องกรอกให้ครบ ' + need + ' เลข (ตอนนี้ ' + serials.length + ')';
+  return null;
+}
+
+function updateSerialState() {
+  var item = selectedItem();
+  var serialized = !!(item && item.serialized);
+  $('#rcvSerialSection').toggleClass('d-none', !serialized);
+  if (!serialized) return;
+
+  $('#serialNeeded').text(baseQty());
+  $('#serialCount').text(enteredSerials().length);
+  var problem = serialProblem();
+  $('#serialWarn').toggleClass('d-none', !problem);
+  $('#serialWarnText').text(problem || '');
+}
 
 function updateConversion() {
-  var $sel = $('.item-picker-row.selected');
-  var name = $sel.data('name'), recvUnit = $sel.data('recv-unit'), baseUnit = $sel.data('base-unit');
-  var factor = parseFloat($sel.data('factor')), current = parseFloat($sel.data('current'));
+  var item = selectedItem();
+  if (!item) return;
+  var recvUnit = item.recvUnit || item.unit;
+  var factor = item.recvFactor || 1;
   var qty = parseFloat($('#rcvQty').val()) || 0;
   var result = qty * factor;
 
-  $('#selItemName').text(name);
+  $('#selItemName').text(item.name);
   $('#rcvUnitLabel').val(recvUnit);
+  $('#rcvPriceUnit').text(recvUnit);
   $('#cvQty').text(qty);
   $('#cvUnit').text(recvUnit);
   $('#cvFactor').text(factor);
-  $('#cvBaseUnit').text(baseUnit + ' / ' + recvUnit);
-  $('#cvResult').text('+' + result + ' ' + baseUnit);
-  $('#cvCurrent').text(current + ' ' + baseUnit);
-  $('#cvAfter').text((current + result) + ' ' + baseUnit);
+  $('#cvBaseUnit').text(item.unit + ' / ' + recvUnit);
+  $('#cvResult').text('+' + result + ' ' + item.unit);
+  $('#cvCurrent').text(item.stock + ' ' + item.unit);
+  $('#cvAfter').text((item.stock + result) + ' ' + item.unit);
+  updateSerialState();
 }
+
 $('#rcvQty').on('input', updateConversion);
+$('#rcvSerials').on('input', updateSerialState);
+
+$('#toStep2').on('click', function () { updateConversion(); goStep(2); });
+
+$('#toStep3').on('click', function () {
+  var item = selectedItem();
+  if (!$('#rcvPo').val().trim()) {
+    showToast('warning', 'กรุณาระบุเลขที่ PO เพื่อให้ตรวจสอบย้อนกลับได้ตอนส่งเคลม');
+    $('#rcvPo').focus();
+    return;
+  }
+  var problem = serialProblem();
+  if (problem) {
+    showToast('warning', problem);
+    $('#rcvSerials').focus();
+    return;
+  }
+
+  var price = $('#rcvPrice').val();
+  var warranty = $('#rcvWarranty').val();
+  $('#confName').text(item.name);
+  $('#confResult').text($('#cvResult').text());
+  $('#confPo').text($('#rcvPo').val().trim());
+  $('#confSupplier').text($('#rcvSupplier').val().trim() || '-');
+  $('#confPrice').text(price ? Number(price).toLocaleString('th-TH') + ' บาท / ' + (item.recvUnit || item.unit) : '-');
+  $('#confDate').text($('#rcvDate').val() ? formatThaiDate(new Date($('#rcvDate').val() + 'T00:00:00')) : '-');
+  $('#confWarranty').text(warranty ? formatThaiDate(new Date(warranty + 'T00:00:00')) : 'ไม่มีประกัน');
+
+  var serials = item.serialized ? enteredSerials() : [];
+  $('#confSerialWrap').toggleClass('d-none', serials.length === 0);
+  $('#confSerialCount').text(serials.length);
+  $('#confSerialList').html(serials.map(function (s) {
+    return '<span class="serial-tag">' + s + '</span>';
+  }).join(''));
+
+  goStep(3);
+});
+
+$('[data-back]').on('click', function () { goStep($(this).data('back')); });
 
 $('#confirmReceive').on('click', function () {
   var $btn = $(this);
   setBtnLoading($btn, 'กำลังบันทึก...');
   setTimeout(function () {
     resetBtnLoading($btn);
-    showToast('success', 'รับเข้าอุปกรณ์สำเร็จ');
+    showToast('success', 'รับเข้าอุปกรณ์สำเร็จ (ล็อต ' + nextRef('LOT') + ')');
     setTimeout(function () { location.href = 'inventory.html'; }, 900);
   }, 700);
 });
