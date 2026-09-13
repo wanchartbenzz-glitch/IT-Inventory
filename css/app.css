@@ -119,7 +119,13 @@ button { font-family: inherit; }
   max-width: 1440px;
   width: 100%;
 }
-@media (max-width: 991px) {
+/* Tablet: sidebar stays visible but auto-compacts to icon-only (no drawer, no manual toggle needed) */
+@media (min-width: 576px) and (max-width: 991px) {
+  .app-shell { grid-template-columns: var(--sidebar-w-collapsed) 1fr; }
+  .app-main { padding: var(--sp-5) var(--sp-5) var(--sp-8); }
+}
+/* Mobile: sidebar becomes an off-canvas drawer */
+@media (max-width: 575px) {
   .app-shell { grid-template-columns: 1fr; }
   .app-main { padding: var(--sp-4) var(--sp-4) var(--sp-8); }
 }
@@ -202,10 +208,20 @@ button { font-family: inherit; }
 }
 .sidebar-collapse-btn:hover { color: #fff; }
 
+/* Tablet: same icon-only treatment as manual desktop collapse, applied automatically.
+   Placed after the base rules above so it wins the cascade at this width. */
+@media (min-width: 576px) and (max-width: 991px) {
+  .sidebar__brand-text, .sidebar__group-label,
+  .nav-item span:not(.nav-item__icon), .nav-item__soon { display: none; }
+  .nav-item { justify-content: center; }
+  .sidebar__brand { justify-content: center; padding-inline: var(--sp-3); }
+  .sidebar-collapse-btn { display: none; }
+}
+
 .sidebar-overlay {
   display: none; position: fixed; inset: 0; background: rgba(11,21,38,.5); z-index: 39;
 }
-@media (max-width: 991px) {
+@media (max-width: 575px) {
   .sidebar {
     position: fixed; left: 0; top: 0; width: 272px !important;
     transform: translateX(-100%); transition: transform var(--dur) var(--ease); z-index: 50;
@@ -229,7 +245,7 @@ button { font-family: inherit; }
   width: 40px; height: 40px; border-radius: var(--r-sm); cursor: pointer; flex-shrink: 0;
 }
 .header-menu-btn:hover { background: var(--color-bg); }
-@media (max-width: 991px) { .header-menu-btn { display: inline-flex; align-items: center; justify-content: center; } }
+@media (max-width: 575px) { .header-menu-btn { display: inline-flex; align-items: center; justify-content: center; } }
 
 .header-search {
   flex: 1; max-width: 480px; margin-inline: auto;
@@ -240,7 +256,7 @@ button { font-family: inherit; }
 }
 .header-search:focus-within { border-color: var(--color-primary); background: var(--color-surface); }
 .header-search input { border: none; background: none; outline: none; flex: 1; font: inherit; color: var(--color-text); }
-@media (max-width: 767px) { .header-search { display: none; } }
+@media (max-width: 575px) { .header-search { display: none; } }
 
 .header-actions { display: flex; align-items: center; gap: var(--sp-2); flex-shrink: 0; }
 .icon-btn {
@@ -267,7 +283,7 @@ button { font-family: inherit; }
 @media (max-width: 575px) { .user-chip__text { display: none; } }
 
 .dropdown-panel {
-  position: absolute; top: calc(100% + 8px); right: 0; width: 320px;
+  position: absolute; top: calc(100% + 8px); right: 0; width: 320px; max-width: calc(100vw - 32px);
   background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--r-md);
   box-shadow: var(--shadow-lg); z-index: 60; overflow: hidden;
 }

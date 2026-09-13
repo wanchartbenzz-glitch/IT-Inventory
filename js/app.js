@@ -1,31 +1,7 @@
-// IT Inventory — shared shell behavior
+// IT Inventory — generic page utilities.
+// Shell (sidebar/header) markup + its interactions now live in js/shell.js.
 
 $(function () {
-  // Mobile drawer
-  $('.header-menu-btn').on('click', function () {
-    $('.sidebar, .sidebar-overlay').addClass('is-open');
-  });
-  $('.sidebar-overlay').on('click', function () {
-    $('.sidebar, .sidebar-overlay').removeClass('is-open');
-  });
-
-  // Desktop collapse
-  $('.sidebar-collapse-btn').on('click', function () {
-    $('.app-shell').toggleClass('is-collapsed');
-  });
-
-  // Dropdown panels (notifications / user menu)
-  $('[data-panel-toggle]').on('click', function (e) {
-    e.stopPropagation();
-    var target = $(this).data('panel-toggle');
-    $('.dropdown-panel').not(target).addClass('d-none');
-    $(target).toggleClass('d-none');
-  });
-  $(document).on('click', function () {
-    $('.dropdown-panel').addClass('d-none');
-  });
-  $('.dropdown-panel').on('click', function (e) { e.stopPropagation(); });
-
   // Quantity steppers
   $(document).on('click', '.qty-stepper [data-step]', function () {
     var $wrap = $(this).closest('.qty-stepper');
@@ -50,7 +26,7 @@ function showToast(type, message) {
   var icon = icons[type] || icons.info;
   var $stack = $('.toast-stack');
   if ($stack.length === 0) {
-    $stack = $('<div class="toast-stack"></div>').appendTo('body');
+    $stack = $('<div class="toast-stack" role="status" aria-live="polite"></div>').appendTo('body');
   }
   var $toast = $(
     '<div class="app-toast app-toast--' + type + '">' +
