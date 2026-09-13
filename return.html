@@ -106,14 +106,27 @@
           </div>
         </div>
 
+        <div class="empty-state d-none" id="retNotFound">
+          <div class="empty-state__icon"><i class="bi bi-search"></i></div>
+          <div class="empty-state__title">ไม่พบรายการเบิกที่ตรงกับคำค้นหา</div>
+          <div class="empty-state__desc">ลองค้นหาด้วยชื่อผู้เบิก รหัสอุปกรณ์ หรือเลขที่อ้างอิงอื่น</div>
+        </div>
+
+        <div class="form-section d-none" id="consumableBlock">
+          <div class="d-flex gap-2 p-3" style="background:var(--color-warning-bg);border-radius:var(--r-md);font-size:12.5px;color:#92610a">
+            <i class="bi bi-info-circle-fill"></i>
+            <span><b id="consumableName"></b> เป็นอุปกรณ์สิ้นเปลือง (Consumable) ไม่รองรับการคืนสต๊อก เนื่องจากถือว่าถูกใช้งานแล้ว</span>
+          </div>
+        </div>
+
         <div class="form-section d-none" id="foundBlock">
           <div class="section-title mb-3" style="font-size:14px">รายการที่พบ</div>
           <div class="conversion-box" style="background:var(--color-primary-light);border-color:#c7dafb">
             <div class="row g-3 w-100">
-              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">อุปกรณ์</div><div class="fw-700">Mechanical Keyboard</div></div>
-              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">เลขอ้างอิง</div><div class="fw-700 num">ISS-2026-0305</div></div>
-              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">ผู้เบิก</div><div class="fw-700">กมล ศรีสุข</div></div>
-              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">จำนวนที่เบิก</div><div class="fw-700 num">2 ชิ้น</div></div>
+              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">อุปกรณ์</div><div class="fw-700" id="foundName">-</div></div>
+              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">เลขอ้างอิง</div><div class="fw-700 num" id="foundRef">-</div></div>
+              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">ผู้เบิก</div><div class="fw-700" id="foundRequester">-</div></div>
+              <div class="col-6 col-md-3"><div class="text-muted-2" style="font-size:11px">จำนวนที่เบิก</div><div class="fw-700 num" id="foundQty">-</div></div>
             </div>
           </div>
         </div>
@@ -121,7 +134,7 @@
         <div class="form-section d-none" id="detailBlock">
           <div class="section-title mb-3" style="font-size:14px">รายละเอียดการคืน</div>
           <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">จำนวนที่คืน <span class="required">*</span></label><input type="number" class="form-control" value="1" min="1" max="2"></div>
+            <div class="col-md-6"><label class="form-label">จำนวนที่คืน <span class="required">*</span></label><input type="number" class="form-control" id="retQty" value="1" min="1"></div>
             <div class="col-md-6"><label class="form-label">วันที่คืน <span class="required">*</span></label><input type="date" class="form-control" id="retDate"></div>
             <div class="col-md-6">
               <label class="form-label">สภาพอุปกรณ์ <span class="required">*</span></label>
@@ -132,6 +145,7 @@
                 <option value="damaged">ชำรุด &mdash; ส่งซ่อม</option>
                 <option value="broken">เสีย &mdash; จำหน่ายออก</option>
               </select>
+              <div class="invalid-feedback">กรุณาเลือกสภาพอุปกรณ์</div>
             </div>
             <div class="col-md-6"><label class="form-label">เหตุผลการคืน</label><select class="form-select"><option>ไม่ได้ใช้งานแล้ว</option><option>เปลี่ยนอุปกรณ์ใหม่</option><option>ลาออก/ย้ายแผนก</option></select></div>
             <div class="col-12"><label class="form-label">หมายเหตุ</label><textarea class="form-control" rows="2" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea></div>
@@ -156,21 +170,64 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.5/sweetalert2.all.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/shell.js"></script>
+<script src="js/data.js"></script>
 <script>
 $('#retDate').val(new Date().toISOString().split('T')[0]);
 
+// Small mock issue log to search against (no backend yet -- consistent with the
+// same transactions already referenced in js/data.js's movement history).
+var ISSUED_RECORDS = [
+  { ref: 'ISS-2026-0311', code: 'IT-MOU-001', requester: 'กมล ศรีสุข (IT Support)', qty: 5 },
+  { ref: 'ISS-2026-0300', code: 'IT-KEY-001', requester: 'ทีมบัญชี', qty: 2 },
+  { ref: 'ISS-2026-0315', code: 'IT-SSD-001', requester: 'ทีม IT (อัปเกรดเครื่อง)', qty: 6 }
+];
+var currentRecord = null;
+
 function searchIssue() {
-  if (!$('#retSearch').val().trim()) { showToast('warning', 'กรุณาระบุข้อมูลสำหรับค้นหา'); return; }
-  $('#foundBlock, #detailBlock').removeClass('d-none');
-  $('#confirmReturnBtn').removeClass('d-none');
+  var q = $('#retSearch').val().trim().toLowerCase();
+  if (!q) { showToast('warning', 'กรุณาระบุข้อมูลสำหรับค้นหา'); return; }
+
+  var record = ISSUED_RECORDS.find(function (r) {
+    var item = findInventoryItem(r.code);
+    return r.ref.toLowerCase().indexOf(q) > -1 ||
+           r.requester.toLowerCase().indexOf(q) > -1 ||
+           r.code.toLowerCase().indexOf(q) > -1 ||
+           (item && item.name.toLowerCase().indexOf(q) > -1);
+  });
+
+  $('#foundBlock, #detailBlock, #consumableBlock, #retNotFound, #confirmReturnBtn').addClass('d-none');
+  currentRecord = null;
+
+  if (!record) {
+    $('#retNotFound').removeClass('d-none');
+    return;
+  }
+
+  var item = findInventoryItem(record.code);
+  currentRecord = record;
+  $('#foundName').text(item.name);
+  $('#foundRef').text(record.ref);
+  $('#foundRequester').text(record.requester);
+  $('#foundQty').text(record.qty + ' ' + item.unit);
+  $('#retQty').attr('max', record.qty).val(record.qty);
+  $('#foundBlock').removeClass('d-none');
+
+  if (item.category === 'Consumable' || item.category === 'Cable') {
+    $('#consumableName').text(item.name);
+    $('#consumableBlock').removeClass('d-none');
+  } else {
+    $('#detailBlock, #confirmReturnBtn').removeClass('d-none');
+  }
 }
 
 function confirmReturn() {
+  if (!currentRecord) return;
   if (!$('#retCondition').val()) { $('#retCondition').addClass('is-invalid').focus(); return; }
+  var item = findInventoryItem(currentRecord.code);
   var cond = $('#retCondition option:selected').text();
   Swal.fire({
     title: 'ยืนยันการคืนอุปกรณ์?',
-    html: '<div style="text-align:left;font-size:13.5px"><p><b>อุปกรณ์:</b> Mechanical Keyboard</p><p><b>ผู้คืน:</b> กมล ศรีสุข</p><p><b>สภาพ:</b> ' + cond + '</p></div>',
+    html: '<div style="text-align:left;font-size:13.5px"><p><b>อุปกรณ์:</b> ' + item.name + '</p><p><b>ผู้คืน:</b> ' + currentRecord.requester + '</p><p><b>สภาพ:</b> ' + cond + '</p></div>',
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#2563eb',

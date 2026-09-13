@@ -226,8 +226,9 @@ function renderInventory() {
     var barColor = stockBarColor(item.status);
     var barWidth = stockBarWidth(item);
 
+    var ariaLabel = item.name + ' ' + item.code + ' คงเหลือ ' + item.stock + ' ' + item.unit + ' ' + st.label + ' ดูรายละเอียด';
     var $row = $(
-      '<tr data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" style="cursor:pointer">' +
+      '<tr data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" style="cursor:pointer" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
         '<td><div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div></td>' +
         '<td class="num text-muted-2">' + item.code + '</td>' +
         '<td><div class="fw-700">' + item.name + '</div><div class="text-muted-2" style="font-size:11.5px">' + (item.brand !== '-' ? item.brand + ' ' + item.model : '&nbsp;') + '</div></td>' +
@@ -240,10 +241,11 @@ function renderInventory() {
       '</tr>'
     );
     $row.on('click', function () { location.href = href; });
+    $row.on('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = href; } });
     $tbody.append($row);
 
     var $card = $(
-      '<div class="inv-card" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '">' +
+      '<div class="inv-card" data-category="' + item.category + '" data-type="' + item.type + '" data-unit="' + item.unit + '" data-status="' + item.status + '" tabindex="0" role="link" aria-label="' + ariaLabel + '">' +
         '<div class="item-icon-box" style="background:' + tone.bg + ';color:' + tone.fg + '"><i class="bi ' + item.icon + '"></i></div>' +
         '<div class="inv-card__body">' +
           '<div class="inv-card__title">' + item.name + '</div>' +
@@ -255,6 +257,7 @@ function renderInventory() {
       '</div>'
     );
     $card.on('click', function () { location.href = href; });
+    $card.on('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = href; } });
     $cards.append($card);
   });
 
